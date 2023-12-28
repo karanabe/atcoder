@@ -16,9 +16,11 @@ fn solve(s: Vec<Vec<char>>) -> usize {
     for a_row in 0..9 as usize {
         for a_col in 0..9 as usize {
             for b_row in a_row..9 {
-                for b_col in a_col+1..9 {
+                for b_col in a_col + 1..9 {
                     if s[a_row][a_col] == '#' && s[b_row][b_col] == '#' {
-                        if is_square(vec![[a_row, a_col], [b_row, b_col]], &s) { result += 1; }
+                        if is_square(vec![[a_row, a_col], [b_row, b_col]], &s) {
+                            result += 1;
+                        }
                     }
                 }
             }
@@ -27,7 +29,6 @@ fn solve(s: Vec<Vec<char>>) -> usize {
     println!("{}", result);
     return result;
 }
-
 
 fn is_square(vec: Vec<[usize; 2]>, list: &Vec<Vec<char>>) -> bool {
     let a = vec[0];
@@ -38,8 +39,12 @@ fn is_square(vec: Vec<[usize; 2]>, list: &Vec<Vec<char>>) -> bool {
     let d_row = (c_row as i32 - (c_col as i32 - b[1] as i32).abs()) as usize;
     let d_col = (c_col as i32 - (c_row as i32 - b[0] as i32).abs()) as usize;
 
-    if !(c_row < 9 && c_col < 9 && d_row < 9 && d_col < 9) { return false; }
-    if list[c_row][c_col] == '#' && list[d_row][d_col] == '#' { return true; }
+    if !(c_row < 9 && c_col < 9 && d_row < 9 && d_col < 9) {
+        return false;
+    }
+    if list[c_row][c_col] == '#' && list[d_row][d_col] == '#' {
+        return true;
+    }
     false
 }
 
@@ -58,7 +63,7 @@ mod abc275 {
             "........#".to_string().chars().collect(),
             "......#..".to_string().chars().collect(),
             ".........".to_string().chars().collect(),
-            ".........".to_string().chars().collect()
+            ".........".to_string().chars().collect(),
         ];
         assert_eq!(2, solve(s));
     }
@@ -74,9 +79,9 @@ mod abc275 {
             ".#.......".to_string().chars().collect(),
             ".........".to_string().chars().collect(),
             ".....#...".to_string().chars().collect(),
-            ".........".to_string().chars().collect()
+            ".........".to_string().chars().collect(),
         ];
-        assert!(is_square(vec![[1,3], [3,7]], &s));
+        assert!(is_square(vec![[1, 3], [3, 7]], &s));
     }
 
     #[test]
@@ -90,12 +95,11 @@ mod abc275 {
             ".........".to_string().chars().collect(),
             "....#.#.#".to_string().chars().collect(),
             "........#".to_string().chars().collect(),
-            ".........".to_string().chars().collect()
+            ".........".to_string().chars().collect(),
         ];
         assert_eq!(3, solve(s));
     }
 }
-
 
 /*
 use proconio::input;

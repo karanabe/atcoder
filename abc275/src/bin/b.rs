@@ -23,7 +23,6 @@ fn solve(a: u128, b: u128, c: u128, d: u128, e: u128, f: u128) -> u128 {
     return result;
 }
 
-
 #[cfg(test)]
 mod abc275 {
     use super::*;

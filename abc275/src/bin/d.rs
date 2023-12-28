@@ -21,12 +21,12 @@ fn solve(n: usize) -> usize {
 #[allow(dead_code)]
 #[inline(never)]
 fn fib(n: usize) -> usize {
-    if n == 0 { 1 }
-    else {
+    if n == 0 {
+        1
+    } else {
         fib(n.div_euclid(2)) + fib(n.div_euclid(3))
     }
 }
-
 
 fn fib_memo(n: usize, memo: &mut HashMap<usize, usize>) -> usize {
     if let Some(&value) = memo.get(&n) {
