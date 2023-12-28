@@ -20,7 +20,7 @@ fn solve(a: u128, b: u128, c: u128, d: u128, e: u128, f: u128) -> u128 {
     let def = d % m * e % m * f % m;
     let result = (abc - def + m) % m;
     println!("{}", result);
-    return result;
+    result
 }
 
 #[cfg(test)]

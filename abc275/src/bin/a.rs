@@ -20,7 +20,7 @@ fn solve(bridges: &[i32]) -> usize {
         }
     }
     println!("{}", result);
-    return result;
+    result
 }
 
 #[cfg(test)]

@@ -15,7 +15,7 @@ fn solve(n: usize) -> usize {
     let mut memo: HashMap<usize, usize> = HashMap::new();
     let result: usize = fib_memo(n, &mut memo);
     println!("{}", result);
-    return result;
+    result
 }
 
 #[allow(dead_code)]

@@ -13,24 +13,22 @@ fn solve(s: Vec<Vec<char>>) -> usize {
     let mut result: usize = 0;
     // let s2: Vec<Vec<char>> = s.iter().map(|x| x.chars().collect()).collect();
 
-    for a_row in 0..9 as usize {
-        for a_col in 0..9 as usize {
+    for a_row in 0..9_usize {
+        for a_col in 0..9_usize {
             for b_row in a_row..9 {
                 for b_col in a_col + 1..9 {
-                    if s[a_row][a_col] == '#' && s[b_row][b_col] == '#' {
-                        if is_square(vec![[a_row, a_col], [b_row, b_col]], &s) {
-                            result += 1;
-                        }
+                    if s[a_row][a_col] == '#' && s[b_row][b_col] == '#' && is_square(vec![[a_row, a_col], [b_row, b_col]], &s) {
+                        result += 1;
                     }
                 }
             }
         }
     }
     println!("{}", result);
-    return result;
+    result
 }
 
-fn is_square(vec: Vec<[usize; 2]>, list: &Vec<Vec<char>>) -> bool {
+fn is_square(vec: Vec<[usize; 2]>, list: &[Vec<char>]) -> bool {
     let a = vec[0];
     let b = vec[1];
 
