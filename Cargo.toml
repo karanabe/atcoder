@@ -1,8 +1,11 @@
 [workspace]
 resolver = "2"
-members = [
+members = [ "abc275",
     "abs",
     "algorithm",
     "binbin",
     "typical90"
 ]
+
+[workspace.dependencies]
+proconio = "0.4.5"
