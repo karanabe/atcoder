@@ -8,6 +8,7 @@ members = [
     "abs",
     "algorithm",
     "binbin",
+    "math-and-algorithm",
     "typical90"
 ]
 

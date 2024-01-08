@@ -1,0 +1,26 @@
+// https://atcoder.jp/contests/math-and-algorithm/tasks/math_and_algorithm_a
+// 001 - Print 5+N
+use proconio::input;
+
+fn main() {
+    input! {
+        n: usize,
+    }
+    let _: String = solve(n);
+}
+
+fn solve(n: usize) -> String {
+    println!("{n}");
+    "Yes".to_string()
+}
+
+#[cfg(test)]
+mod maa {
+    use super::*;
+
+    #[test]
+    fn test_1() {
+        let n = 1;
+        assert_eq!("Yes", solve(n));
+    }
+}
