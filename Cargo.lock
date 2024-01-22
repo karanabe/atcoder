@@ -52,6 +52,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "adt_20240118_3"
+version = "0.1.0"
+dependencies = [
+ "proconio",
+]
+
+[[package]]
 name = "algorithm"
 version = "0.1.0"
 
