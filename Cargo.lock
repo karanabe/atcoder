@@ -66,6 +66,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "abc341"
+version = "0.1.0"
+dependencies = [
+ "proconio",
+]
+
+[[package]]
 name = "abs"
 version = "0.1.0"
 dependencies = [

@@ -1,0 +1,176 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in abc275c",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=c",
+                    "--package=abc275"
+                ],
+                "filter": {
+                    "name": "c",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'practice_a'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=practice_a",
+                    "--package=abs",
+                    "--target-dir=target/abs"
+                ],
+                "filter": {
+                    "name": "practice_a",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'practice_a'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=practice_a",
+                    "--package=abs"
+                ],
+                "filter": {
+                    "name": "practice_a",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'algorithm'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=algorithm",
+                    "--package=algorithm"
+                ],
+                "filter": {
+                    "name": "algorithm",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'algorithm'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=algorithm",
+                    "--package=algorithm"
+                ],
+                "filter": {
+                    "name": "algorithm",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'arr'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=arr",
+                    "--package=binbin"
+                ],
+                "filter": {
+                    "name": "arr",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'arr'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=arr",
+                    "--package=binbin"
+                ],
+                "filter": {
+                    "name": "arr",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable '001_yokan_party'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=001_yokan_party",
+                    "--package=typical90"
+                ],
+                "filter": {
+                    "name": "001_yokan_party",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable '001_yokan_party'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=001_yokan_party",
+                    "--package=typical90"
+                ],
+                "filter": {
+                    "name": "001_yokan_party",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
