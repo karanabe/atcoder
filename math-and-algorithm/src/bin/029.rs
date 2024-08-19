@@ -6,18 +6,18 @@ fn main() {
     input! {
         n: usize,
     }
-    let _: String = solve(n);
+    let result: i64 = solve(n);
+    println!("{}", result);
 }
 
-fn solve(n: usize) -> String {
-    let mut dp: Vec<i32> = vec![0; n+1];
+fn solve(n: usize) -> i64 {
+    let mut dp: Vec<i64> = vec![0; n+1];
     dp[0] = 1;
     dp[1] = 1;
     for i in 2..=n {
         dp[i] = dp[i - 1] + dp[i - 2];
     }
-    println!("{}", dp[n]);
-    format!("{}", dp[n])
+    dp[n]
 }
 
 #[cfg(test)]
@@ -27,18 +27,18 @@ mod maa {
     #[test]
     fn test_1() {
         let n = 4;
-        assert_eq!("5", solve(n));
+        assert_eq!(5, solve(n));
     }
 
     #[test]
     fn test_2() {
         let n = 6;
-        assert_eq!("13", solve(n));
+        assert_eq!(13, solve(n));
     }
 
     #[test]
     fn test_3() {
         let n = 45;
-        assert_eq!("1836311903", solve(n));
+        assert_eq!(1836311903, solve(n));
     }
 }
