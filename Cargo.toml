@@ -20,6 +20,7 @@ members = [
     "abc368",
     "abc369",
     "abc370",
+    "abc371",
     "abs",
     "adt_20240118_3",
     "adt_20240123_3",
@@ -32,3 +33,4 @@ members = [
 
 [workspace.dependencies]
 proconio = "0.4.5"
+itertools = "0.11.0"
