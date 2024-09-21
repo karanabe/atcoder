@@ -73,6 +73,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "abc346"
+version = "0.1.0"
+dependencies = [
+ "itertools",
+ "proconio",
+]
+
+[[package]]
 name = "abc351"
 version = "0.1.0"
 dependencies = [
@@ -122,6 +130,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "abc369"
+version = "0.1.0"
+dependencies = [
+ "proconio",
+]
+
+[[package]]
+name = "abc370"
+version = "0.1.0"
+dependencies = [
+ "proconio",
+]
+
+[[package]]
+name = "abc371"
+version = "0.1.0"
+dependencies = [
+ "itertools",
+ "proconio",
+]
+
+[[package]]
+name = "abc372"
+version = "0.1.0"
+dependencies = [
+ "itertools",
+ "proconio",
+]
+
+[[package]]
 name = "abs"
 version = "0.1.0"
 dependencies = [
@@ -156,6 +194,21 @@ dependencies = [
 [[package]]
 name = "binbin"
 version = "0.1.0"
+
+[[package]]
+name = "either"
+version = "1.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "60b1af1c220855b6ceac025d3f6ecdd2b7c4894bfe9cd9bda4fbb4bc7c0d4cf0"
+
+[[package]]
+name = "itertools"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1c173a5686ce8bfa551b3563d0c2170bf24ca44da99c7ca4bfdab5418c3fe57"
+dependencies = [
+ "either",
+]
 
 [[package]]
 name = "math-and-algorithm"
