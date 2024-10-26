@@ -1,0 +1,9 @@
+[package]
+name = "abc375"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+proconio = { workspace = true }
+itertools = { workspace = true }
+regex = { workspace = true }
