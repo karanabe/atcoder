@@ -23,9 +23,14 @@ members = [
     "abc370",
     "abc371",
     "abc372",
+    "abc373",
+    "abc374",
+    "abc375",
+    "abc376",
     "abs",
     "adt_20240118_3",
     "adt_20240123_3",
+    "ahc038",
     "algorithm",
     "arc170",
     "binbin",
@@ -34,5 +39,8 @@ members = [
 ]
 
 [workspace.dependencies]
-proconio = "0.4.5"
+proconio = { version = "0.4.5", features = ["derive"]}
 itertools = "0.11.0"
+regex = "1.9.1"
+rand = "0.8.5"
+ac-library-rs = "0.1.1"
