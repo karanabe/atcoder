@@ -1,6 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
+    "abc241",
+    "abc262",
     "abc275",
     "abc296",
     "abc314",
@@ -28,6 +30,8 @@ members = [
     "abc375",
     "abc376",
     "abc377",
+    "abc378",
+    "abc379",
     "abs",
     "adt_20240118_3",
     "adt_20240123_3",
@@ -35,7 +39,9 @@ members = [
     "algorithm",
     "arc170",
     "binbin",
+    "library-practice",
     "math-and-algorithm",
+    "tessoku",
     "typical90"
 ]
 
@@ -45,3 +51,4 @@ itertools = "0.11.0"
 regex = "1.9.1"
 rand = "0.8.5"
 ac-library-rs = "0.1.1"
+num = "0.4.1"
