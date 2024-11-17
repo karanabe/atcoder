@@ -32,10 +32,12 @@ members = [
     "abc377",
     "abc378",
     "abc379",
+    "abc380",
     "abs",
     "adt_20240118_3",
     "adt_20240123_3",
     "ahc038",
+    "ahc039",
     "algorithm",
     "arc170",
     "binbin",
@@ -52,3 +54,5 @@ regex = "1.9.1"
 rand = "0.8.5"
 ac-library-rs = "0.1.1"
 num = "0.4.1"
+rand_pcg = "0.3.1"
+rustc-hash = "1.1.0"
