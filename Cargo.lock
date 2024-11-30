@@ -258,6 +258,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "abc382"
+version = "0.1.0"
+dependencies = [
+ "ac-library-rs",
+ "itertools",
+ "num",
+ "proconio",
+ "regex",
+ "rustc-hash",
+]
+
+[[package]]
 name = "abs"
 version = "0.1.0"
 dependencies = [
