@@ -69,6 +69,123 @@ use rand::{Rng, thread_rng};
 #[allow(unused_imports)]
 use rand_distr::{Normal, Distribution};
 
+struct PackingStatus {
+    count: usize,
+    split_point: Vec<usize>,
+    split_count: usize,
+}
+struct Rectangle {
+    list: Vec<(usize, usize, (i64, i64))>,
+}
+
+struct Container {
+    status: PackingStatus,
+    rects: Rectangle,
+}
+
+trait Packing {
+    fn new(items: Vec<(i64, i64)>) -> Self;
+    fn check_rotate(&mut self);
+    fn apply_margin(&mut self, sigma: i64);
+    fn find_split_point(&mut self);
+}
+
+impl Packing for Container {
+    fn new(items: Vec<(i64, i64)>) -> Self {
+        Container {
+            status: PackingStatus {
+                count: 1,
+                split_point: vec![0],
+                split_count: 0,
+            },
+            rects: Rectangle {
+                list: items
+                    .into_iter()
+                    .enumerate()
+                    .map(|(i, (w, h))| (i, 0, (w, h)))
+                    .collect()
+            },
+        }
+    }
+
+    fn check_rotate(&mut self) {
+        for item in &mut self.rects.list {
+            let (_, rotate, (w, h)) = item;
+            if *h+2000 < *w {
+                *rotate = 1;
+                std::mem::swap(w, h);
+            }
+        }
+    }
+
+    fn apply_margin(&mut self, sigma: i64) {
+
+        let mean = 0.0;
+        let mut rng = thread_rng();
+
+        for item in &mut self.rects.list {
+            let (_, _, (w, h)) = item;
+            let normal = Normal::new(mean, sigma as f64).unwrap();
+
+            let width_padding = normal.sample(&mut rng) as i64;
+            let height_padding = normal.sample(&mut rng) as i64;
+
+            *w = *w + width_padding;
+            *h = *h + height_padding;
+        }
+
+    }
+
+    fn find_split_point(&mut self) {
+        let n = self.rects.list.len();
+
+        let mut sum_width_left = vec![0; n];
+        let mut max_height_left = vec![0; n];
+        let mut width_accum = 0;
+        let mut height_max = 0;
+
+        for i in 0..n {
+            let (_, _, (width, height)) = self.rects.list[i];
+            width_accum += width;
+            height_max = height_max.max(height);
+            sum_width_left[i] = width_accum;
+            max_height_left[i] = height_max;
+        }
+
+        let mut sum_width_right = vec![0; n];
+        let mut max_height_right = vec![0; n];
+        width_accum = 0;
+        height_max = 0;
+
+        for i in (0..n).rev() {
+            let (_, _, (width, height)) = self.rects.list[i];
+            width_accum += width;
+            height_max = height_max.max(height);
+            sum_width_right[i] = width_accum;
+            max_height_right[i] = height_max;
+        }
+
+        self.status.split_point = (0..n - 1)
+            .filter(|&i| {
+                sum_width_left[i] == max_height_left[i] && sum_width_right[i + 1] == max_height_right[i + 1]
+            })
+            .collect();
+
+        if self.status.split_point.is_empty() {
+            let mut split_count = 4;
+            if 50 < n {
+                split_count = (n / 10) - 1;
+            }
+
+            let split = (n + split_count - 1) / split_count;
+
+            self.status.split_point = (0..split_count).map(|i| i * split).collect();
+        }
+
+        self.status.split_count = self.status.split_point.len();
+    }
+}
+
 fn main() {
     input_interactive! {
         n: usize,
@@ -77,39 +194,25 @@ fn main() {
         rects: [(i64, i64); n],
     }
 
-    let mut rng = thread_rng();
+    let mut container = Container::new(rects);
 
-    let rectangles: Vec<(usize, i64, i64)> = rects
-        .into_iter()
-        .enumerate()
-        .map(|(i, (w, h))| (i, w, h))
-        .collect();
-
-    // T Count
-    let mut count = 1;
-
-    // Split rects list
-    let mut split_count = 4;
-    if 50 < n {
-        split_count = n / 10 - 1;
-    }
-
-    let mut split = (n + split_count - 1) / split_count;
-    let mut split_point: Vec<usize> = (0..split_count).map(|i| i * split).collect();
-
-    let mut max_offset = split / 2;
+    let mut max_offset = 2;
     let mut adjustment_step: isize = 1;
 
+    //container.apply_margin(sigma);
+    container.check_rotate();
+    container.find_split_point();
+
     loop {
-        if t < count {
+        if t < container.status.count {
             break;
         }
 
         // Special First time
-        println!("# Cycle T={}", count);
-        println!("# Split count={}", split_count);
+        println!("# Cycle T={}", container.status.count);
+        println!("# Split count={}", container.status.split_count);
         println!("# Adjust step={}", adjustment_step);
-        println!("# Split={:?}", split_point);
+        println!("# Split={:?}", container.status.split_point);
 
         // Save data for rectangle
         let mut placement = Vec::new();
@@ -122,33 +225,20 @@ fn main() {
         // Update max height
         let mut max_height = 0;
 
-        let split_point_backup = split_point.clone();
+        let split_point_backup = container.status.split_point.clone();
 
-        for &(idx, w, h) in &rectangles {
-            let mut rotate = 0;
-            let (mut w, mut h) = (w, h);
-
-            // Rotate
-            if w > h {
-                rotate = 1;
-                std::mem::swap(&mut w, &mut h);
-            }
+        for &(idx, rotate, (w, h)) in &container.rects.list {
+            let (w, h) = (w, h);
 
             // Add placement
-            let bi = if split_point.contains(&idx) {
+            let bi = if container.status.split_point.contains(&idx) {
                 split_xxx += 1;
                 -1
             } else {
                 (idx - 1) as i64
             };
 
-            let mean = 0.0;
-            let normal = Normal::new(mean, sigma as f64).unwrap();
-
-            let random_number = normal.sample(&mut rng);
-
-            // Update x
-            current_x += w + random_number as i64;
+            current_x += w;
 
             if bi == -1 && first_time && idx != 0 {
                 first_time = false;
@@ -156,21 +246,22 @@ fn main() {
                 println!("# idx={} maxwidth={}", idx, max_width);
             }
 
-            let bi = if !first_time && max_width <= current_x && split_xxx < split_point.len() && !split_point.contains(&idx) {
+            let bi = if !first_time && max_width+sigma <= current_x && split_xxx < container.status.split_point.len() && !container.status.split_point.contains(&idx) {
                 println!("# idx={} split_idx={}", &idx, split_xxx);
-                split_point[split_xxx] = 0;
+                container.status.split_point[split_xxx] = 0;
                 split_xxx += 1;
-                println!("# Split={:?}", split_point);
+                println!("# Split={:?}", container.status.split_point);
+                max_width = current_x;
                 current_x = 0;
                 -1
-            } else if split_point.contains(&idx) {
+            } /* else if container.status.split_point.contains(&idx) {
                 println!("# idx={}", idx);
                 if max_width < current_x {
                     println!("# idx={} maxwidth={}", idx, max_width);
                     max_width = current_x;
                 }
                 -1
-            } else {
+            } */ else {
                 (idx - 1) as i64
             };
 
@@ -182,7 +273,6 @@ fn main() {
 
             placement.push((idx, rotate, 'U', bi));
 
-
             // Update max height
             if h > max_height {
                 max_height = h;
@@ -190,7 +280,7 @@ fn main() {
         }
 
         // reset
-        split_point = split_point_backup;
+        container.status.split_point = split_point_backup;
 
         println!("{}", placement.len());
         for (p, r, d, b) in &placement {
@@ -203,11 +293,11 @@ fn main() {
             _h_prime: i64,
         }
 
-        count += 1;
+        container.status.count += 1;
 
-        for indices in (1..split_count).combinations(adjustment_step as usize) {
+        for indices in (1..container.status.split_count).combinations(adjustment_step as usize) {
             for adjustment in [-adjustment_step, adjustment_step] {
-                if t < count {
+                if t < container.status.count {
                     break;
                 }
 
@@ -217,14 +307,14 @@ fn main() {
                 let mut first_time = true;
                 let mut split_xxx = 0;
 
-                println!("# Cycle T={}", count);
-                println!("# Split count={}", split_count);
+                println!("# Cycle T={}", container.status.count);
+                println!("# Split count={}", container.status.split_count);
                 println!("# Adjust step={}", adjustment_step);
                 for &idx in &indices {
-                    split_point[idx] = (split_point[idx] as isize + adjustment) as usize;
+                    container.status.split_point[idx] = (container.status.split_point[idx] as isize + adjustment) as usize;
                 }
-                println!("# Split={:?}", split_point);
-                let split_point_backup = split_point.clone();
+                println!("# Split={:?}", container.status.split_point);
+                let split_point_backup = container.status.split_point.clone();
 
                 // Save data for rectangle
                 let mut placement = Vec::new();
@@ -234,30 +324,18 @@ fn main() {
                 // Update max height
                 let mut max_height = 0;
 
-                for &(idx, w, h) in &rectangles {
-                    let mut rotate = 0;
-                    let (mut w, mut h) = (w, h);
-
-                    // Rotate
-                    if w > h {
-                        rotate = 1;
-                        std::mem::swap(&mut w, &mut h);
-                    }
+                for &(idx, rotate, (w, h)) in &container.rects.list {
+                    let (w, h) = (w, h);
 
                     // Add placement
-                    let bi = if split_point.contains(&idx) {
+                    let bi = if container.status.split_point.contains(&idx) {
                         split_xxx += 1;
                         -1
                     } else {
                         (idx - 1) as i64
                     };
 
-                    let mean = 0.0;
-                    let normal = Normal::new(mean, sigma as f64).unwrap();
-
-                    let random_number = normal.sample(&mut rng);
-
-                    current_x += w + random_number as i64;
+                    current_x += w;
 
                     if bi == -1 && first_time && idx != 0 {
                         first_time = false;
@@ -265,14 +343,14 @@ fn main() {
                         println!("# idx={} maxwidth={}", idx, max_width);
                     }
 
-                    let bi = if !first_time && max_width <= current_x && split_xxx < split_point.len() && !split_point.contains(&idx) {
+                    let bi = if !first_time && max_width <= current_x && split_xxx < container.status.split_point.len() && !container.status.split_point.contains(&idx) {
                         println!("# idx={} split_idx={}", &idx, split_xxx);
-                        split_point[split_xxx] = 0;
+                        container.status.split_point[split_xxx] = 0;
                         split_xxx += 1;
-                        println!("# Split={:?}", split_point);
+                        println!("# Split={:?}", container.status.split_point);
                         current_x = 0;
                         -1
-                    } else if split_point.contains(&idx) {
+                    } else if container.status.split_point.contains(&idx) {
                         println!("# idx={}", idx);
                         if max_width < current_x {
                             println!("# idx={} maxwidth={}", idx, max_width);
@@ -312,40 +390,40 @@ fn main() {
                 }
 
                 // reset
-                split_point = split_point_backup;
+                container.status.split_point = split_point_backup;
 
                 for &idx in &indices {
-                    split_point[idx] = (split_point[idx] as isize - adjustment) as usize;
+                    container.status.split_point[idx] = (container.status.split_point[idx] as isize - adjustment) as usize;
                 }
 
-                count += 1;
-                if t < count {
+                container.status.count += 1;
+                if t < container.status.count {
                     break;
                 }
             }
-            if t < count {
+            if t < container.status.count {
                 break;
             }
         }
 
-        if t < count {
+        if t < container.status.count {
             break;
         }
 
         adjustment_step += 1;
         if adjustment_step as usize > max_offset {
-            split_count += 1;
-            split = (n + split_count - 1) / split_count;
-            split_point = (0..split_count).map(|i| i * split).collect();
+            container.status.split_count += 1;
+            let split = (n + container.status.split_count - 1) / container.status.split_count;
+            container.status.split_point = (0..container.status.split_count).map(|i| i * split).collect();
 
             max_offset = (split / 2) + 1;
             adjustment_step = 1;
         }
     }
 
-    if count < t {
-        for _ in count..=t {
-            println!("# Cycle T={}", count);
+    if container.status.count < t {
+        for _ in container.status.count..=t {
+            println!("# Cycle T={}", container.status.count);
             println!("1");
             println!("0 0 U -1");
             stdout().flush().unwrap();
@@ -355,8 +433,9 @@ fn main() {
                 _h_prime: i64,
             }
 
-            count += 1;
+            container.status.count += 1;
         }
     }
 
 }
+

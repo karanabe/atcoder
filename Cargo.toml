@@ -1,51 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
-    "abc241",
-    "abc262",
-    "abc275",
-    "abc296",
-    "abc314",
-    "abc335",
-    "abc336",
-    "abc337",
-    "abc338",
-    "abc339",
-    "abc340",
-    "abc341",
-    "abc346",
-    "abc351",
-    "abc352",
-    "abc355",
-    "abc365",
-    "abc366",
-    "abc367",
-    "abc368",
-    "abc369",
-    "abc370",
-    "abc371",
-    "abc372",
-    "abc373",
-    "abc374",
-    "abc375",
-    "abc376",
-    "abc377",
-    "abc378",
-    "abc379",
-    "abc380",
-    "abc382",
-    "abs",
-    "adt_20240118_3",
-    "adt_20240123_3",
-    "ahc038",
-    "ahc039",
-    "algorithm",
-    "arc170",
-    "binbin",
-    "library-practice",
-    "math-and-algorithm",
-    "tessoku",
-    "typical90"
+    "crates/*"
 ]
 
 [workspace.dependencies]
@@ -57,3 +13,4 @@ ac-library-rs = "0.1.1"
 num = "0.4.1"
 rand_pcg = "0.3.1"
 rustc-hash = "1.1.0"
+rand_distr = "=0.4.3"

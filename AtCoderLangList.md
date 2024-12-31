@@ -1,39 +1,3 @@
-use proconio::input;
-use std::collections::HashMap;
-
-fn main() {
-    input! {
-        n: usize,
-        a: [i32; n],
-    }
-    let _: String = solve(n, a);
-}
-
-fn solve(n: usize, a: Vec<i32>) -> String {
-    let mut current = -1;
-    #[allow(unused_assignments)]
-    let mut num: i32 = 0;
-    let mut result: String = "".to_string();
-    let mut hashmap: HashMap<i32, usize> = HashMap::new();
-
-    for (index, element) in a.iter().enumerate() {
-        hashmap.insert(*element, index);
-    }
-
-    for _i in 0..n {
-        num = *hashmap.get(&current).unwrap() as i32 + 1;
-        print!("{} ", num);
-        result = format!("{result}{num} ");
-        current = num ;
-    }
-    println!();
-    result.trim_start().trim_end().to_string()
-}
-
-
-Rust (rustc 1.70.0)	cargo build --release --quiet --offline
-	["./target/release/main"]
-
 https://img.atcoder.jp/file/language-update/language-list.html
 
 ac-library-rs@=0.1.1

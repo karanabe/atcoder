@@ -58,10 +58,9 @@ fn main() {
         h: usize,
         w: usize,
         k: u32,
-        s: [String; h],
+        grid: [Chars; h],
     }
 
-    let grid: Vec<Vec<char>> = s.iter().map(|line| line.chars().collect()).collect();
     let mut count = 0;
     let dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
