@@ -77,7 +77,45 @@ use rand_distr::{Normal, Distribution};
 use std::time::{Instant, Duration};
 
 
-#[fastout]
+fn bfs(
+    root: usize,
+    graph: &Vec<Vec<usize>>,
+    a: &Vec<usize>,
+    used_global: &Vec<bool>,
+    h: usize
+) -> (Vec<isize>, usize, Vec<usize>)
+{
+    let n = graph.len();
+
+    let mut parent = vec![-1isize; n];
+    let mut dist   = vec![-1isize; n];
+    let mut score: usize = 0;
+    let mut used_vertices = vec![];
+
+    dist[root] = 0;
+    parent[root] = -1;
+    let mut que = VecDeque::new();
+    que.push_back(root);
+
+    while let Some(u) = que.pop_front() {
+        let du = dist[u];
+        score += (h + 1) * a[u];
+        used_vertices.push(u);
+
+        if du < h as isize {
+            for &v in &graph[u] {
+                if !used_global[v] && dist[v] == -1 {
+                    dist[v] = du + 1;
+                    parent[v] = u as isize;
+                    que.push_back(v);
+                }
+            }
+        }
+    }
+
+    (parent, score, used_vertices)
+}
+
 fn main() {
     input! {
         n: usize,
@@ -85,7 +123,7 @@ fn main() {
         h: usize,
         a: [usize; n],
         edges: [(usize, usize); m],
-        coords: [(usize, usize); n],
+        _coords: [(usize, usize); n],
     }
 
     let mut graph = vec![Vec::new(); n];
@@ -94,15 +132,56 @@ fn main() {
         graph[v].push(u);
     }
 
+    let mut used_global = vec![false; n];
     let mut parent = vec![-2isize; n];
 
-    for v in 0..n {
-        if parent[v] == -2 {
-            parent[v] = -1;
-            // dfs_assign(v, &graph, &mut parent, h);
+    loop {
+        let mut best_root = None;
+        let mut best_score = 0;
+        let mut best_parent = vec![-1isize; n];
+        let mut best_vertices = vec![];
+
+        for v in 0..n {
+            if used_global[v] {
+                continue;
+            }
+
+            // Find best tree with BFS
+            let (parent_tmp, score_tmp, used_tmp) =
+                bfs(v, &graph, &a, &used_global, h);
+
+            if score_tmp > best_score {
+                best_score = score_tmp;
+                best_root = Some(v);
+                best_parent = parent_tmp;
+                best_vertices = used_tmp;
+            }
+        }
+
+        // If we can not create tree any more
+        if best_score == 0 || best_root.is_none() {
+            break;
+        }
+
+        // Update vertices to the best score
+        for &u in &best_vertices {
+            used_global[u] = true;
+        }
+
+        // Update to result array
+        for i in 0..n {
+            if best_parent[i] >= 0 {
+                parent[i] = best_parent[i];
+            } else if best_parent[i] == -1 {
+                if i == best_root.unwrap() {
+                    parent[i] = -1;
+                }
+            }
         }
     }
 
+    // 最終的な親配列を出力
+    // （問題の出力形式に合わせてください）
     for i in 0..n {
         print!("{} ", parent[i]);
     }
