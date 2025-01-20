@@ -76,15 +76,14 @@ use rand_distr::{Normal, Distribution};
 #[allow(unused_imports)]
 use std::time::{Instant, Duration};
 
-
-fn bfs(
+#[allow(dead_code)]
+fn dfs(
     root: usize,
     graph: &Vec<Vec<usize>>,
     a: &Vec<usize>,
     used_global: &Vec<bool>,
     h: usize
-) -> (Vec<isize>, usize, Vec<usize>)
-{
+) -> (Vec<isize>, usize, Vec<usize>) {
     let n = graph.len();
 
     let mut parent = vec![-1isize; n];
@@ -94,10 +93,11 @@ fn bfs(
 
     dist[root] = 0;
     parent[root] = -1;
-    let mut que = VecDeque::new();
-    que.push_back(root);
 
-    while let Some(u) = que.pop_front() {
+    let mut stack = Vec::new();
+    stack.push(root);
+
+    while let Some(u) = stack.pop() {
         let du = dist[u];
         score += (h + 1) * a[u];
         used_vertices.push(u);
@@ -107,7 +107,7 @@ fn bfs(
                 if !used_global[v] && dist[v] == -1 {
                     dist[v] = du + 1;
                     parent[v] = u as isize;
-                    que.push_back(v);
+                    stack.push(v);
                 }
             }
         }
@@ -115,6 +115,66 @@ fn bfs(
 
     (parent, score, used_vertices)
 }
+
+fn dfs_recursive(
+    u: usize,
+    graph: &Vec<Vec<usize>>,
+    a: &Vec<usize>,
+    used_global: &Vec<bool>,
+    parent: &mut Vec<isize>,
+    dist: &mut Vec<isize>,
+    h: usize,
+    score: &mut usize,
+    used_vertices: &mut Vec<usize>,
+) {
+    *score += (h + 1) * a[u];
+    used_vertices.push(u);
+
+    let du = dist[u];
+    if du < h as isize {
+        for &v in &graph[u] {
+            if !used_global[v] && dist[v] == -1 {
+                dist[v] = du + 1;
+                parent[v] = u as isize;
+                dfs_recursive(v, graph, a, used_global, parent, dist, h, score, used_vertices);
+            }
+        }
+    }
+}
+
+fn dfs_wrapper(
+    root: usize,
+    graph: &Vec<Vec<usize>>,
+    a: &Vec<usize>,
+    used_global: &Vec<bool>,
+    h: usize
+) -> (Vec<isize>, usize, Vec<usize>) {
+    let n = graph.len();
+    let mut parent = vec![-1isize; n];
+    let mut dist   = vec![-1isize; n];
+    let mut score: usize = 0;
+    let mut used_vertices = vec![];
+
+    dist[root] = 0;
+    parent[root] = -1;
+
+    if !used_global[root] {
+        dfs_recursive(
+            root,
+            graph,
+            a,
+            used_global,
+            &mut parent,
+            &mut dist,
+            h,
+            &mut score,
+            &mut used_vertices
+        );
+    }
+
+    (parent, score, used_vertices)
+}
+
 
 fn main() {
     input! {
@@ -148,7 +208,7 @@ fn main() {
 
             // Find best tree with BFS
             let (parent_tmp, score_tmp, used_tmp) =
-                bfs(v, &graph, &a, &used_global, h);
+                dfs_wrapper(v, &graph, &a, &used_global, h);
 
             if score_tmp > best_score {
                 best_score = score_tmp;
@@ -180,8 +240,6 @@ fn main() {
         }
     }
 
-    // 最終的な親配列を出力
-    // （問題の出力形式に合わせてください）
     for i in 0..n {
         print!("{} ", parent[i]);
     }
