@@ -192,6 +192,10 @@ fn main() {
         graph[v].push(u);
     }
 
+    for u in 0..n {
+        graph[u].sort_by_key(|&v| a[v]);
+    }
+
     let mut used_global = vec![false; n];
     let mut parent = vec![-2isize; n];
 
