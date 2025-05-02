@@ -3,3 +3,6 @@ note.md
 Cargo.lock
 tools
 pahcer
+async-run
+run.sh
+backup
