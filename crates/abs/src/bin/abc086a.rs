@@ -7,7 +7,6 @@ fn main() {
     }
 
     let _: &str = solve(a, b);
-
 }
 
 fn solve(a: usize, b: usize) -> &'static str {

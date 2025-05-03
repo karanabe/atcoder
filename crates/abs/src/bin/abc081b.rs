@@ -11,7 +11,7 @@ fn main() {
 
 fn solve(a: &[u32]) -> usize {
     let mut div_count: usize = 0;
-    let mut v1: Vec<_>  = a.to_vec();
+    let mut v1: Vec<_> = a.to_vec();
     while odd_check(&v1) {
         div_count += 1;
         v1 = v1.iter().map(|x| x / 2).collect();
@@ -47,8 +47,9 @@ mod abs {
 
     #[test]
     fn div_count_test_3() {
-        let a: [u32; 6] = [382253568, 723152896, 37802240, 379425024, 404894720, 471526144];
+        let a: [u32; 6] = [
+            382253568, 723152896, 37802240, 379425024, 404894720, 471526144,
+        ];
         assert_eq!(8, solve(&a));
     }
-
 }

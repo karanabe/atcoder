@@ -24,7 +24,11 @@ fn solve(s: &str, t: &str) -> String {
         }
     }
 
-    let ans = result.iter().map(|&x| x.to_string()).collect::<Vec<_>>().join(" ");
+    let ans = result
+        .iter()
+        .map(|&x| x.to_string())
+        .collect::<Vec<_>>()
+        .join(" ");
 
     println!("{ans}");
     format!("{ans}")

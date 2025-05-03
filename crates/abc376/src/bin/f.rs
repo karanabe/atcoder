@@ -1,30 +1,17 @@
 #[allow(unused_imports)]
 use proconio::{
-    input,
-    fastout,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    fastout, input,
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max
-};
-
+use std::cmp::{max, min};
 
 fn main() {
     input! {
@@ -70,22 +57,37 @@ fn main() {
     println!("{}", ans);
 }
 
-
 fn simulate(mut h_pos: usize, mut other_pos: usize, t: usize, n: usize, clockwise: bool) -> usize {
     let mut steps = 0;
 
     while h_pos != t {
         let next_h_pos = if clockwise {
-            if h_pos == n { 1 } else { h_pos + 1 }
+            if h_pos == n {
+                1
+            } else {
+                h_pos + 1
+            }
         } else {
-            if h_pos == 1 { n } else { h_pos - 1 }
+            if h_pos == 1 {
+                n
+            } else {
+                h_pos - 1
+            }
         };
 
         if next_h_pos == other_pos {
             let next_other_pos = if clockwise {
-                if other_pos == n { 1 } else { other_pos + 1 }
+                if other_pos == n {
+                    1
+                } else {
+                    other_pos + 1
+                }
             } else {
-                if other_pos == 1 { n } else { other_pos - 1 }
+                if other_pos == 1 {
+                    n
+                } else {
+                    other_pos - 1
+                }
             };
 
             steps += 1;
@@ -99,19 +101,41 @@ fn simulate(mut h_pos: usize, mut other_pos: usize, t: usize, n: usize, clockwis
     steps
 }
 
-fn steps_cw_other_pos(mut h_pos: usize, mut other_pos: usize, t: usize, n: usize, clockwise: bool) -> usize {
+fn steps_cw_other_pos(
+    mut h_pos: usize,
+    mut other_pos: usize,
+    t: usize,
+    n: usize,
+    clockwise: bool,
+) -> usize {
     while h_pos != t {
         let next_h_pos = if clockwise {
-            if h_pos == n { 1 } else { h_pos + 1 }
+            if h_pos == n {
+                1
+            } else {
+                h_pos + 1
+            }
         } else {
-            if h_pos == 1 { n } else { h_pos - 1 }
+            if h_pos == 1 {
+                n
+            } else {
+                h_pos - 1
+            }
         };
 
         if next_h_pos == other_pos {
             let next_other_pos = if clockwise {
-                if other_pos == n { 1 } else { other_pos + 1 }
+                if other_pos == n {
+                    1
+                } else {
+                    other_pos + 1
+                }
             } else {
-                if other_pos == 1 { n } else { other_pos - 1 }
+                if other_pos == 1 {
+                    n
+                } else {
+                    other_pos - 1
+                }
             };
 
             other_pos = next_other_pos;

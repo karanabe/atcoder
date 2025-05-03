@@ -6,8 +6,8 @@ fn main() {
         a: [usize; n],
     }
 
-    for i in 0..n-1 {
-        print!("{} ", a[i] * a[i+1]);
+    for i in 0..n - 1 {
+        print!("{} ", a[i] * a[i + 1]);
     }
     println!("");
 }

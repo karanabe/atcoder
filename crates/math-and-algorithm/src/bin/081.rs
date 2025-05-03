@@ -1,22 +1,14 @@
 #[allow(unused_imports)]
 use proconio::{
     input,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 fn main() {
     input! {
@@ -34,7 +26,7 @@ fn main() {
         ans += 1;
     }
     while 1000 <= n {
-        n -=1000;
+        n -= 1000;
         ans += 1;
     }
 

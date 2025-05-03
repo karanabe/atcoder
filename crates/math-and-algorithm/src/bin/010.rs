@@ -6,7 +6,7 @@ fn main() {
     input! {
         n: usize,
     }
-    let _: usize = solve(n,);
+    let _: usize = solve(n);
 }
 
 fn solve(n: usize) -> usize {

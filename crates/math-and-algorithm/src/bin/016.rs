@@ -38,10 +38,11 @@ fn gcd_not_good(aa: usize, bb: usize) -> usize {
             a = a % b;
         }
     }
-    if a >= 1 { return a; }
+    if a >= 1 {
+        return a;
+    }
     b
 }
-
 
 #[cfg(test)]
 mod maa {

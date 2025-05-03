@@ -1,28 +1,17 @@
 #[allow(unused_imports)]
 use proconio::{
     input,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max
-};
+use std::cmp::{max, min};
 
 fn move_position(x: usize, y: usize, cnt: usize, n: usize) -> (usize, usize) {
     match cnt % 4 {

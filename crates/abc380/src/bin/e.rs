@@ -1,33 +1,25 @@
 #[allow(unused_imports)]
 use proconio::{
-    input,
-    fastout,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    fastout, input,
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max,
-    Ordering
-};
+use std::cmp::{max, min, Ordering};
 
 #[allow(unused_imports)]
 use ac_library::{
+    // new(n: usize, e: T) -> Self
+    // accum(&self, idx: usize) -> T
+    // add<U: Clone>(&mut self, idx: usize, val: U)
+    // sum<R>(&self, range: R) -> T
+    math,
     Dsu,
     // new(size: usize) -> Self
     // merge(&mut self, a: usize, b: usize) -> usize
@@ -36,11 +28,7 @@ use ac_library::{
     // size(&mut self, a: usize) -> usize
     // groups(&mut self) -> Vec<Vec<usize>>
     FenwickTree,
-    // new(n: usize, e: T) -> Self
-    // accum(&self, idx: usize) -> T
-    // add<U: Clone>(&mut self, idx: usize, val: U)
-    // sum<R>(&self, range: R) -> T
-    math,
+    Max,
     // crt(r: &[i64], m: &[i64]) -> (i64, i64)
     // floor_sum(n: i64, m: i64, a: i64, b: i64) -> i64
     // inv_mod(x: i64, m: i64) -> i64
@@ -50,14 +38,10 @@ use ac_library::{
     // add_edge(&mut self, from: usize, to: usize)
     // scc(&self) -> Vec<Vec<usize>>
     Segtree,
-    Max
 };
 
 #[allow(unused_imports)]
-use num::{
-    BigInt,
-    Zero
-};
+use num::{BigInt, Zero};
 
 #[allow(unused_variables)]
 #[allow(dead_code)]
@@ -77,7 +61,14 @@ fn main() {
     let mut intervals = BTreeMap::new();
 
     for i in 1..=n {
-        intervals.insert(i, Interval { start: i, end: i, color: i });
+        intervals.insert(
+            i,
+            Interval {
+                start: i,
+                end: i,
+                color: i,
+            },
+        );
         cnt[i] = 1;
     }
 
@@ -104,7 +95,14 @@ fn main() {
                 cnt[c0] -= r - l + 1;
                 cnt[c] += r - l + 1;
 
-                intervals.insert(l, Interval { start: l, end: r, color: c });
+                intervals.insert(
+                    l,
+                    Interval {
+                        start: l,
+                        end: r,
+                        color: c,
+                    },
+                );
 
                 if let Some((&prev_start, prev_interval)) = intervals.range(..l).next_back() {
                     if prev_interval.end == l - 1 && prev_interval.color == c {
@@ -112,7 +110,14 @@ fn main() {
                         let new_end = r;
                         intervals.remove(&prev_start);
                         intervals.remove(&l);
-                        intervals.insert(new_start, Interval { start: new_start, end: new_end, color: c });
+                        intervals.insert(
+                            new_start,
+                            Interval {
+                                start: new_start,
+                                end: new_end,
+                                color: c,
+                            },
+                        );
                         l = new_start;
                         r = new_end;
                     }
@@ -120,12 +125,18 @@ fn main() {
 
                 if let Some(next_interval) = intervals.get(&(r + 1)) {
                     if next_interval.color == c {
-
                         let new_start = l;
                         let new_end = next_interval.end;
                         intervals.remove(&l);
                         intervals.remove(&(r + 1));
-                        intervals.insert(new_start, Interval { start: new_start, end: new_end, color: c });
+                        intervals.insert(
+                            new_start,
+                            Interval {
+                                start: new_start,
+                                end: new_end,
+                                color: c,
+                            },
+                        );
                     }
                 }
             }

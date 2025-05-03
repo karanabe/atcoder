@@ -12,12 +12,12 @@ fn main() {
 }
 
 fn solve(_n: usize, a: Vec<usize>, b: Vec<usize>) -> f64 {
-    let calc: f64 = a.iter().sum::<usize>() as f64 * 2.0 / 6.0 + b.iter().sum::<usize>() as f64 * 4.0 / 6.0;
+    let calc: f64 =
+        a.iter().sum::<usize>() as f64 * 2.0 / 6.0 + b.iter().sum::<usize>() as f64 * 4.0 / 6.0;
     let result = format!("{calc:.12}");
     println!("{result}");
     result.parse::<f64>().unwrap()
 }
-
 
 #[cfg(test)]
 mod maa {

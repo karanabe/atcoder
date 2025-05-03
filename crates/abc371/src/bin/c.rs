@@ -1,6 +1,6 @@
+use itertools::Itertools;
 use proconio::input;
 use proconio::marker::Usize1;
-use itertools::Itertools;
 use std::cmp::min;
 
 fn main() {

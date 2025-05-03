@@ -11,7 +11,7 @@ fn main() {
 }
 
 fn solve(n: usize) -> i64 {
-    let mut dp: Vec<i64> = vec![0; n+1];
+    let mut dp: Vec<i64> = vec![0; n + 1];
     dp[0] = 1;
     dp[1] = 1;
     for i in 2..=n {

@@ -9,7 +9,14 @@ fn main() {
 
     let mut anss = vec![];
 
-    fn dfs(index: usize, cur: &mut Vec<usize>, n: usize, k: usize, r: &[usize], anss: &mut Vec<Vec<usize>>) {
+    fn dfs(
+        index: usize,
+        cur: &mut Vec<usize>,
+        n: usize,
+        k: usize,
+        r: &[usize],
+        anss: &mut Vec<Vec<usize>>,
+    ) {
         if index == n {
             let sum: usize = cur.iter().sum();
             if sum % k == 0 {
@@ -28,6 +35,12 @@ fn main() {
     dfs(0, &mut vec![], n, k, &r, &mut anss);
 
     for ans in anss {
-        println!("{}", ans.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" "));
+        println!(
+            "{}",
+            ans.iter()
+                .map(|x| x.to_string())
+                .collect::<Vec<_>>()
+                .join(" ")
+        );
     }
 }

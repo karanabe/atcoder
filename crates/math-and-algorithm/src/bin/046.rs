@@ -1,22 +1,14 @@
 #[allow(unused_imports)]
 use proconio::{
     input,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 const DIJ: [(usize, usize); 4] = [(!0, 0), (0, !0), (1, 0), (0, 1)];
 
@@ -33,7 +25,9 @@ fn main() {
     let mut seen = vec![vec![false; c]; r];
 
     while let Some((d, pos)) = todo.pop_front() {
-        if seen[pos.0][pos.1] { continue; }
+        if seen[pos.0][pos.1] {
+            continue;
+        }
         if pos == g {
             println!("{}", d);
             break;

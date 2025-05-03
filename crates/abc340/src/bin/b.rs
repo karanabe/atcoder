@@ -16,11 +16,9 @@ fn solve(n: usize) -> String {
         if q == 1 {
             result.push(xk);
         }
-        if q == 2{
+        if q == 2 {
             println!("{}", result.get(result.len() - xk).unwrap());
         }
-
     }
     format!("test")
 }
-

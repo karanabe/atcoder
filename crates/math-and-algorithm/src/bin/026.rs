@@ -19,7 +19,6 @@ fn solve(n: usize) -> f64 {
     result.parse::<f64>().unwrap()
 }
 
-
 #[cfg(test)]
 mod maa {
     use super::*;

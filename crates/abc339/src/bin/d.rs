@@ -33,7 +33,8 @@ fn solve(n: usize, a: Vec<String>) -> String {
     let mut players = vec![];
 
     // グリッドとプレイヤーの位置を読み込む
-    for i in 0..n { // 例として5x5グリッド
+    for i in 0..n {
+        // 例として5x5グリッド
         let cells: Vec<Cell> = a[i].trim().chars().map(Cell::from_char).collect();
 
         for j in 0..cells.len() {
@@ -65,9 +66,11 @@ fn solve(n: usize, a: Vec<String>) -> String {
 
             // 移動先のマスが存在し、かつ空きマスであるかどうかをチェック
             let valid = |p: (isize, isize)| {
-                p.0 >= 0 && p.0 < grid.len() as isize
-                && p.1 >= 0 && p.1 < grid[0].len() as isize
-                && grid[p.0 as usize][p.1 as usize] != Cell::Obstacle
+                p.0 >= 0
+                    && p.0 < grid.len() as isize
+                    && p.1 >= 0
+                    && p.1 < grid[0].len() as isize
+                    && grid[p.0 as usize][p.1 as usize] != Cell::Obstacle
             };
 
             // 移動可能ならばキューに追加
@@ -89,7 +92,13 @@ mod abc339 {
     #[test]
     fn test_1() {
         let n = 5;
-        let a: Vec<String> = vec!["....#".to_string(), "#..#.".to_string(), ".P...".to_string(), "..P..".to_string(), "....#".to_string()];
+        let a: Vec<String> = vec![
+            "....#".to_string(),
+            "#..#.".to_string(),
+            ".P...".to_string(),
+            "..P..".to_string(),
+            "....#".to_string(),
+        ];
         assert_eq!("3", solve(n, a));
     }
 }

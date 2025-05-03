@@ -16,14 +16,15 @@ fn solve(a: usize, b: usize, c: usize, x: usize) -> usize {
     for c500 in 0..=a {
         for c100 in 0..=b {
             for c50 in 0..=c {
-                if (c500 * 500 + c100 * 100 + c50 * 50) == x { calc_count += 1; }
+                if (c500 * 500 + c100 * 100 + c50 * 50) == x {
+                    calc_count += 1;
+                }
             }
         }
     }
     print!("{}", calc_count);
     calc_count
 }
-
 
 #[cfg(test)]
 mod abs {

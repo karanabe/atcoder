@@ -10,7 +10,7 @@ fn main() {
     for &health in &healths {
         let cur_damage = health / 5;
         max_turns += cur_damage * 3;
-        let mut sub_health = health - cur_damage*5;
+        let mut sub_health = health - cur_damage * 5;
 
         while sub_health > 0 {
             max_turns += 1;

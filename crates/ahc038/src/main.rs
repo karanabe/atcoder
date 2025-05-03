@@ -1,34 +1,22 @@
 #[allow(unused_imports)]
 use proconio::{
     input,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max,
-    Reverse
-};
+use std::cmp::{max, min, Reverse};
 
-#[allow(unused_imports)]
-use std::time::{Instant, Duration};
 #[allow(unused_imports)]
 use rand::prelude::*;
+#[allow(unused_imports)]
+use std::time::{Duration, Instant};
 
 #[allow(unused_variables)]
 #[allow(unused_assignments)]
@@ -39,7 +27,8 @@ fn main() {
         v: usize,
     }
 
-    let mut ans_queue: BinaryHeap<Reverse<(usize, VecDeque<Vec<char>>, usize, usize)>> = BinaryHeap::new();
+    let mut ans_queue: BinaryHeap<Reverse<(usize, VecDeque<Vec<char>>, usize, usize)>> =
+        BinaryHeap::new();
     //let mut action_queue = VecDeque::new();
 
     let mut s_grid = Vec::new();
@@ -75,7 +64,8 @@ fn main() {
         }
     }
 
-    let common_elements: HashSet<(usize, usize)> = takoyaki.intersection(&target_positions).cloned().collect();
+    let common_elements: HashSet<(usize, usize)> =
+        takoyaki.intersection(&target_positions).cloned().collect();
 
     for elem in &common_elements {
         takoyaki.remove(elem);
@@ -87,7 +77,6 @@ fn main() {
 
     let takoyaki_org = takoyaki.clone();
     let target_positions_org = target_positions.clone();
-
 
     let start = Instant::now();
     let time_limit = Duration::from_millis(2000);
@@ -121,10 +110,10 @@ fn main() {
         [(2, 1), (3, 0), (2, -1)],
         [(1, -2), (0, -3), (-1, -2)],
         [(-2, -1), (-3, 0), (-2, 1)],
-        [(-1, 2), (0, 3), (1, 2)]
+        [(-1, 2), (0, 3), (1, 2)],
     ];
 
-    while start.elapsed() < time_limit  {
+    while start.elapsed() < time_limit {
         //&& temp > temp_min
 
         if start_pos.len() != 0 {
@@ -158,7 +147,6 @@ fn main() {
             //println!("{} {}", ssx, ssy);
             let (sx, sy) = nearest_goal_in_grid(root_x, root_y, ssx, ssy, n).unwrap();
 
-
             let target_pos_option = nearest_point(sx, sy, &mut target_positions).unwrap();
             let (ttx, tty) = target_pos_option;
             let (tx, ty) = nearest_goal_in_grid(sx, sy, ttx, tty, n).unwrap();
@@ -166,8 +154,9 @@ fn main() {
             let start_direction = goal_direction(sx, sy, ssx, ssy);
             //println!("{start_direction}");
 
-            while (root_x as isize - sx as isize).abs() + (root_y as isize - sy as isize).abs() != 0 {
-                let mut cmd = vec!['.'; v_prime*2];
+            while (root_x as isize - sx as isize).abs() + (root_y as isize - sy as isize).abs() != 0
+            {
+                let mut cmd = vec!['.'; v_prime * 2];
                 let dx = sx as isize - root_x as isize;
                 let dy = sy as isize - root_y as isize;
                 if dx != 0 {
@@ -213,14 +202,14 @@ fn main() {
                     sy,
                     tx,
                     ty,
-                    &mut cmd
+                    &mut cmd,
                 );
 
                 // println!("{}", cmd.iter().collect::<String>());
                 action_queue.push_back(cmd);
             }
             while dir_current != start_direction {
-                let mut cmd = vec!['.'; v_prime*2];
+                let mut cmd = vec!['.'; v_prime * 2];
                 let diff = (start_direction + 4 - dir_current) % 4;
                 if diff == 1 {
                     cmd[1] = 'R';
@@ -244,14 +233,14 @@ fn main() {
                     sy,
                     tx,
                     ty,
-                    &mut cmd
+                    &mut cmd,
                 );
 
                 // println!("{}", cmd.iter().collect::<String>());
                 action_queue.push_back(cmd);
             }
 
-            let mut cmd = vec!['.'; v_prime*2];
+            let mut cmd = vec!['.'; v_prime * 2];
             cmd[7] = 'P';
             holding = true;
             // println!("{}", cmd.iter().collect::<String>());
@@ -259,8 +248,9 @@ fn main() {
 
             let end_direction = goal_direction(tx, ty, ttx, tty);
 
-            while (root_x as isize - tx as isize).abs() + (root_y as isize - ty as isize).abs() != 0 {
-                let mut cmd = vec!['.'; v_prime*2];
+            while (root_x as isize - tx as isize).abs() + (root_y as isize - ty as isize).abs() != 0
+            {
+                let mut cmd = vec!['.'; v_prime * 2];
 
                 let dx = tx as isize - root_x as isize;
                 let dy = ty as isize - root_y as isize;
@@ -301,7 +291,7 @@ fn main() {
                     sy,
                     tx,
                     ty,
-                    &mut cmd
+                    &mut cmd,
                 );
 
                 // println!("{}", cmd.iter().collect::<String>());
@@ -309,7 +299,7 @@ fn main() {
             }
 
             while dir_current != end_direction {
-                let mut cmd = vec!['.'; v_prime*2];
+                let mut cmd = vec!['.'; v_prime * 2];
                 let diff = (end_direction + 4 - dir_current) % 4;
                 if diff == 1 {
                     cmd[1] = 'R';
@@ -333,13 +323,13 @@ fn main() {
                     sy,
                     tx,
                     ty,
-                    &mut cmd
+                    &mut cmd,
                 );
 
                 // println!("{}", cmd.iter().collect::<String>());
                 action_queue.push_back(cmd);
             }
-            let mut cmd = vec!['.'; v_prime*2];
+            let mut cmd = vec!['.'; v_prime * 2];
             cmd[7] = 'P';
             holding = false;
             // println!("{}", cmd.iter().collect::<String>());
@@ -347,7 +337,7 @@ fn main() {
         }
 
         let mut sa_queue = VecDeque::new();
-        let mut current_cmd = vec!['.'; v_prime*2];
+        let mut current_cmd = vec!['.'; v_prime * 2];
         while let Some(next_cmd) = action_queue.pop_front() {
             let mut can_merge = true;
             for i in 0..=7 {
@@ -388,11 +378,13 @@ fn main() {
             println!("{}", vec.iter().collect::<String>());
         }
     }
-
 }
 
-
-fn nearest_point(root_x: usize, root_y: usize, points: &mut HashSet<(usize, usize)>) -> Option<(usize, usize)> {
+fn nearest_point(
+    root_x: usize,
+    root_y: usize,
+    points: &mut HashSet<(usize, usize)>,
+) -> Option<(usize, usize)> {
     if points.is_empty() {
         return None;
     }
@@ -416,14 +408,27 @@ fn nearest_point(root_x: usize, root_y: usize, points: &mut HashSet<(usize, usiz
     closest_point
 }
 
-
-fn nearest_goal_in_grid(root_x: usize, root_y: usize, goal_x: usize, goal_y: usize, n: usize) -> Option<(usize, usize)> {
+fn nearest_goal_in_grid(
+    root_x: usize,
+    root_y: usize,
+    goal_x: usize,
+    goal_y: usize,
+    n: usize,
+) -> Option<(usize, usize)> {
     let mut goals = HashSet::new();
     let root_len = 3;
-    if goal_x >= root_len { goals.insert((goal_x - root_len, goal_y)); }
-    if goal_y >= root_len { goals.insert((goal_x, goal_y - root_len)); }
-    if goal_x + root_len < n { goals.insert((goal_x + root_len, goal_y)); }
-    if goal_y + root_len < n { goals.insert((goal_x, goal_y + root_len)); }
+    if goal_x >= root_len {
+        goals.insert((goal_x - root_len, goal_y));
+    }
+    if goal_y >= root_len {
+        goals.insert((goal_x, goal_y - root_len));
+    }
+    if goal_x + root_len < n {
+        goals.insert((goal_x + root_len, goal_y));
+    }
+    if goal_y + root_len < n {
+        goals.insert((goal_x, goal_y + root_len));
+    }
 
     if goals.is_empty() {
         return None;
@@ -433,7 +438,8 @@ fn nearest_goal_in_grid(root_x: usize, root_y: usize, goal_x: usize, goal_y: usi
     let mut closest_goal = None;
 
     for &(gx, gy) in goals.iter() {
-        let distance = (root_x as isize - gx as isize).abs() + (root_y as isize - gy as isize).abs();
+        let distance =
+            (root_x as isize - gx as isize).abs() + (root_y as isize - gy as isize).abs();
 
         if distance < min_distance {
             min_distance = distance;
@@ -473,26 +479,38 @@ fn pick_or_drop_takoyaki(
     sy: usize,
     gx: usize,
     gy: usize,
-    cmd: &mut Vec<char>
+    cmd: &mut Vec<char>,
 ) {
     return;
     #[allow(unreachable_code)]
     let arm_positions = arms[direction];
 
-    let arm_pos_1 = (root_x as isize + arm_positions[0].0, root_y as isize + arm_positions[0].1);
-    let arm_pos_2 = (root_x as isize + arm_positions[2].0, root_y as isize + arm_positions[2].1);
+    let arm_pos_1 = (
+        root_x as isize + arm_positions[0].0,
+        root_y as isize + arm_positions[0].1,
+    );
+    let arm_pos_2 = (
+        root_x as isize + arm_positions[2].0,
+        root_y as isize + arm_positions[2].1,
+    );
 
     let arm_pos_1u: (usize, usize);
     let arm_pos_2u: (usize, usize);
 
     if is_in_grid(arm_pos_1.0, arm_pos_1.1, n) {
-        arm_pos_1u = ((root_x as isize + arm_positions[0].0).abs() as usize, (root_y as isize + arm_positions[0].1).abs() as usize);
+        arm_pos_1u = (
+            (root_x as isize + arm_positions[0].0).abs() as usize,
+            (root_y as isize + arm_positions[0].1).abs() as usize,
+        );
     } else {
         arm_pos_1u = (10000usize, 10000usize);
     }
 
     if is_in_grid(arm_pos_2.0, arm_pos_2.1, n) {
-        arm_pos_2u = ((root_x as isize + arm_positions[2].0).abs() as usize, (root_y as isize + arm_positions[2].1).abs() as usize);
+        arm_pos_2u = (
+            (root_x as isize + arm_positions[2].0).abs() as usize,
+            (root_y as isize + arm_positions[2].1).abs() as usize,
+        );
     } else {
         arm_pos_2u = (10000usize, 10000usize);
     }

@@ -17,19 +17,25 @@ fn solve(n: usize, x: usize, mut a: Vec<usize>) -> String {
     let mut ans = "No";
 
     let mut left = 1;
-    let mut right = n-1;
+    let mut right = n - 1;
 
     while left <= right {
         let mid = (left + right) / 2;
-        if a[mid] == x { ans = "Yes"; break }
-        if x < a[mid] { right = mid - 1; }
-        if a[mid] < x { left = mid + 1; }
+        if a[mid] == x {
+            ans = "Yes";
+            break;
+        }
+        if x < a[mid] {
+            right = mid - 1;
+        }
+        if a[mid] < x {
+            left = mid + 1;
+        }
     }
 
     println!("{}", ans);
     format!("{}", ans)
 }
-
 
 #[cfg(test)]
 mod maa {

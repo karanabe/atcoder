@@ -8,11 +8,11 @@ fn main() {
         a: [(Usize1, Usize1, isize); q],
     }
 
-    let mut ans = vec![0isize; n+1];
+    let mut ans = vec![0isize; n + 1];
 
     for i in 0..q {
         ans[a[i].0] += a[i].2;
-        ans[a[i].1+1] -= a[i].2;
+        ans[a[i].1 + 1] -= a[i].2;
         // println!("{:?}", ans);
     }
 

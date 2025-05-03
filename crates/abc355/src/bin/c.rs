@@ -33,7 +33,6 @@ fn solve(n: usize, t: usize, a: Vec<usize>) -> String {
             anti_diag += 1;
         }
 
-
         if rows[row] == n || cols[col] == n || diag == n || anti_diag == n {
             println!("{}", i + 1);
             return format!("{}", i + 1);
@@ -42,9 +41,7 @@ fn solve(n: usize, t: usize, a: Vec<usize>) -> String {
 
     println!("-1");
     format!("-1")
-
 }
-
 
 #[cfg(test)]
 mod abc355 {

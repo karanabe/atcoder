@@ -20,7 +20,7 @@ fn solve(_n: usize, a: Vec<usize>) -> usize {
     }
     // Get values less than 50000 from the list
     for (key, value) in map.range(..50000) {
-        result += value * map.get(&(100000-key)).unwrap_or(&0);
+        result += value * map.get(&(100000 - key)).unwrap_or(&0);
     }
     // Count 50000
     // nC2 => n is 50000 count
@@ -29,7 +29,6 @@ fn solve(_n: usize, a: Vec<usize>) -> usize {
     println!("{result}");
     result
 }
-
 
 #[cfg(test)]
 mod maa {
@@ -45,7 +44,9 @@ mod maa {
     #[test]
     fn test_2() {
         let n = 12;
-        let a = vec![40000, 50000, 20000, 80000, 50000, 30000, 40000, 50000, 20000, 80000, 50000, 30000];
+        let a = vec![
+            40000, 50000, 20000, 80000, 50000, 30000, 40000, 50000, 20000, 80000, 50000, 30000,
+        ];
         assert_eq!(10, solve(n, a));
     }
 }

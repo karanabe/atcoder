@@ -38,7 +38,13 @@ mod adt_20240118_03 {
     #[test]
     fn test_2() {
         let n: usize = 5;
-        let a: Vec<Vec<usize>> = vec![vec![1, 1], vec![1, 1], vec![1, 2], vec![2, 1, 1], vec![3, 1, 1, 1]];
+        let a: Vec<Vec<usize>> = vec![
+            vec![1, 1],
+            vec![1, 1],
+            vec![1, 2],
+            vec![2, 1, 1],
+            vec![3, 1, 1, 1],
+        ];
         assert_eq!("4", solve(n, a));
     }
 

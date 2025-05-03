@@ -13,9 +13,9 @@ fn solve(n: usize, y: usize) -> String {
     for s10000 in 0..=n {
         for s5000 in 0..=n - s10000 {
             let s1000 = n - s10000 - s5000;
-            if y == (s10000*10000 + s5000*5000 + s1000*1000) {
+            if y == (s10000 * 10000 + s5000 * 5000 + s1000 * 1000) {
                 print!("{} {} {}", s10000, s5000, s1000);
-                let result = s10000*10000 + s5000*5000 + s1000*1000;
+                let result = s10000 * 10000 + s5000 * 5000 + s1000 * 1000;
                 return result.to_string();
             }
         }
@@ -23,7 +23,6 @@ fn solve(n: usize, y: usize) -> String {
     print!("-1 -1 -1");
     return "-1 -1 -1".to_string();
 }
-
 
 #[cfg(test)]
 mod abs {

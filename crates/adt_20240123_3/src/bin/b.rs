@@ -18,7 +18,6 @@ fn solve(_n: usize, mut s: Vec<String>) -> String {
     format!("test")
 }
 
-
 #[cfg(test)]
 mod adt_20240123_03 {
     #[test]

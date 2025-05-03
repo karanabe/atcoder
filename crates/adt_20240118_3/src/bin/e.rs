@@ -30,7 +30,7 @@ fn dfs(pos: usize, result: usize, n: usize, x: usize, a: &Vec<Vec<usize>>, ans: 
         if result > x / arr {
             continue;
         }
-        dfs(pos+1, result * arr, n, x, a, ans);
+        dfs(pos + 1, result * arr, n, x, a, ans);
     }
 }
 
@@ -50,7 +50,11 @@ mod adt_20240118_03 {
     fn test_2() {
         let n: usize = 3;
         let x: usize = 200;
-        let a: Vec<Vec<usize>> = vec![vec![3, 10, 10, 10], vec![3, 10, 10, 10], vec![5, 2, 2, 2, 2, 2]];
+        let a: Vec<Vec<usize>> = vec![
+            vec![3, 10, 10, 10],
+            vec![3, 10, 10, 10],
+            vec![5, 2, 2, 2, 2, 2],
+        ];
         assert_eq!("45", solve(n, x, a));
     }
 
@@ -58,7 +62,11 @@ mod adt_20240118_03 {
     fn test_3() {
         let n: usize = 3;
         let x: usize = 1000000000000000000;
-        let a: Vec<Vec<usize>> = vec![vec![2, 1000000000, 1000000000], vec![2, 1000000000, 1000000000], vec![2, 1000000000, 1000000000]];
+        let a: Vec<Vec<usize>> = vec![
+            vec![2, 1000000000, 1000000000],
+            vec![2, 1000000000, 1000000000],
+            vec![2, 1000000000, 1000000000],
+        ];
         assert_eq!("0", solve(n, x, a));
     }
 }

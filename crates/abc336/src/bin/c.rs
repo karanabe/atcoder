@@ -17,7 +17,7 @@ fn solve(mut n: usize) -> String {
     let mut v = vec![];
     n -= 1;
     while n > 0 {
-        v.push((n%5) * 2);
+        v.push((n % 5) * 2);
         n /= 5;
     }
     v.reverse();
@@ -28,7 +28,6 @@ fn solve(mut n: usize) -> String {
     let s: Vec<String> = v.iter().map(|x| x.to_string()).collect();
     s.join("")
 }
-
 
 #[cfg(test)]
 mod abc336 {

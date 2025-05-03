@@ -16,9 +16,15 @@ fn solve(a: &Vec<Vec<i32>>) -> String {
     for v in a {
         let dt = v[0] - t;
         let dist = (v[1] - x).abs() + (v[2] - y).abs();
-        if dist > dt { println!("No"); return "No".to_string(); }
+        if dist > dt {
+            println!("No");
+            return "No".to_string();
+        }
         // if ((dt - dist) % 2 == 1) { println!("No"); return "No".to_string(); }
-        if dist % 2 != dt % 2 { println!("No"); return "No".to_string(); }
+        if dist % 2 != dt % 2 {
+            println!("No");
+            return "No".to_string();
+        }
 
         t = v[0];
         x = v[1];
@@ -27,7 +33,6 @@ fn solve(a: &Vec<Vec<i32>>) -> String {
     println!("Yes");
     return "Yes".to_string();
 }
-
 
 #[cfg(test)]
 mod abs {
@@ -50,5 +55,4 @@ mod abs {
         let a: Vec<Vec<i32>> = vec![vec![5, 1, 1], vec![100, 1, 1]];
         assert_eq!("No", solve(&a));
     }
-
 }

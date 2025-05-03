@@ -10,7 +10,7 @@ fn main() {
 }
 
 fn solve(n: usize) -> usize {
-    println!("{}", n+5);
+    println!("{}", n + 5);
     n + 5
 }
 

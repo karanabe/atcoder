@@ -1,12 +1,11 @@
 // Worng answer
+use itertools::Itertools;
 #[allow(unused_imports)]
 use proconio::{
     input,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 use std::cmp::Reverse;
-use itertools::Itertools;
-
 
 fn main() {
     input! {n: usize, m: usize, k: i64, a: [i64; n]}

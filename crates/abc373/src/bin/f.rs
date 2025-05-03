@@ -1,11 +1,11 @@
 // Worng answer
 #[allow(unused_imports)]
+use itertools::Itertools;
+#[allow(unused_imports)]
 use proconio::{
     input,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
-#[allow(unused_imports)]
-use itertools::Itertools;
 use std::collections::BinaryHeap;
 
 fn main() {

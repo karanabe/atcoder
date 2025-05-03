@@ -21,11 +21,17 @@ fn solve(n: f64) -> String {
     if tmp > 1 {
         result.push(tmp);
     }
-    let r = format!("{}", result.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" "));
+    let r = format!(
+        "{}",
+        result
+            .iter()
+            .map(|x| x.to_string())
+            .collect::<Vec<_>>()
+            .join(" ")
+    );
     println!("{}", r);
     return r;
 }
-
 
 #[cfg(test)]
 mod maa {

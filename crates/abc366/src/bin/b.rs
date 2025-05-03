@@ -10,7 +10,8 @@ fn gen_t(n: usize, strings: Vec<String>) -> Vec<String> {
         }
     }
 
-    result.into_iter()
+    result
+        .into_iter()
         .map(|row| {
             let mut row_string: String = row.into_iter().collect();
             while row_string.ends_with('*') {
@@ -32,8 +33,6 @@ fn main() {
         println!("{}", row);
     }
 }
-
-
 
 #[cfg(test)]
 mod tests {

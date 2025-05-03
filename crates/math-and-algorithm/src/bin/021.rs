@@ -16,13 +16,12 @@ fn solve(n: usize, r: usize) -> usize {
     for i in 1..=r {
         bottom *= i;
         if i != r {
-            top *= n-i;
+            top *= n - i;
         }
     }
     println!("{}", top / bottom);
     top / bottom
 }
-
 
 #[cfg(test)]
 mod maa {

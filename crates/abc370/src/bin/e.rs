@@ -20,7 +20,7 @@ fn main() {
         let banned = sum - k;
         let mut curr = tot;
         if dp.contains_key(&banned) {
-           curr = (curr + MOD - dp[&banned]) % MOD;
+            curr = (curr + MOD - dp[&banned]) % MOD;
         }
 
         *dp.entry(sum).or_insert(0) += curr;

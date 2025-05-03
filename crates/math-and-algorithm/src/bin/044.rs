@@ -1,23 +1,14 @@
 #[allow(unused_imports)]
 use proconio::{
     input,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
-
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 fn bfs(n: usize, graph: &Vec<Vec<usize>>, start: usize) -> Vec<isize> {
     let mut distance = vec![-1; n];
@@ -37,7 +28,6 @@ fn bfs(n: usize, graph: &Vec<Vec<usize>>, start: usize) -> Vec<isize> {
 
     distance
 }
-
 
 fn main() {
     input! {

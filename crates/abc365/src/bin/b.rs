@@ -10,7 +10,12 @@ fn main() {
 }
 
 fn solve(_n: usize, a: Vec<i64>) -> usize {
-    let mut indexed_a: Vec<(i64, usize)> = a.iter().copied().enumerate().map(|(i, x)| (x, i + 1)).collect();
+    let mut indexed_a: Vec<(i64, usize)> = a
+        .iter()
+        .copied()
+        .enumerate()
+        .map(|(i, x)| (x, i + 1))
+        .collect();
     indexed_a.sort_by(|a, b| b.0.cmp(&a.0));
 
     println!("{}", indexed_a[1].1);
@@ -36,9 +41,13 @@ mod tests {
     }
 
     fn find_second_largest_index(_n: usize, a: Vec<i64>) -> usize {
-        let mut indexed_a: Vec<(i64, usize)> = a.iter().copied().enumerate().map(|(i, x)| (x, i + 1)).collect();
+        let mut indexed_a: Vec<(i64, usize)> = a
+            .iter()
+            .copied()
+            .enumerate()
+            .map(|(i, x)| (x, i + 1))
+            .collect();
         indexed_a.sort_by(|a, b| b.0.cmp(&a.0));
         indexed_a[1].1
     }
 }
-

@@ -11,8 +11,8 @@ fn main() {
 }
 
 fn solve(n: usize, s: &str) -> String {
-    println!("{}", &s[n-1..n]);
-    format!("{}", &s[n-1..n])
+    println!("{}", &s[n - 1..n]);
+    format!("{}", &s[n - 1..n])
 }
 
 #[cfg(test)]

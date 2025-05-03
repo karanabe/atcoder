@@ -27,7 +27,7 @@ fn solve(n: usize, a: Vec<i32>) -> String {
         print!("{} ", num);
         // Below is reason for TLE. Just for testing.
         // result = format!("{result}{num} ");
-        current = num ;
+        current = num;
     }
     println!();
     // result.trim_start().trim_end().to_string()
@@ -55,7 +55,13 @@ mod abc337 {
     #[test]
     fn test_3() {
         let n: usize = 30;
-        let a: Vec<i32> = vec![3, 25, 20, 6, 18, 12, 26, 1, 29, -1, 21, 17, 23, 9, 8, 30, 10, 15, 22, 27, 4, 13, 5, 11, 16, 24, 28, 2, 19, 7];
-        assert_eq!("10 17 12 6 4 21 11 24 26 7 30 16 25 2 28 27 20 3 1 8 15 18 5 23 13 22 19 29 9 14", solve(n, a));
+        let a: Vec<i32> = vec![
+            3, 25, 20, 6, 18, 12, 26, 1, 29, -1, 21, 17, 23, 9, 8, 30, 10, 15, 22, 27, 4, 13, 5,
+            11, 16, 24, 28, 2, 19, 7,
+        ];
+        assert_eq!(
+            "10 17 12 6 4 21 11 24 26 7 30 16 25 2 28 27 20 3 1 8 15 18 5 23 13 22 19 29 9 14",
+            solve(n, a)
+        );
     }
 }

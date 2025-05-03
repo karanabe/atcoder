@@ -36,7 +36,6 @@ fn solve(_n: usize, _m: usize, a: Vec<usize>, mut b: Vec<usize>) -> String {
     format!("No")
 }
 
-
 #[cfg(test)]
 mod abc355 {
     use super::*;

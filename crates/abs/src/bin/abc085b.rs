@@ -17,7 +17,6 @@ fn solve(d: &[usize]) -> usize {
     v.len()
 }
 
-
 #[cfg(test)]
 mod abs {
     use super::*;

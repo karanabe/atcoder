@@ -8,7 +8,8 @@ fn main() {
     }
 
     let middle = if sab == '<' && sac == '<' {
-        if sbc == '<' { // B < C
+        if sbc == '<' {
+            // B < C
             "B"
         } else {
             "C"

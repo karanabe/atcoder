@@ -10,7 +10,7 @@ fn main() {
 }
 
 fn solve(n: usize) -> String {
-    input ! { a: usize, b: usize }
+    input! { a: usize, b: usize }
     let mut max_diff = b - a;
     let mut head = b;
     let mut sholder = a;

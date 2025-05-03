@@ -23,12 +23,14 @@ fn solve(s: String) -> String {
             }
         }
 
-        if result == false { print!("NO"); return "NO".to_string(); }
+        if result == false {
+            print!("NO");
+            return "NO".to_string();
+        }
     }
     print!("YES");
     return "YES".to_string();
 }
-
 
 #[cfg(test)]
 mod abs {

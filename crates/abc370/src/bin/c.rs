@@ -9,7 +9,6 @@ fn main() {
     let mut steps = Vec::new();
     let mut current = s.clone();
 
-
     for i in 0..s.len() {
         if s[i] != t[i] && s[i] > t[i] {
             current[i] = t[i];

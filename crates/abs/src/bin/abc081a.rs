@@ -44,5 +44,4 @@ mod abs {
         let s: String = "111".to_string();
         assert_eq!(3, solve(s));
     }
-
 }

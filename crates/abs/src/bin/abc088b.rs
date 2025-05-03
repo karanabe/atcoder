@@ -23,13 +23,11 @@ fn solve(a: &[i32]) -> i32 {
         } else {
             bob += card;
         }
-
     }
     let result = alice - bob;
     print!("{}", result);
     result
 }
-
 
 #[cfg(test)]
 mod abs {

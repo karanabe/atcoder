@@ -10,7 +10,7 @@ fn main() {
 }
 
 fn solve(n: i64) -> String {
-    let m =  998244353;
+    let m = 998244353;
     let result = (n % m + m) % m;
     // let result = n.rem_euclid(m);
     println!("{result}");

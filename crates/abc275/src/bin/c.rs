@@ -17,7 +17,10 @@ fn solve(s: Vec<Vec<char>>) -> usize {
         for a_col in 0..9_usize {
             for b_row in a_row..9 {
                 for b_col in a_col + 1..9 {
-                    if s[a_row][a_col] == '#' && s[b_row][b_col] == '#' && is_square(vec![[a_row, a_col], [b_row, b_col]], &s) {
+                    if s[a_row][a_col] == '#'
+                        && s[b_row][b_col] == '#'
+                        && is_square(vec![[a_row, a_col], [b_row, b_col]], &s)
+                    {
                         result += 1;
                     }
                 }

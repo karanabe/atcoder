@@ -14,16 +14,11 @@ fn main() {
 }
 
 fn solve(_n: usize, m: usize, x: usize, t: usize, d: usize) -> String {
-    let result = if m < x {
-        t - ((x - m) * d)
-    } else {
-        t
-    };
+    let result = if m < x { t - ((x - m) * d) } else { t };
 
     println!("{result}");
     format!("{result}")
 }
-
 
 #[cfg(test)]
 mod adt_20240123_03 {

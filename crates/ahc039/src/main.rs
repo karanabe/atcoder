@@ -1,32 +1,25 @@
 #[allow(unused_imports)]
 use proconio::{
-    input,
-    fastout,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    fastout, input,
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max
-};
+use std::cmp::{max, min};
 
 #[allow(unused_imports)]
 use ac_library::{
+    // new(n: usize, e: T) -> Self
+    // accum(&self, idx: usize) -> T
+    // add<U: Clone>(&mut self, idx: usize, val: U)
+    // sum<R>(&self, range: R) -> T
+    math,
     Dsu,
     // new(size: usize) -> Self
     // merge(&mut self, a: usize, b: usize) -> usize
@@ -35,11 +28,7 @@ use ac_library::{
     // size(&mut self, a: usize) -> usize
     // groups(&mut self) -> Vec<Vec<usize>>
     FenwickTree,
-    // new(n: usize, e: T) -> Self
-    // accum(&self, idx: usize) -> T
-    // add<U: Clone>(&mut self, idx: usize, val: U)
-    // sum<R>(&self, range: R) -> T
-    math,
+    Max,
     // crt(r: &[i64], m: &[i64]) -> (i64, i64)
     // floor_sum(n: i64, m: i64, a: i64, b: i64) -> i64
     // inv_mod(x: i64, m: i64) -> i64
@@ -49,14 +38,10 @@ use ac_library::{
     // add_edge(&mut self, from: usize, to: usize)
     // scc(&self) -> Vec<Vec<usize>>
     Segtree,
-    Max
 };
 
 #[allow(unused_imports)]
-use num::{
-    BigInt,
-    Zero
-};
+use num::{BigInt, Zero};
 
 fn main() {
     input! {
@@ -89,18 +74,18 @@ fn main() {
 
     for i in 0..=grid_size {
         for j in 0..=grid_size {
-            mackerel_prefix[i + 1][j + 1] = mackerel_grid[i][j]
-                + mackerel_prefix[i][j + 1]
-                + mackerel_prefix[i + 1][j]
-                - mackerel_prefix[i][j];
-            sardine_prefix[i + 1][j + 1] = sardine_grid[i][j]
-                + sardine_prefix[i][j + 1]
-                + sardine_prefix[i + 1][j]
-                - sardine_prefix[i][j];
+            mackerel_prefix[i + 1][j + 1] =
+                mackerel_grid[i][j] + mackerel_prefix[i][j + 1] + mackerel_prefix[i + 1][j]
+                    - mackerel_prefix[i][j];
+            sardine_prefix[i + 1][j + 1] =
+                sardine_grid[i][j] + sardine_prefix[i][j + 1] + sardine_prefix[i + 1][j]
+                    - sardine_prefix[i][j];
         }
     }
 
-    let sizes = vec![10, 20, 30, 40, 50, 100, 200, 400, 500, 600, 700, 750, 800, 850, 900, 950, 1000];
+    let sizes = vec![
+        10, 20, 30, 40, 50, 100, 200, 400, 500, 600, 700, 750, 800, 850, 900, 950, 1000,
+    ];
     let step = 1;
 
     let mut best_score = std::i32::MIN;
@@ -122,15 +107,13 @@ fn main() {
                     let x2 = x + w;
                     let y2 = y + h;
 
-                    let mackerels = mackerel_prefix[x2][y2]
-                        - mackerel_prefix[x1][y2]
-                        - mackerel_prefix[x2][y1]
-                        + mackerel_prefix[x1][y1];
+                    let mackerels =
+                        mackerel_prefix[x2][y2] - mackerel_prefix[x1][y2] - mackerel_prefix[x2][y1]
+                            + mackerel_prefix[x1][y1];
 
-                    let sardines = sardine_prefix[x2][y2]
-                        - sardine_prefix[x1][y2]
-                        - sardine_prefix[x2][y1]
-                        + sardine_prefix[x1][y1];
+                    let sardines =
+                        sardine_prefix[x2][y2] - sardine_prefix[x1][y2] - sardine_prefix[x2][y1]
+                            + sardine_prefix[x1][y1];
 
                     let score = mackerels as i32 - sardines as i32;
                     if score > best_score {
@@ -149,12 +132,7 @@ fn main() {
     let x2 = (x + w) * cell_size;
     let y2 = (y + h) * cell_size;
 
-    let vertices = vec![
-        (x1, y1),
-        (x2, y1),
-        (x2, y2),
-        (x1, y2),
-    ];
+    let vertices = vec![(x1, y1), (x2, y1), (x2, y2), (x1, y2)];
 
     println!("{}", vertices.len());
 

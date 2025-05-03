@@ -42,10 +42,8 @@ impl UnionFind {
         self.parent[root_y] = root_x;
         self.size[root_x] += self.size[root_y];
 
-        let merged_top = Self::merge_top_vertices(
-            &self.top_vertices[root_x],
-            &self.top_vertices[root_y],
-        );
+        let merged_top =
+            Self::merge_top_vertices(&self.top_vertices[root_x], &self.top_vertices[root_y]);
         self.top_vertices[root_x] = merged_top;
     }
 

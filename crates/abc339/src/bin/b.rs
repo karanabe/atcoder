@@ -25,19 +25,16 @@ fn solve(h: i32, w: i32, n: usize) {
             next = (-next.1, next.0);
         }
 
-        current = (
-            current.0 + next.0,
-            current.1 + next.1
-        );
+        current = (current.0 + next.0, current.1 + next.1);
 
         if current.0 == h {
             current.0 = 0;
         } else if current.0 < 0 {
-            current.0 = h-1;
+            current.0 = h - 1;
         } else if current.1 == w {
             current.1 = 0;
         } else if current.1 < 0 {
-            current.1 = w-1;
+            current.1 = w - 1;
         }
     }
 
@@ -48,7 +45,4 @@ fn solve(h: i32, w: i32, n: usize) {
 }
 
 #[cfg(test)]
-mod abc339 {
-
-
-}
+mod abc339 {}

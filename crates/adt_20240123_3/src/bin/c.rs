@@ -16,7 +16,7 @@ fn solve(s: &str) -> String {
     }
     let first = s.chars().next().unwrap();
     let last = s.chars().last().unwrap();
-    let middle = &s[1..s.len()-1];
+    let middle = &s[1..s.len() - 1];
 
     let is_uppercase = first.is_ascii_uppercase() && last.is_ascii_uppercase();
 
@@ -35,7 +35,6 @@ fn solve(s: &str) -> String {
         return format!("No");
     }
 }
-
 
 #[cfg(test)]
 mod adt_20240123_03 {

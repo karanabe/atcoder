@@ -1,35 +1,26 @@
 #[allow(unused_imports)]
 use proconio::{
-    input,
-    input_interactive,
-    fastout,
+    fastout, input, input_interactive,
+    marker::{Bytes, Chars, Isize1, Usize1},
     source::line::LineSource,
-    marker::{Isize1,Usize1,Chars,Bytes}
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max,
-    Ordering
-};
+use std::cmp::{max, min, Ordering};
 
 #[allow(unused_imports)]
 use ac_library::{
+    // new(n: usize, e: T) -> Self
+    // accum(&self, idx: usize) -> T
+    // add<U: Clone>(&mut self, idx: usize, val: U)
+    // sum<R>(&self, range: R) -> T
+    math,
     Dsu,
     // new(size: usize) -> Self
     // merge(&mut self, a: usize, b: usize) -> usize
@@ -38,11 +29,7 @@ use ac_library::{
     // size(&mut self, a: usize) -> usize
     // groups(&mut self) -> Vec<Vec<usize>>
     FenwickTree,
-    // new(n: usize, e: T) -> Self
-    // accum(&self, idx: usize) -> T
-    // add<U: Clone>(&mut self, idx: usize, val: U)
-    // sum<R>(&self, range: R) -> T
-    math,
+    Max,
     // crt(r: &[i64], m: &[i64]) -> (i64, i64)
     // floor_sum(n: i64, m: i64, a: i64, b: i64) -> i64
     // inv_mod(x: i64, m: i64) -> i64
@@ -52,31 +39,20 @@ use ac_library::{
     // add_edge(&mut self, from: usize, to: usize)
     // scc(&self) -> Vec<Vec<usize>>
     Segtree,
-    Max
 };
 
 #[allow(unused_imports)]
-use num::{
-    BigInt,
-    Zero
-};
+use num::{BigInt, Zero};
 
 #[allow(unused_imports)]
 use std::io::{stdout, Write};
 
 #[allow(unused_imports)]
-use rand::{
-    rngs::StdRng,
-    Rng,
-    thread_rng,
-    SeedableRng
-};
+use rand::{rngs::StdRng, thread_rng, Rng, SeedableRng};
 #[allow(unused_imports)]
-use rand_distr::{Normal, Distribution};
+use rand_distr::{Distribution, Normal};
 #[allow(unused_imports)]
-use std::time::{Instant, Duration};
-
-
+use std::time::{Duration, Instant};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 enum Direction {
@@ -86,18 +62,17 @@ enum Direction {
     Right,
 }
 
-
 fn safe_up(board: &Vec<Vec<char>>, i: usize, j: usize) -> bool {
     (0..i).all(|r| board[r][j] != 'o')
 }
 fn safe_down(board: &Vec<Vec<char>>, i: usize, j: usize, n: usize) -> bool {
-    ((i+1)..n).all(|r| board[r][j] != 'o')
+    ((i + 1)..n).all(|r| board[r][j] != 'o')
 }
 fn safe_left(board: &Vec<Vec<char>>, i: usize, j: usize) -> bool {
     (0..j).all(|c| board[i][c] != 'o')
 }
 fn safe_right(board: &Vec<Vec<char>>, i: usize, j: usize, n: usize) -> bool {
-    ((j+1)..n).all(|c| board[i][c] != 'o')
+    ((j + 1)..n).all(|c| board[i][c] != 'o')
 }
 
 fn has_demon(board: &Vec<Vec<char>>) -> bool {
@@ -119,7 +94,7 @@ fn count_x_up(board: &Vec<Vec<char>>, i: usize, j: usize) -> usize {
 
 fn count_x_down(board: &Vec<Vec<char>>, i: usize, j: usize, n: usize) -> usize {
     let mut count = 0;
-    for r in (i+1)..n {
+    for r in (i + 1)..n {
         if board[r][j] == 'o' {
             break;
         }
@@ -145,7 +120,7 @@ fn count_x_left(board: &Vec<Vec<char>>, i: usize, j: usize) -> usize {
 
 fn count_x_right(board: &Vec<Vec<char>>, i: usize, j: usize, n: usize) -> usize {
     let mut count = 0;
-    for c in (j+1)..n {
+    for c in (j + 1)..n {
         if board[i][c] == 'o' {
             break;
         }
@@ -165,25 +140,25 @@ fn update_board(t: usize, i: usize, j: usize, direction: Direction, board: &mut 
                     board[r][j] = board[r + 1][j];
                 }
                 board[n - 1][j] = '.';
-            },
+            }
             Direction::Down => {
                 for r in (1..n).rev() {
                     board[r][j] = board[r - 1][j];
                 }
                 board[0][j] = '.';
-            },
+            }
             Direction::Left => {
                 for c in 0..(n - 1) {
                     board[i][c] = board[i][c + 1];
                 }
                 board[i][n - 1] = '.';
-            },
+            }
             Direction::Right => {
                 for c in (1..n).rev() {
                     board[i][c] = board[i][c - 1];
                 }
                 board[i][0] = '.';
-            },
+            }
         }
     }
 }
@@ -197,19 +172,19 @@ fn best_score(best: BestScore, score: usize, i: usize, j: usize, dir: Direction)
             Direction::Up => {
                 let t = i + 1;
                 return (t, score, i, j, dir);
-            },
+            }
             Direction::Down => {
                 let t = 20 - i;
                 return (t, score, i, j, dir);
-            },
+            }
             Direction::Left => {
                 let t = j + 1;
                 return (t, score, i, j, dir);
-            },
+            }
             Direction::Right => {
                 let t = 20 - j;
                 return (t, score, i, j, dir);
-            },
+            }
         }
     }
     return best;
@@ -219,10 +194,11 @@ fn check_guarantee(board: &Vec<Vec<char>>, n: usize) -> bool {
     for i in 0..n {
         for j in 0..n {
             if board[i][j] == 'x' {
-                if !( safe_up(board, i, j)
-                      || safe_down(board, i, j, n)
-                      || safe_left(board, i, j)
-                      || safe_right(board, i, j, n) ) {
+                if !(safe_up(board, i, j)
+                    || safe_down(board, i, j, n)
+                    || safe_left(board, i, j)
+                    || safe_right(board, i, j, n))
+                {
                     //println!("i={i} j={j}");
                     return false;
                 }
@@ -290,7 +266,6 @@ fn main() {
         }
 
         update_board(best.0, best.2, best.3, best.4, &mut board);
-
 
         for _ in 0..best.0 {
             if check_guarantee(&board, n) {

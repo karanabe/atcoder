@@ -1,29 +1,17 @@
 #[allow(unused_imports)]
 use proconio::{
-    input,
-    fastout,
-    marker::{Isize1,Usize1,Chars,Bytes}
+    fastout, input,
+    marker::{Bytes, Chars, Isize1, Usize1},
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max
-};
+use std::cmp::{max, min};
 
 fn num_cells_on_main_diagonal(k: i64, n: i64) -> i64 {
     if 2 <= k && k <= n + 1 {

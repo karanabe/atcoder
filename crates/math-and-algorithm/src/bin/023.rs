@@ -18,7 +18,6 @@ fn solve(n: usize, b: Vec<f64>, r: Vec<f64>) -> f64 {
     result
 }
 
-
 #[cfg(test)]
 mod maa {
     use super::*;

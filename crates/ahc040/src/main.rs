@@ -1,35 +1,26 @@
 #[allow(unused_imports)]
 use proconio::{
-    input,
-    input_interactive,
-    fastout,
+    fastout, input, input_interactive,
+    marker::{Bytes, Chars, Isize1, Usize1},
     source::line::LineSource,
-    marker::{Isize1,Usize1,Chars,Bytes}
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max,
-    Ordering
-};
+use std::cmp::{max, min, Ordering};
 
 #[allow(unused_imports)]
 use ac_library::{
+    // new(n: usize, e: T) -> Self
+    // accum(&self, idx: usize) -> T
+    // add<U: Clone>(&mut self, idx: usize, val: U)
+    // sum<R>(&self, range: R) -> T
+    math,
     Dsu,
     // new(size: usize) -> Self
     // merge(&mut self, a: usize, b: usize) -> usize
@@ -38,11 +29,7 @@ use ac_library::{
     // size(&mut self, a: usize) -> usize
     // groups(&mut self) -> Vec<Vec<usize>>
     FenwickTree,
-    // new(n: usize, e: T) -> Self
-    // accum(&self, idx: usize) -> T
-    // add<U: Clone>(&mut self, idx: usize, val: U)
-    // sum<R>(&self, range: R) -> T
-    math,
+    Max,
     // crt(r: &[i64], m: &[i64]) -> (i64, i64)
     // floor_sum(n: i64, m: i64, a: i64, b: i64) -> i64
     // inv_mod(x: i64, m: i64) -> i64
@@ -52,22 +39,18 @@ use ac_library::{
     // add_edge(&mut self, from: usize, to: usize)
     // scc(&self) -> Vec<Vec<usize>>
     Segtree,
-    Max
 };
 
 #[allow(unused_imports)]
-use num::{
-    BigInt,
-    Zero
-};
+use num::{BigInt, Zero};
 
 #[allow(unused_imports)]
 use std::io::{stdout, Write};
 
 #[allow(unused_imports)]
-use rand::{Rng, thread_rng};
+use rand::{thread_rng, Rng};
 #[allow(unused_imports)]
-use rand_distr::{Normal, Distribution};
+use rand_distr::{Distribution, Normal};
 
 struct PackingStatus {
     count: usize,
@@ -103,7 +86,7 @@ impl Packing for Container {
                     .into_iter()
                     .enumerate()
                     .map(|(i, (w, h))| (i, 0, (w, h)))
-                    .collect()
+                    .collect(),
             },
         }
     }
@@ -111,7 +94,7 @@ impl Packing for Container {
     fn check_rotate(&mut self) {
         for item in &mut self.rects.list {
             let (_, rotate, (w, h)) = item;
-            if *h+2000 < *w {
+            if *h + 2000 < *w {
                 *rotate = 1;
                 std::mem::swap(w, h);
             }
@@ -119,7 +102,6 @@ impl Packing for Container {
     }
 
     fn apply_margin(&mut self, sigma: i64) {
-
         let mean = 0.0;
         let mut rng = thread_rng();
 
@@ -133,7 +115,6 @@ impl Packing for Container {
             *w = *w + width_padding;
             *h = *h + height_padding;
         }
-
     }
 
     fn find_split_point(&mut self) {
@@ -167,7 +148,8 @@ impl Packing for Container {
 
         self.status.split_point = (0..n - 1)
             .filter(|&i| {
-                sum_width_left[i] == max_height_left[i] && sum_width_right[i + 1] == max_height_right[i + 1]
+                sum_width_left[i] == max_height_left[i]
+                    && sum_width_right[i + 1] == max_height_right[i + 1]
             })
             .collect();
 
@@ -246,7 +228,11 @@ fn main() {
                 println!("# idx={} maxwidth={}", idx, max_width);
             }
 
-            let bi = if !first_time && max_width+sigma <= current_x && split_xxx < container.status.split_point.len() && !container.status.split_point.contains(&idx) {
+            let bi = if !first_time
+                && max_width + sigma <= current_x
+                && split_xxx < container.status.split_point.len()
+                && !container.status.split_point.contains(&idx)
+            {
                 println!("# idx={} split_idx={}", &idx, split_xxx);
                 container.status.split_point[split_xxx] = 0;
                 split_xxx += 1;
@@ -254,14 +240,16 @@ fn main() {
                 max_width = current_x;
                 current_x = 0;
                 -1
-            } /* else if container.status.split_point.contains(&idx) {
+            }
+            /* else if container.status.split_point.contains(&idx) {
                 println!("# idx={}", idx);
                 if max_width < current_x {
                     println!("# idx={} maxwidth={}", idx, max_width);
                     max_width = current_x;
                 }
                 -1
-            } */ else {
+            } */
+            else {
                 (idx - 1) as i64
             };
 
@@ -311,7 +299,8 @@ fn main() {
                 println!("# Split count={}", container.status.split_count);
                 println!("# Adjust step={}", adjustment_step);
                 for &idx in &indices {
-                    container.status.split_point[idx] = (container.status.split_point[idx] as isize + adjustment) as usize;
+                    container.status.split_point[idx] =
+                        (container.status.split_point[idx] as isize + adjustment) as usize;
                 }
                 println!("# Split={:?}", container.status.split_point);
                 let split_point_backup = container.status.split_point.clone();
@@ -343,7 +332,11 @@ fn main() {
                         println!("# idx={} maxwidth={}", idx, max_width);
                     }
 
-                    let bi = if !first_time && max_width <= current_x && split_xxx < container.status.split_point.len() && !container.status.split_point.contains(&idx) {
+                    let bi = if !first_time
+                        && max_width <= current_x
+                        && split_xxx < container.status.split_point.len()
+                        && !container.status.split_point.contains(&idx)
+                    {
                         println!("# idx={} split_idx={}", &idx, split_xxx);
                         container.status.split_point[split_xxx] = 0;
                         split_xxx += 1;
@@ -393,7 +386,8 @@ fn main() {
                 container.status.split_point = split_point_backup;
 
                 for &idx in &indices {
-                    container.status.split_point[idx] = (container.status.split_point[idx] as isize - adjustment) as usize;
+                    container.status.split_point[idx] =
+                        (container.status.split_point[idx] as isize - adjustment) as usize;
                 }
 
                 container.status.count += 1;
@@ -414,7 +408,9 @@ fn main() {
         if adjustment_step as usize > max_offset {
             container.status.split_count += 1;
             let split = (n + container.status.split_count - 1) / container.status.split_count;
-            container.status.split_point = (0..container.status.split_count).map(|i| i * split).collect();
+            container.status.split_point = (0..container.status.split_count)
+                .map(|i| i * split)
+                .collect();
 
             max_offset = (split / 2) + 1;
             adjustment_step = 1;
@@ -436,6 +432,4 @@ fn main() {
             container.status.count += 1;
         }
     }
-
 }
-

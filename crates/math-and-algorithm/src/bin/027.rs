@@ -11,7 +11,6 @@ fn main() {
 }
 
 fn solve(_n: usize, mut a: Vec<usize>) -> String {
-
     /*
     for i in 0..n-1 {
         let mut min_index = i;
@@ -31,7 +30,6 @@ fn solve(_n: usize, mut a: Vec<usize>) -> String {
     let result: Vec<String> = a.iter().map(|x| x.to_string()).collect();
     let ans = result.join(" ");
     println!("{ans}");
-
 
     format!("{ans}")
 }
@@ -61,7 +59,6 @@ fn merge_sort<T: Ord + Copy>(data: &mut [T]) {
         }
     }
 }
-
 
 #[cfg(test)]
 mod maa {

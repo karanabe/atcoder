@@ -14,8 +14,7 @@ fn main() {
     let _: String = solve(n, k, p);
 }
 
-fn solve(n: usize, k:usize, p: Vec<usize>) -> String {
-
+fn solve(n: usize, k: usize, p: Vec<usize>) -> String {
     let mut q = vec![0; n];
     for i in 0..n {
         q[p[i]] = i;
@@ -36,7 +35,6 @@ fn solve(n: usize, k:usize, p: Vec<usize>) -> String {
     format!("{}", ans)
 }
 
-
 #[cfg(test)]
 mod abc352 {
     use super::*;
@@ -46,7 +44,9 @@ mod abc352 {
         let n = 4;
         let k = 2;
         let mut p = vec![2, 3, 1, 4];
-        for value in p.iter_mut() { *value -= 1 }
+        for value in p.iter_mut() {
+            *value -= 1
+        }
         assert_eq!("1", solve(n, k, p));
     }
 
@@ -55,7 +55,9 @@ mod abc352 {
         let n = 4;
         let k = 1;
         let mut p = vec![2, 3, 1, 4];
-        for value in p.iter_mut() { *value -= 1 }
+        for value in p.iter_mut() {
+            *value -= 1
+        }
         assert_eq!("0", solve(n, k, p));
     }
 
@@ -64,7 +66,9 @@ mod abc352 {
         let n = 10;
         let k = 5;
         let mut p = vec![10, 1, 6, 8, 7, 2, 5, 9, 3, 4];
-        for value in p.iter_mut() { *value -= 1 }
+        for value in p.iter_mut() {
+            *value -= 1
+        }
         assert_eq!("5", solve(n, k, p));
     }
 }

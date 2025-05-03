@@ -43,7 +43,7 @@ mod abc352 {
         let z = 3;
         assert_eq!("Yes", solve(n, x, y, z));
     }
-    
+
     #[test]
     fn test_3() {
         let n = 100;

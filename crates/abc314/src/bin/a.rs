@@ -11,12 +11,10 @@ fn main() {
 
 fn solve(n: usize) -> &'static str {
     let pi: &str = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
-    let result: &str = &pi[0..n+2];
+    let result: &str = &pi[0..n + 2];
     println!("{}", result);
     result
 }
-
-
 
 #[cfg(test)]
 mod abc314 {

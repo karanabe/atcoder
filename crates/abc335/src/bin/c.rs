@@ -33,7 +33,7 @@ fn solve(n: usize, q: usize) {
         }
         if t == 2 {
             input! { p: usize }
-            println!("{} {}", a[p-1].0, a[p-1].1);
+            println!("{} {}", a[p - 1].0, a[p - 1].1);
         }
     }
 }

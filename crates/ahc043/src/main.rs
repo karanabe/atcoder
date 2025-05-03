@@ -1,35 +1,26 @@
 #[allow(unused_imports)]
 use proconio::{
-    input,
-    input_interactive,
-    fastout,
+    fastout, input, input_interactive,
+    marker::{Bytes, Chars, Isize1, Usize1},
     source::line::LineSource,
-    marker::{Isize1,Usize1,Chars,Bytes}
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max,
-    Ordering
-};
+use std::cmp::{max, min, Ordering};
 
 #[allow(unused_imports)]
 use ac_library::{
+    // new(n: usize, e: T) -> Self
+    // accum(&self, idx: usize) -> T
+    // add<U: Clone>(&mut self, idx: usize, val: U)
+    // sum<R>(&self, range: R) -> T
+    math,
     Dsu,
     // new(size: usize) -> Self
     // merge(&mut self, a: usize, b: usize) -> usize
@@ -38,11 +29,7 @@ use ac_library::{
     // size(&mut self, a: usize) -> usize
     // groups(&mut self) -> Vec<Vec<usize>>
     FenwickTree,
-    // new(n: usize, e: T) -> Self
-    // accum(&self, idx: usize) -> T
-    // add<U: Clone>(&mut self, idx: usize, val: U)
-    // sum<R>(&self, range: R) -> T
-    math,
+    Max,
     // crt(r: &[i64], m: &[i64]) -> (i64, i64)
     // floor_sum(n: i64, m: i64, a: i64, b: i64) -> i64
     // inv_mod(x: i64, m: i64) -> i64
@@ -52,29 +39,20 @@ use ac_library::{
     // add_edge(&mut self, from: usize, to: usize)
     // scc(&self) -> Vec<Vec<usize>>
     Segtree,
-    Max
 };
 
 #[allow(unused_imports)]
-use num::{
-    BigInt,
-    Zero
-};
+use num::{BigInt, Zero};
 
 #[allow(unused_imports)]
 use std::io::{stdout, Write};
 
 #[allow(unused_imports)]
-use rand::{
-    rngs::StdRng,
-    Rng,
-    thread_rng,
-    SeedableRng
-};
+use rand::{rngs::StdRng, thread_rng, Rng, SeedableRng};
 #[allow(unused_imports)]
-use rand_distr::{Normal, Distribution};
+use rand_distr::{Distribution, Normal};
 #[allow(unused_imports)]
-use std::time::{Instant, Duration};
+use std::time::{Duration, Instant};
 
 type Pos = (usize, usize);
 type HomePos = (usize, usize);
@@ -139,14 +117,18 @@ impl Railway {
         let (new_r, new_c) = new_station;
         let mut additional_revenue = 0;
         for &((home_r, home_c), (office_r, office_c), dist) in self.home_office.iter() {
-
             let current_home_covered = self.is_covered(home_r, home_c);
             let current_office_covered = self.is_covered(office_r, office_c);
 
-            let candidate_home_covered = current_home_covered || Railway::cell_in_range(home_r, home_c, new_r, new_c);
-            let candidate_office_covered = current_office_covered || Railway::cell_in_range(office_r, office_c, new_r, new_c);
+            let candidate_home_covered =
+                current_home_covered || Railway::cell_in_range(home_r, home_c, new_r, new_c);
+            let candidate_office_covered =
+                current_office_covered || Railway::cell_in_range(office_r, office_c, new_r, new_c);
 
-            if candidate_home_covered && candidate_office_covered && !(current_home_covered && current_office_covered) {
+            if candidate_home_covered
+                && candidate_office_covered
+                && !(current_home_covered && current_office_covered)
+            {
                 additional_revenue += dist as i64;
             }
         }
@@ -227,7 +209,9 @@ impl Railway {
                     let mut output = Vec::new();
                     for ((i, j), _d) in result {
                         // println!("# pos=({}, {}) dist={}", i, j, d);
-                        let next_station_pos = self.find_candidate_station_from_pos(i, j).unwrap_or((1, i, j));
+                        let next_station_pos = self
+                            .find_candidate_station_from_pos(i, j)
+                            .unwrap_or((1, i, j));
 
                         // println!("# pos=({}, {}) count={}", next_station_pos.1, next_station_pos.2, next_station_pos.0);
                         output.push(next_station_pos);
@@ -235,9 +219,7 @@ impl Railway {
                     output.sort_by_key(|x| x.0);
                     output.reverse();
 
-                    output.dedup_by(|a, b| {
-                        a.1 == b.1 && a.2 == b.2
-                    });
+                    output.dedup_by(|a, b| a.1 == b.1 && a.2 == b.2);
 
                     for (d, i, j) in output {
                         println!("# Goal pos=({}, {}) count={} Station", i, j, d);
@@ -251,7 +233,11 @@ impl Railway {
 
                         let total_cost = (self.path.len() * RAIL_COST) + (2 * STATION_COST);
 
-                        if self.is_new_station_pair_investment_profitable((r, c), (i, j), self.path.len()) {
+                        if self.is_new_station_pair_investment_profitable(
+                            (r, c),
+                            (i, j),
+                            self.path.len(),
+                        ) {
                             // Cost effectiveness
                             println!("# is_investigate true from=({} {}) to=({}, {})", r, c, i, j);
                         } else {
@@ -261,15 +247,24 @@ impl Railway {
                         }
 
                         if self.can_place_station((r, c)) && self.can_place_station((i, j)) {
-                            println!("# can_place_station true from=({}, {}) to=({}, {})", r, c, i, j);
+                            println!(
+                                "# can_place_station true from=({}, {}) to=({}, {})",
+                                r, c, i, j
+                            );
                         } else {
-                            println!("# can_place_station false from=({}, {}) to=({}, {})", r, c, i, j);
+                            println!(
+                                "# can_place_station false from=({}, {}) to=({}, {})",
+                                r, c, i, j
+                            );
                             self.path = Vec::new();
                             continue;
                         }
 
                         if self.capital < total_cost as i64 && first_time {
-                            println!("# Capital cost over... continue capital={} total_cost={}", self.capital, total_cost);
+                            println!(
+                                "# Capital cost over... continue capital={} total_cost={}",
+                                self.capital, total_cost
+                            );
                             self.path = Vec::new();
                             continue;
                         }
@@ -279,7 +274,8 @@ impl Railway {
                         self.stations.push((i, j));
 
                         self.station_candidates.retain(|&(cnt, rr, cc)| {
-                            !((cnt == count && rr == r && cc == c) || (cnt == d && rr == i && cc == j))
+                            !((cnt == count && rr == r && cc == c)
+                                || (cnt == d && rr == i && cc == j))
                         });
 
                         println!("# This path works");
@@ -288,7 +284,7 @@ impl Railway {
 
                         return true;
                     }
-                },
+                }
                 None => {
                     println!("# Worng?");
                 }
@@ -344,7 +340,6 @@ impl Railway {
         let dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)];
         while let Some((r, c)) = queue.pop_front() {
             if r == tr && c == tc {
-
                 let mut path = Vec::new();
                 let mut cur = (r, c);
                 while let Some(prev) = parent[cur.0][cur.1] {
@@ -417,9 +412,8 @@ impl Railway {
             self.stations.push((r, c));
             self.stations.push((cand_r, cand_c));
 
-            self.station_candidates.retain(|&(_cnt, rr, cc)| {
-                !((rr == cand_r) && (cc == cand_c))
-            });
+            self.station_candidates
+                .retain(|&(_cnt, rr, cc)| !((rr == cand_r) && (cc == cand_c)));
 
             println!("# This path works");
             println!("# Cost={}", cost);
@@ -447,8 +441,9 @@ impl Railway {
         for &(src_r, src_c) in &built_stations {
             if let Some(home_office_list) = self.find_home_or_office(src_r, src_c) {
                 for &((dest_r, dest_c), _dist) in home_office_list.iter() {
-
-                    if let Some((_count, cand_r, cand_c)) = self.find_candidate_station_from_pos(dest_r, dest_c) {
+                    if let Some((_count, cand_r, cand_c)) =
+                        self.find_candidate_station_from_pos(dest_r, dest_c)
+                    {
                         let new_station = (cand_r, cand_c);
 
                         if !self.can_place_station(new_station) {
@@ -462,12 +457,17 @@ impl Railway {
 
                         let cost = (path.len() * RAIL_COST) as i64 + STATION_COST as i64;
 
-                        if !self.is_new_station_pair_investment_profitable((src_r, src_c), new_station, path.len()) {
+                        if !self.is_new_station_pair_investment_profitable(
+                            (src_r, src_c),
+                            new_station,
+                            path.len(),
+                        ) {
                             continue;
                         }
 
                         if best_candidate.is_none() || cost < best_candidate.as_ref().unwrap().3 {
-                            best_candidate = Some(((src_r, src_c), new_station, path.clone(), cost));
+                            best_candidate =
+                                Some(((src_r, src_c), new_station, path.clone(), cost));
                         }
                     }
                 }
@@ -479,14 +479,18 @@ impl Railway {
     fn is_investigate(&self, new_station: Pos, path_len: usize) -> bool {
         let revenue: i64 = self.calc_candidate_revenue(new_station);
         let station_construct = 1;
-        let total_revenue: i64 = revenue * (self.t - self.loop_count - path_len - station_construct) as i64;
+        let total_revenue: i64 =
+            revenue * (self.t - self.loop_count - path_len - station_construct) as i64;
         let diff_revenue: i64 = total_revenue - STATION_COST as i64 - (path_len * RAIL_COST) as i64;
 
         if diff_revenue < 1 {
             return false;
         }
 
-        println!("# loop_count={} revenue={} diff_revenue={}", self.loop_count, revenue, diff_revenue);
+        println!(
+            "# loop_count={} revenue={} diff_revenue={}",
+            self.loop_count, revenue, diff_revenue
+        );
 
         true
     }
@@ -513,7 +517,12 @@ impl Railway {
         revenue
     }
 
-    fn is_new_station_pair_investment_profitable(&self, station1: Pos, station2: Pos, path_len: usize) -> bool {
+    fn is_new_station_pair_investment_profitable(
+        &self,
+        station1: Pos,
+        station2: Pos,
+        path_len: usize,
+    ) -> bool {
         let revenue_per_turn = self.calc_pair_revenue(station1, station2);
         let station_construct = 1;
         let remaining_turns = self.t - self.loop_count - path_len - station_construct;
@@ -522,7 +531,6 @@ impl Railway {
         total_expected_revenue >= investment_cost
     }
 }
-
 
 fn main() {
     input! {
@@ -563,15 +571,12 @@ fn main() {
         outputs.push(format!("# capital={}", railway.capital));
         outputs.push(format!("# revenue={}", railway.calc_revenue()));
         if !railway.path.is_empty() && railway.path.len() >= 3 {
-
             if (RAIL_COST as i64) < railway.capital {
                 let pos_prev = railway.path[0];
                 let pos_cur = railway.path[1];
                 let pos_next = railway.path[2];
                 let track_type = decide_track_type(
-                    pos_prev.0, pos_prev.1,
-                    pos_cur.0, pos_cur.1,
-                    pos_next.0, pos_next.1
+                    pos_prev.0, pos_prev.1, pos_cur.0, pos_cur.1, pos_next.0, pos_next.1,
                 );
 
                 railway.grid[pos_cur.0][pos_cur.1] = Cell::Track;
@@ -586,17 +591,15 @@ fn main() {
                     railway.path = Vec::new();
                 }
             } else {
-
                 outputs.push("-1".to_string());
             }
-
         } else if !railway.stations.is_empty() {
             if railway.is_station() {
                 railway.stations.remove(0);
                 continue;
             }
 
-            if  (STATION_COST as i64) < railway.capital {
+            if (STATION_COST as i64) < railway.capital {
                 let station = railway.stations.remove(0);
                 railway.grid[station.0][station.1] = Cell::Station;
                 let tmp = format!("{} {} {}", "0".to_string(), station.0, station.1);
@@ -607,12 +610,10 @@ fn main() {
                 if railway.stations.is_empty() {
                     railway.stations = Vec::new();
                 }
-
             } else {
                 // println!("# Capital short - station");
                 outputs.push("-1".to_string());
             }
-
         } else {
             if railway.extend_network() {
                 // println!("# station={} path={}", railway.stations.len(), railway.path.len());
@@ -646,7 +647,6 @@ fn main() {
 }
 
 fn decide_track_type(rp: usize, cp: usize, r: usize, c: usize, rn: usize, cn: usize) -> i64 {
-
     let dr1 = r as i64 - rp as i64;
     let dc1 = c as i64 - cp as i64;
     let dr2 = rn as i64 - r as i64;
@@ -660,10 +660,8 @@ fn decide_track_type(rp: usize, cp: usize, r: usize, c: usize, rn: usize, cn: us
     // println!("# {}", combo);
 
     match combo.as_str() {
-
         "L-L" | "R-R" => 1,
         "U-U" | "D-D" => 2,
-
 
         "R-D" | "U-L" => 3,
         "R-U" | "D-L" => 4,
@@ -674,13 +672,12 @@ fn decide_track_type(rp: usize, cp: usize, r: usize, c: usize, rn: usize, cn: us
     }
 }
 
-
 fn dir_to_char(dr: i64, dc: i64) -> &'static str {
     match (dr, dc) {
-        (0, 1)  => "R",
+        (0, 1) => "R",
         (0, -1) => "L",
-        (1, 0)  => "D",
+        (1, 0) => "D",
         (-1, 0) => "U",
-        _       => "?",
+        _ => "?",
     }
 }

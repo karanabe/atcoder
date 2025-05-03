@@ -12,7 +12,7 @@ fn main() {
 }
 
 fn solve(a: usize, b: usize, c: usize, s: String) -> String {
-    let result = format!("{} {}", (a+b+c), s);
+    let result = format!("{} {}", (a + b + c), s);
     print!("{}", result);
     result
 }

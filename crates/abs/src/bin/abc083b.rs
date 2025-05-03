@@ -26,7 +26,6 @@ fn solve(n: u32, a: u32, b: u32) -> u32 {
     result
 }
 
-
 #[cfg(test)]
 mod abs {
     use super::*;
@@ -54,5 +53,4 @@ mod abs {
         let b: u32 = 16;
         assert_eq!(4554, solve(n, a, b));
     }
-
 }

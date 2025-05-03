@@ -9,7 +9,7 @@ fn main() {
     solve(n);
 }
 
-fn solve(n: usize){
+fn solve(n: usize) {
     let mut result = vec![vec![0; n]; n];
     let mut current: (usize, usize) = (0, 0);
 
@@ -49,7 +49,6 @@ fn solve(n: usize){
         println!("");
     }
 }
-
 
 #[cfg(test)]
 mod abc335 {

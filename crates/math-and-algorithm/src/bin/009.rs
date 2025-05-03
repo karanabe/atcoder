@@ -65,5 +65,4 @@ mod maa {
         let a = vec![3, 1, 4, 5];
         assert_eq!("No", solve(n, s, a));
     }
-
 }

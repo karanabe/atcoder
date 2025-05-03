@@ -28,7 +28,6 @@ fn solve(n: usize, a: Vec<usize>) -> String {
     format!("{}", dp[n - 1])
 }
 
-
 #[cfg(test)]
 mod maa {
     use super::*;

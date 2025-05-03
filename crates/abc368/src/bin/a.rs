@@ -8,8 +8,8 @@ fn main() {
     }
 
     let mut b = Vec::new();
-    b.extend_from_slice(&a[n-k..n]);
-    b.extend_from_slice(&a[0..n-k]);
+    b.extend_from_slice(&a[n - k..n]);
+    b.extend_from_slice(&a[0..n - k]);
 
     for (i, x) in b.iter().enumerate() {
         if i > 0 {

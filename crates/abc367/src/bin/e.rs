@@ -33,5 +33,12 @@ fn main() {
     }
 
     let result = current_pos.iter().map(|&i| a[i]).collect::<Vec<_>>();
-    println!("{}", result.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" "));
+    println!(
+        "{}",
+        result
+            .iter()
+            .map(|x| x.to_string())
+            .collect::<Vec<_>>()
+            .join(" ")
+    );
 }

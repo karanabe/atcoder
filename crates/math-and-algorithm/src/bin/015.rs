@@ -14,14 +14,13 @@ fn main() {
 fn solve(a: usize, b: usize) -> usize {
     let mut result = 1;
     for i in 2..=min(a, b) {
-        if a % i == 0 && b % i ==0 {
+        if a % i == 0 && b % i == 0 {
             result = i;
         }
     }
     println!("{result}");
     result
 }
-
 
 #[cfg(test)]
 mod maa {

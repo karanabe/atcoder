@@ -11,9 +11,8 @@ fn main() {
     let _: String = solve(n, s, a);
 }
 
-fn solve(n: usize, s:usize, a: Vec<usize>) -> String {
-
-    let mut dp: Vec<Vec<bool>> = vec![vec![false; s+1]; n+1];
+fn solve(n: usize, s: usize, a: Vec<usize>) -> String {
+    let mut dp: Vec<Vec<bool>> = vec![vec![false; s + 1]; n + 1];
     dp[0][0] = true;
 
     // dp[][If sum is equal to j] = true
@@ -31,8 +30,8 @@ fn solve(n: usize, s:usize, a: Vec<usize>) -> String {
             }
         }
     }
-    println!("{}", if dp[n][s] {"Yes"} else {"No"});
-    format!("{}", if dp[n][s] {"Yes"} else {"No"})
+    println!("{}", if dp[n][s] { "Yes" } else { "No" });
+    format!("{}", if dp[n][s] { "Yes" } else { "No" })
 }
 
 #[cfg(test)]
@@ -54,5 +53,4 @@ mod maa {
         let a = vec![3, 1, 4, 5];
         assert_eq!("No", solve(n, s, a));
     }
-
 }

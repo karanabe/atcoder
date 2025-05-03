@@ -21,7 +21,6 @@ fn solve(_n: usize, a: Vec<usize>) -> usize {
     result
 }
 
-
 #[cfg(test)]
 mod maa {
     use super::*;

@@ -1,35 +1,26 @@
 #[allow(unused_imports)]
 use proconio::{
-    input,
-    input_interactive,
-    fastout,
+    fastout, input, input_interactive,
+    marker::{Bytes, Chars, Isize1, Usize1},
     source::line::LineSource,
-    marker::{Isize1,Usize1,Chars,Bytes}
 };
 
 #[allow(unused_imports)]
 use itertools::Itertools;
 
 #[allow(unused_imports)]
-use std::collections::{
-    VecDeque,
-    LinkedList,
-    HashMap,
-    BTreeMap,
-    HashSet,
-    BTreeSet,
-    BinaryHeap
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 #[allow(unused_imports)]
-use std::cmp::{
-    min,
-    max,
-    Ordering
-};
+use std::cmp::{max, min, Ordering};
 
 #[allow(unused_imports)]
 use ac_library::{
+    // new(n: usize, e: T) -> Self
+    // accum(&self, idx: usize) -> T
+    // add<U: Clone>(&mut self, idx: usize, val: U)
+    // sum<R>(&self, range: R) -> T
+    math,
     Dsu,
     // new(size: usize) -> Self
     // merge(&mut self, a: usize, b: usize) -> usize
@@ -38,11 +29,7 @@ use ac_library::{
     // size(&mut self, a: usize) -> usize
     // groups(&mut self) -> Vec<Vec<usize>>
     FenwickTree,
-    // new(n: usize, e: T) -> Self
-    // accum(&self, idx: usize) -> T
-    // add<U: Clone>(&mut self, idx: usize, val: U)
-    // sum<R>(&self, range: R) -> T
-    math,
+    Max,
     // crt(r: &[i64], m: &[i64]) -> (i64, i64)
     // floor_sum(n: i64, m: i64, a: i64, b: i64) -> i64
     // inv_mod(x: i64, m: i64) -> i64
@@ -52,30 +39,20 @@ use ac_library::{
     // add_edge(&mut self, from: usize, to: usize)
     // scc(&self) -> Vec<Vec<usize>>
     Segtree,
-    Max
 };
 
 #[allow(unused_imports)]
-use num::{
-    BigInt,
-    Zero
-};
+use num::{BigInt, Zero};
 
 #[allow(unused_imports)]
 use std::io::{stdout, Write};
 
 #[allow(unused_imports)]
-use rand::{
-    rngs::StdRng,
-    Rng,
-    thread_rng,
-    SeedableRng
-};
+use rand::{rngs::StdRng, thread_rng, Rng, SeedableRng};
 #[allow(unused_imports)]
-use rand_distr::{Normal, Distribution};
+use rand_distr::{Distribution, Normal};
 #[allow(unused_imports)]
-use std::time::{Instant, Duration};
-
+use std::time::{Duration, Instant};
 
 static SIM_STEPS: usize = 10_000;
 
@@ -97,7 +74,13 @@ fn simulate(n: usize, sol: &[(usize, usize)], steps: usize) -> (Vec<usize>, usiz
     (count, current)
 }
 
-fn compute_error(n: usize, count: &[usize], t_target: &[usize], l: usize, sim_steps: usize) -> usize {
+fn compute_error(
+    n: usize,
+    count: &[usize],
+    t_target: &[usize],
+    l: usize,
+    sim_steps: usize,
+) -> usize {
     let scale = (l as f64) / (sim_steps as f64);
     let mut err_sum = 0usize;
     for i in 0..n {
@@ -135,7 +118,6 @@ fn main() {
     let temp_min: f64 = 1.0;
     let max_iter = 50000;
 
-
     while iteration_count < max_iter {
         iteration_count += 1;
 
@@ -161,7 +143,6 @@ fn main() {
         let (count_test, _) = simulate(n, &sol, SIM_STEPS);
         let new_error = compute_error(n, &count_test, &t_vals, l, SIM_STEPS);
 
-
         let diff = new_error as i64 - best_error as i64;
         if diff < 0 {
             if new_error < best_error {
@@ -169,10 +150,8 @@ fn main() {
                 best_sol = sol.clone();
             }
         } else {
-
             let prob = f64::exp(-(diff as f64) / temperature);
             if rng.gen_bool(prob) {
-
             } else {
                 if change_ab {
                     sol[i].0 = old_val;

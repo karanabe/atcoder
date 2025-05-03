@@ -11,7 +11,7 @@ fn main() {
     println!("n:{} l:{} k:{} a:{:?}", n, l, k, a);
 }
 
-fn solve(N:usize, l: usize, k: usize, a: &[usize]) {
+fn solve(N: usize, l: usize, k: usize, a: &[usize]) {
     let mut tmp: usize = 0;
     let mut cut = Vec::new();
     for (index, &arr) in a.into_iter().enumerate() {
@@ -20,12 +20,12 @@ fn solve(N:usize, l: usize, k: usize, a: &[usize]) {
             cut.push(arr);
             tmp = 1;
         } else {
-            let yokan_pice = arr - a[index-1];
+            let yokan_pice = arr - a[index - 1];
             println!("index:{} arr:{} pice:{}", index, arr, yokan_pice);
             cut.push(yokan_pice);
         }
     }
-    let yokan_pice = l - a[N-1];
+    let yokan_pice = l - a[N - 1];
     cut.push(yokan_pice);
 
     println!("cut:{:?}", cut);

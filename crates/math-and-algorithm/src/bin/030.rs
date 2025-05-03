@@ -12,9 +12,9 @@ fn main() {
     let _: String = solve(n, w, wv);
 }
 
-fn solve(_n: usize, w:usize, wv: Vec<(usize, usize)>) -> String {
+fn solve(_n: usize, w: usize, wv: Vec<(usize, usize)>) -> String {
     // dp[i] i is weight, dp[i]=value
-    let mut dp: Vec<usize> = vec![0; w+1];
+    let mut dp: Vec<usize> = vec![0; w + 1];
 
     // calc from i=8
     //  i | 3, 30 | 4, 50 | 5, 60
@@ -28,7 +28,7 @@ fn solve(_n: usize, w:usize, wv: Vec<(usize, usize)>) -> String {
     //  1 |   0   |   0   |   0
     //  0 |   0   |   0   |   0
     for (wi, v) in wv {
-        for i in (wi..w+1).rev() {
+        for i in (wi..w + 1).rev() {
             dp[i] = max(dp[i - wi] + v, dp[i]);
         }
     }
