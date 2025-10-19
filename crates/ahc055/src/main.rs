@@ -26,8 +26,8 @@ use ac_library::{
     // merge(&mut self, a: usize, b: usize) -> usize
     // same(&mut self, a: usize, b: usize) -> bool
     // leader(&mut self, a: usize) -> usize
-    // size(&self, a: usize) -> usize
-    // groups(&self) -> Vec<Vec<usize>>
+    // size(&mut self, a: usize) -> usize
+    // groups(&mut self) -> Vec<Vec<usize>>
     FenwickTree,
     // new(n: usize, e: T) -> Self
     // accum(&self, idx: usize) -> T
@@ -36,7 +36,7 @@ use ac_library::{
     Max,
     SccGraph,
     // new(n: usize) -> Self
-    // add_edge(&self, from: usize, to: usize)
+    // add_edge(&mut self, from: usize, to: usize)
     // scc(&self) -> Vec<Vec<usize>>
     Segtree,
 };
@@ -58,15 +58,11 @@ type AttackPower = Vec<Vec<i32>>;
 
 #[derive(Clone, Debug)]
 struct Weapon {
-    #[allow(dead_code)]
-    id: usize,
     initial_durability: i32,
 }
 
 #[derive(Clone, Debug)]
 struct Chest {
-    #[allow(dead_code)]
-    id: usize,
     #[allow(dead_code)]
     initial_hardness: i32,
 }
@@ -114,295 +110,278 @@ impl Inventory {
     }
 }
 
+#[derive(Clone, Debug)]
 struct BattleState {
     chests: Vec<Chest>,
     weapons: Vec<Weapon>,
     attacks: AttackMatrix,
     inventory: Inventory,
-    opened: Vec<bool>,
     remaining: Vec<i32>,
+    opened: Vec<bool>,
     actions: Vec<(i32, usize)>,
+    attack_heap: BinaryHeap<AttackCandidate>,
 }
 
 impl BattleState {
     fn new(h: Vec<i32>, c: Vec<i32>, a: AttackPower) -> Self {
-        let chests: Vec<Chest> = h
+        let chests = h
             .iter()
-            .enumerate()
-            .map(|(id, &initial_hardness)| Chest {
-                id,
-                initial_hardness,
+            .map(|&hardness| Chest {
+                initial_hardness: hardness,
             })
             .collect();
-        let weapons: Vec<Weapon> = c
+        let weapons = c
             .iter()
-            .enumerate()
-            .map(|(id, &durability)| Weapon {
-                id,
+            .map(|&durability| Weapon {
                 initial_durability: durability,
             })
-            .collect();
-        let opened = vec![false; weapons.len()];
-        let inventory = Inventory::new(&weapons);
+            .collect::<Vec<_>>();
         let attacks = AttackMatrix::new(a);
+        let inventory = Inventory::new(&weapons);
         let remaining = h;
+        let opened = vec![false; weapons.len()];
         let actions = Vec::new();
+        let attack_heap = BinaryHeap::new();
         Self {
             chests,
             weapons,
             attacks,
             inventory,
-            opened,
             remaining,
+            opened,
             actions,
-        }
-    }
-}
-
-trait BattleOps {
-    fn attacks(&self) -> &AttackMatrix;
-    fn chests(&self) -> &[Chest];
-    fn weapons(&self) -> &[Weapon];
-    fn opened(&self) -> &[bool];
-    fn opened_mut(&mut self) -> &mut [bool];
-    fn inventory(&self) -> &Inventory;
-    fn inventory_mut(&mut self) -> &mut Inventory;
-    fn remaining(&self) -> &[i32];
-    fn remaining_mut(&mut self) -> &mut [i32];
-    fn actions(&self) -> &[(i32, usize)];
-    fn actions_mut(&mut self) -> &mut Vec<(i32, usize)>;
-
-    fn is_opened(&self, chest_id: usize) -> bool {
-        self.opened()[chest_id]
-    }
-
-    fn mark_opened(&mut self, chest_id: usize) {
-        self.opened_mut()[chest_id] = true;
-    }
-
-    fn record_attack(&mut self, weapon: Option<usize>, target: usize) {
-        let weapon_id = weapon.map(|w| w as i32).unwrap_or(-1);
-        self.actions_mut().push((weapon_id, target));
-    }
-
-    fn best_assist_damage(&self, target: usize) -> i32 {
-        let mut best = 0;
-        for weapon_id in 0..self.weapons().len() {
-            if !self.can_use_weapon(weapon_id) {
-                continue;
-            }
-            let damage = self.attacks().damage(weapon_id, target);
-            if damage <= 0 {
-                continue;
-            }
-            let effective = damage.min(self.remaining()[target]);
-            if effective > best {
-                best = effective;
-            }
-        }
-        best
-    }
-
-    fn assist_opening(&mut self, target: usize) {
-        loop {
-            let mut best_weapon = None;
-            let mut best_effective = 0;
-            for weapon_id in 0..self.weapons().len() {
-                if !self.can_use_weapon(weapon_id) {
-                    continue;
-                }
-                let damage = self.attacks().damage(weapon_id, target);
-                if damage <= 1 {
-                    continue;
-                }
-                let effective = damage.min(self.remaining()[target]);
-                if effective > best_effective {
-                    best_effective = effective;
-                    best_weapon = Some(weapon_id);
-                }
-            }
-
-            let Some(weapon_id) = best_weapon else {
-                break;
-            };
-
-            if !self.execute_attack(Some(weapon_id), target) {
-                break;
-            }
-
-            if self.remaining()[target] <= 0 {
-                break;
-            }
+            attack_heap,
         }
     }
 
-    fn can_use_weapon(&self, weapon_id: usize) -> bool {
-        self.is_opened(weapon_id) && self.inventory().remaining(weapon_id) > 0
+    fn len(&self) -> usize {
+        self.chests.len()
     }
 
-    fn evaluate_unlock(&self, chest_id: usize) -> f64 {
-        if self.remaining()[chest_id] <= 0 {
-            return f64::NEG_INFINITY;
+    fn remaining_hardness(&self, chest_id: usize) -> i32 {
+        self.remaining[chest_id]
+    }
+
+    fn record_attack(&mut self, weapon: Option<usize>, target: usize, damage: i32) {
+        if damage <= 0 {
+            return;
         }
-        let weapon = &self.weapons()[chest_id];
-
-        let mut gains: Vec<i32> = self
-            .attacks()
-            .weapon_row(chest_id)
-            .iter()
-            .enumerate()
-            .filter(|(target, _)| *target != chest_id && self.remaining()[*target] > 0)
-            .map(|(_, &damage)| damage)
-            .collect();
-        gains.sort_unstable_by(|a, b| b.cmp(a));
-        let total = gains
-            .into_iter()
-            .take(weapon.initial_durability as usize)
-            .sum::<i32>();
-
-        let assist = self.best_assist_damage(chest_id);
-        let adjusted_cost = (self.remaining()[chest_id] - assist).max(1);
-
-        total as f64 / adjusted_cost as f64
-    }
-
-    fn best_target_for_weapon(&self, weapon_id: usize) -> Option<usize> {
-        let mut best_target = None;
-        let mut best_effective_damage = 0;
-        for (target, &remaining) in self.remaining().iter().enumerate() {
-            if remaining <= 0 {
-                continue;
-            }
-            let damage = self.attacks().damage(weapon_id, target);
-            let effective = damage.min(remaining);
-            if effective > best_effective_damage {
-                best_effective_damage = effective;
-                best_target = Some(target);
-            }
+        if let Some(w) = weapon {
+            self.actions.push((w as i32, target));
+        } else {
+            self.actions.push((-1, target));
         }
-        best_target
     }
 
-    fn execute_attack(&mut self, weapon: Option<usize>, target: usize) -> bool {
-        if self.remaining()[target] <= 0 {
+    fn execute_fist(&mut self, target: usize) {
+        if self.remaining[target] <= 0 {
+            return;
+        }
+        self.remaining[target] -= 1;
+        self.record_attack(None, target, 1);
+        if self.remaining[target] <= 0 {
+            self.on_chest_opened(target);
+        }
+    }
+
+    fn execute_weapon_attack(&mut self, weapon_id: usize, target: usize, damage: i32) -> bool {
+        if self.remaining[target] <= 0 {
             return false;
         }
-
-        let damage = match weapon {
-            None => 1,
-            Some(w) => {
-                if !self.can_use_weapon(w) {
-                    return false;
-                }
-                let damage = self.attacks().damage(w, target);
-                if damage <= 0 {
-                    return false;
-                }
-                if !self.inventory_mut().use_once(w) {
-                    return false;
-                }
-                damage
-            }
-        };
-
-        {
-            let remaining = self.remaining_mut();
-            remaining[target] = (remaining[target] - damage).max(0);
+        if !self.opened[weapon_id] {
+            return false;
         }
-        self.record_attack(weapon, target);
-
-        if self.remaining()[target] <= 0 && !self.is_opened(target) {
-            self.mark_opened(target);
+        if self.inventory.remaining(weapon_id) <= 0 {
+            return false;
+        }
+        if damage <= 0 {
+            return false;
+        }
+        if !self.inventory.use_once(weapon_id) {
+            return false;
+        }
+        self.remaining[target] = (self.remaining[target] - damage).max(0);
+        self.record_attack(Some(weapon_id), target, damage);
+        if self.remaining[target] <= 0 {
+            self.on_chest_opened(target);
         }
         true
     }
 
-    fn use_weapon_greedily(&mut self, weapon_id: usize) {
-        while self.can_use_weapon(weapon_id) {
-            let Some(target) = self.best_target_for_weapon(weapon_id) else {
-                break;
-            };
-            if !self.execute_attack(Some(weapon_id), target) {
-                break;
-            }
+    fn on_chest_opened(&mut self, chest_id: usize) {
+        if self.opened[chest_id] {
+            return;
         }
+        self.opened[chest_id] = true;
+        self.enqueue_weapon_attacks(chest_id);
     }
-}
 
-impl BattleOps for BattleState {
-    fn attacks(&self) -> &AttackMatrix {
-        &self.attacks
-    }
-    fn chests(&self) -> &[Chest] {
-        &self.chests
-    }
-    fn weapons(&self) -> &[Weapon] {
-        &self.weapons
-    }
-    fn opened(&self) -> &[bool] {
-        &self.opened
-    }
-    fn opened_mut(&mut self) -> &mut [bool] {
-        &mut self.opened
-    }
-    fn inventory(&self) -> &Inventory {
-        &self.inventory
-    }
-    fn inventory_mut(&mut self) -> &mut Inventory {
-        &mut self.inventory
-    }
-    fn remaining(&self) -> &[i32] {
-        &self.remaining
-    }
-    fn remaining_mut(&mut self) -> &mut [i32] {
-        &mut self.remaining
-    }
-    fn actions(&self) -> &[(i32, usize)] {
-        &self.actions
-    }
-    fn actions_mut(&mut self) -> &mut Vec<(i32, usize)> {
-        &mut self.actions
-    }
-}
-
-fn greedy_solve(state: &mut BattleState) {
-    let n = state.chests().len();
-    while state.remaining().iter().any(|&hardness| hardness > 0) {
-        let mut best_idx = None;
-        let mut best_value = f64::NEG_INFINITY;
-        for chest_id in 0..n {
-            if state.remaining()[chest_id] <= 0 {
+    fn enqueue_weapon_attacks(&mut self, weapon_id: usize) {
+        if !self.opened[weapon_id] {
+            return;
+        }
+        if self.inventory.remaining(weapon_id) <= 0 {
+            return;
+        }
+        let remaining = self.inventory.remaining(weapon_id) as usize;
+        if remaining == 0 {
+            return;
+        }
+        let weapon_row = self.attacks.weapon_row(weapon_id);
+        for chest_id in 0..self.len() {
+            if self.remaining[chest_id] <= 0 {
                 continue;
             }
-            let value = state.evaluate_unlock(chest_id);
-            if value > best_value {
-                best_value = value;
-                best_idx = Some(chest_id);
+            let damage = weapon_row[chest_id];
+            if damage <= 1 {
+                continue;
             }
+            self.attack_heap.push(AttackCandidate {
+                damage,
+                weapon: weapon_id,
+                target: chest_id,
+            });
         }
+    }
 
-        let chest_id = best_idx.unwrap_or_else(|| {
-            state
-                .remaining()
-                .iter()
-                .enumerate()
-                .find(|(_, &hardness)| hardness > 0)
-                .map(|(idx, _)| idx)
-                .expect("there must be a closed chest")
-        });
-
-        state.assist_opening(chest_id);
-
-        while state.remaining()[chest_id] > 0 {
-            if !state.execute_attack(None, chest_id) {
+    fn apply_best_attacks(&mut self) {
+        while let Some(candidate) = self.attack_heap.pop() {
+            if self.inventory.remaining(candidate.weapon) <= 0 {
+                continue;
+            }
+            if !self.opened[candidate.weapon] {
+                continue;
+            }
+            if self.remaining[candidate.target] <= 0 {
+                continue;
+            }
+            let damage = self.attacks.damage(candidate.weapon, candidate.target);
+            if damage <= 1 {
                 break;
             }
+            let success = self.execute_weapon_attack(candidate.weapon, candidate.target, damage);
+            if !success {
+                continue;
+            }
+            if self.inventory.remaining(candidate.weapon) > 0
+                && self.remaining[candidate.target] > 0
+            {
+                self.attack_heap.push(candidate);
+            }
         }
+    }
 
-        if !state.is_opened(chest_id) {
-            state.mark_opened(chest_id);
+    fn open_with_fists(&mut self, chest_id: usize) {
+        while self.remaining[chest_id] > 0 {
+            self.execute_fist(chest_id);
         }
-        state.use_weapon_greedily(chest_id);
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct AttackCandidate {
+    damage: i32,
+    weapon: usize,
+    target: usize,
+}
+
+impl Ord for AttackCandidate {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.damage
+            .cmp(&other.damage)
+            .then_with(|| other.weapon.cmp(&self.weapon))
+            .then_with(|| other.target.cmp(&self.target))
+    }
+}
+
+impl PartialOrd for AttackCandidate {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+fn evaluate_chest(state: &BattleState, chest_id: usize) -> f64 {
+    if state.remaining_hardness(chest_id) <= 0 {
+        return f64::NEG_INFINITY;
+    }
+    let weapon = &state.weapons[chest_id];
+    let durability = weapon.initial_durability.max(0) as usize;
+    if durability == 0 {
+        return 0.0;
+    }
+
+    let mut contributions = Vec::with_capacity(state.len());
+    let weapon_row = state.attacks.weapon_row(chest_id);
+    for (target, &hardness) in state.remaining.iter().enumerate() {
+        if target == chest_id || hardness <= 0 {
+            continue;
+        }
+        let damage = weapon_row[target];
+        if damage <= 0 {
+            continue;
+        }
+        let effective = damage.min(hardness);
+        contributions.push(effective);
+    }
+    if contributions.is_empty() {
+        return 0.0;
+    }
+    contributions.sort_unstable_by(|a, b| b.cmp(a));
+    let potential: i32 = contributions.into_iter().take(durability).sum();
+    if potential <= 0 {
+        return 0.0;
+    }
+    let cost = state.remaining_hardness(chest_id).max(1) as f64;
+    let max_damage = state
+        .attacks
+        .weapon_row(chest_id)
+        .iter()
+        .copied()
+        .max()
+        .unwrap_or(0);
+    potential as f64 / cost + (max_damage as f64) * 1e-4
+}
+
+fn choose_next_chest(state: &BattleState) -> Option<usize> {
+    let mut best_idx = None;
+    let mut best_value = f64::NEG_INFINITY;
+    for chest_id in 0..state.len() {
+        if state.remaining_hardness(chest_id) <= 0 {
+            continue;
+        }
+        let value = evaluate_chest(state, chest_id);
+        if value > best_value {
+            best_value = value;
+            best_idx = Some(chest_id);
+        }
+    }
+    if best_value <= 0.0 {
+        state
+            .remaining
+            .iter()
+            .enumerate()
+            .filter(|(_, &h)| h > 0)
+            .min_by_key(|&(_, h)| h)
+            .map(|(idx, _)| idx)
+    } else {
+        best_idx
+    }
+}
+
+fn greedy_strategy(state: &mut BattleState) {
+    for chest_id in 0..state.len() {
+        if state.remaining[chest_id] <= 0 {
+            state.on_chest_opened(chest_id);
+        }
+    }
+    while state.remaining.iter().any(|&h| h > 0) {
+        state.apply_best_attacks();
+        if !state.remaining.iter().any(|&h| h > 0) {
+            break;
+        }
+        let chest_id = choose_next_chest(state).expect("there must be unopened chest");
+        state.open_with_fists(chest_id);
+        state.apply_best_attacks();
     }
 }
 
@@ -416,10 +395,10 @@ fn main() {
     };
 
     let mut state = BattleState::new(h, c, a);
-    greedy_solve(&mut state);
+    greedy_strategy(&mut state);
 
-    eprintln!("{}", state.actions().len());
-    for (weapon, target) in state.actions() {
+    eprintln!("{}", state.actions.len());
+    for (weapon, target) in &state.actions {
         println!("{} {}", weapon, target);
     }
 }
