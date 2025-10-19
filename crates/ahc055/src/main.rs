@@ -67,6 +67,7 @@ struct Weapon {
 struct Chest {
     #[allow(dead_code)]
     id: usize,
+    #[allow(dead_code)]
     initial_hardness: i32,
 }
 
@@ -184,6 +185,57 @@ trait BattleOps {
         self.actions_mut().push((weapon_id, target));
     }
 
+    fn best_assist_damage(&self, target: usize) -> i32 {
+        let mut best = 0;
+        for weapon_id in 0..self.weapons().len() {
+            if !self.can_use_weapon(weapon_id) {
+                continue;
+            }
+            let damage = self.attacks().damage(weapon_id, target);
+            if damage <= 0 {
+                continue;
+            }
+            let effective = damage.min(self.remaining()[target]);
+            if effective > best {
+                best = effective;
+            }
+        }
+        best
+    }
+
+    fn assist_opening(&mut self, target: usize) {
+        loop {
+            let mut best_weapon = None;
+            let mut best_effective = 0;
+            for weapon_id in 0..self.weapons().len() {
+                if !self.can_use_weapon(weapon_id) {
+                    continue;
+                }
+                let damage = self.attacks().damage(weapon_id, target);
+                if damage <= 1 {
+                    continue;
+                }
+                let effective = damage.min(self.remaining()[target]);
+                if effective > best_effective {
+                    best_effective = effective;
+                    best_weapon = Some(weapon_id);
+                }
+            }
+
+            let Some(weapon_id) = best_weapon else {
+                break;
+            };
+
+            if !self.execute_attack(Some(weapon_id), target) {
+                break;
+            }
+
+            if self.remaining()[target] <= 0 {
+                break;
+            }
+        }
+    }
+
     fn can_use_weapon(&self, weapon_id: usize) -> bool {
         self.is_opened(weapon_id) && self.inventory().remaining(weapon_id) > 0
     }
@@ -192,7 +244,6 @@ trait BattleOps {
         if self.remaining()[chest_id] <= 0 {
             return f64::NEG_INFINITY;
         }
-        let chest = &self.chests()[chest_id];
         let weapon = &self.weapons()[chest_id];
 
         let mut gains: Vec<i32> = self
@@ -209,7 +260,10 @@ trait BattleOps {
             .take(weapon.initial_durability as usize)
             .sum::<i32>();
 
-        total as f64 / chest.initial_hardness.max(1) as f64
+        let assist = self.best_assist_damage(chest_id);
+        let adjusted_cost = (self.remaining()[chest_id] - assist).max(1);
+
+        total as f64 / adjusted_cost as f64
     }
 
     fn best_target_for_weapon(&self, weapon_id: usize) -> Option<usize> {
@@ -336,6 +390,8 @@ fn greedy_solve(state: &mut BattleState) {
                 .map(|(idx, _)| idx)
                 .expect("there must be a closed chest")
         });
+
+        state.assist_opening(chest_id);
 
         while state.remaining()[chest_id] > 0 {
             if !state.execute_attack(None, chest_id) {
