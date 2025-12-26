@@ -1,0 +1,20 @@
+[package]
+name = "ahc058"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89"
+
+[dependencies]
+ac-library-rs = "0.2.0"
+proconio = "0.5.0"
+itertools = { workspace = true }
+regex = { workspace = true }
+num = { workspace = true }
+rustc-hash = { workspace = true }
+rand = { workspace = true }
+rand_distr = { workspace = true }
+nalgebra = { workspace = true }
+ordered-float = { workspace = true }
+fixedbitset = { workspace = true }
+rand_pcg = { workspace = true }
+rand_chacha = { workspace = true }
