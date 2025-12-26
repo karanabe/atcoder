@@ -554,8 +554,7 @@ fn bfs_clustering(n: usize, coords: &[(f64, f64)], threshold: f64) -> Vec<Vec<us
     let check_range = 120;
     for i in 0..n {
         let ci = idxs[i];
-        for j in i + 1..(i + check_range).min(n) {
-            let cj = idxs[j];
+        for &cj in idxs.iter().take((i + check_range).min(n)).skip(i + 1) {
             let dx = coords[ci].0 - coords[cj].0;
             if dx * dx > threshold * threshold {
                 break;
@@ -621,12 +620,11 @@ fn build_not_adopted_edges(
 }
 
 fn build_initial_groups_by_clusters(
-    n: usize,
-    clusters: &Vec<Vec<usize>>,
+    _n: usize,
+    clusters: &[Vec<usize>],
     group_sizes: &[usize],
 ) -> Vec<Vec<usize>> {
     let all_city = clusters.iter().flatten().copied().collect_vec();
-    if all_city.len() < n {}
 
     let mut groups = Vec::new();
     let mut idx = 0;

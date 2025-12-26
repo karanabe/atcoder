@@ -19,7 +19,7 @@ fn main() {
     ) {
         if index == n {
             let sum: usize = cur.iter().sum();
-            if sum % k == 0 {
+            if sum.is_multiple_of(k) {
                 anss.push(cur.clone());
             }
             return;

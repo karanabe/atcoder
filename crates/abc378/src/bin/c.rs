@@ -51,7 +51,7 @@ fn main() {
 
     for (i, &ai) in a.iter().enumerate() {
         if let Some(&pre_idx) = last.get(&ai) {
-            b.push(pre_idx as i32);
+            b.push(pre_idx);
         } else {
             b.push(-1);
         }

@@ -37,8 +37,8 @@ fn main() {
 
     let mut ans: i64 = 0;
 
-    for l in 1..=m {
-        let cnt_l = min_r[l].saturating_sub(l) as i64;
+    for (l, &r) in min_r.iter().enumerate().take(m + 1).skip(1) {
+        let cnt_l = r.saturating_sub(l) as i64;
         ans += cnt_l;
     }
 

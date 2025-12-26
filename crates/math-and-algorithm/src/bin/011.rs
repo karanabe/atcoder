@@ -21,7 +21,7 @@ fn solve(n: usize) -> usize {
 
 fn is_prime(i: usize) -> bool {
     for j in 2..=i {
-        if j != i && i % j == 0 {
+        if j != i && i.is_multiple_of(j) {
             return false;
         }
     }

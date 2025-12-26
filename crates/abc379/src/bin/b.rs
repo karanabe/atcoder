@@ -52,8 +52,8 @@ fn main() {
 
     for i in 0..=n - k {
         if chars[i..i + k].iter().all(|&c| c == 'O') {
-            for j in i..i + k {
-                chars[j] = 'X';
+            for cell in chars.iter_mut().skip(i).take(k) {
+                *cell = 'X';
             }
             ans += 1;
         }

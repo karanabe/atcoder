@@ -23,10 +23,10 @@ fn main() {
 
     let mut current_pos = (0..n).collect::<Vec<_>>();
 
-    for lv in 0..MAX_LV {
+    for row in dp.iter().take(MAX_LV) {
         if k & 1 != 0 {
-            for i in 0..n {
-                current_pos[i] = dp[lv][current_pos[i]];
+            for value in current_pos.iter_mut() {
+                *value = row[*value];
             }
         }
         k >>= 1;

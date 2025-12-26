@@ -9,18 +9,18 @@ fn main() {
 }
 
 fn solve(y: usize) -> String {
-    let ans = if y % 4 != 0 {
+    let ans = if !y.is_multiple_of(4) {
         365
-    } else if y % 100 != 0 {
+    } else if !y.is_multiple_of(100) {
         366
-    } else if y % 400 != 0 {
+    } else if !y.is_multiple_of(400) {
         365
     } else {
         366
     };
 
     println!("{ans}");
-    format!("{ans}")
+    ans.to_string()
 }
 
 #[cfg(test)]

@@ -228,11 +228,10 @@ impl BattleState {
             return;
         }
         let weapon_row = self.attacks.weapon_row(weapon_id);
-        for chest_id in 0..self.len() {
+        for (chest_id, &damage) in weapon_row.iter().enumerate().take(self.len()) {
             if self.remaining[chest_id] <= 0 {
                 continue;
             }
-            let damage = weapon_row[chest_id];
             if damage <= 1 {
                 continue;
             }

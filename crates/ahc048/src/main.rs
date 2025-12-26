@@ -82,6 +82,7 @@ fn test_answer(make_color_count: usize) {
     }
 }
 
+#[allow(clippy::upper_case_acronyms)]
 type CMY = (f64, f64, f64);
 // type ColorDifference = f64;
 type ColorDifferenceCost = f64;
@@ -102,6 +103,7 @@ struct PaletteWell {
 }
 
 impl PaletteWell {
+    #[allow(clippy::too_many_arguments)]
     fn new(
         palette_size: usize,
         tube_type_count: usize,
@@ -158,10 +160,14 @@ impl PaletteWell {
             }
         }
 
-        return (best_idx, min_cost);
+        (best_idx, min_cost)
     }
 
-    fn best_cost_futuer_count(&self, start: usize, end: usize) -> (ColorDifferenceCost, CommandSet) {
+    fn best_cost_futuer_count(
+        &self,
+        start: usize,
+        end: usize,
+    ) -> (ColorDifferenceCost, CommandSet) {
         let mut cost = 0.0;
         let mut command: CommandSet = Vec::<String>::new();
 
@@ -169,14 +175,18 @@ impl PaletteWell {
             let (idx, best_cost) = self.best_cost(self.target_color[i]);
             cost += best_cost;
             command.push(format!("1 0 0 {idx}"));
-            command.push(format!("2 0 0"));
+            command.push("2 0 0".to_string());
         }
 
         (cost, command)
     }
 
-    fn random_cost_futuer_count(&mut self, start: usize, end: usize) -> (ColorDifferenceCost, CommandSet) {
-        self.generate_color_set(end-start);
+    fn random_cost_futuer_count(
+        &mut self,
+        start: usize,
+        end: usize,
+    ) -> (ColorDifferenceCost, CommandSet) {
+        self.generate_color_set(end - start);
         //let cost = self.calc_cost_from_color_set(start, end);
         let (normal_cost, normal_command) = self.best_cost_futuer_count(start, end);
         let (cost, command) = self.simulated_annealing(start, end);
@@ -191,7 +201,11 @@ impl PaletteWell {
         (cost, command)
     }
 
-    fn simulated_annealing(&mut self, start: usize, end: usize) -> (ColorDifferenceCost, CommandSet) {
+    fn simulated_annealing(
+        &mut self,
+        start: usize,
+        end: usize,
+    ) -> (ColorDifferenceCost, CommandSet) {
         let mut rng = rand::thread_rng();
 
         let start_t = Instant::now();
@@ -211,7 +225,7 @@ impl PaletteWell {
         while Instant::now() < end_t {
             // iter_count += 1;
             let now = Instant::now();
-            let progress = (now - start_t).as_secs_f64() / (self.anneal_time_secs as f64/1000.0);
+            let progress = (now - start_t).as_secs_f64() / (self.anneal_time_secs as f64 / 1000.0);
             if progress >= 1.0 {
                 break;
             }
@@ -223,8 +237,8 @@ impl PaletteWell {
 
             let new_cost = self.calc_cost_from_color_set(start, end);
 
-            let delta_cost =  new_cost - best_cost;
-            let per_once = delta_cost/(end-start) as f64;
+            let delta_cost = new_cost - best_cost;
+            let per_once = delta_cost / (end - start) as f64;
             let p = f64::exp(-per_once / temp);
 
             // ttl_delta_cost += delta_cost/(end-start) as f64;
@@ -232,14 +246,11 @@ impl PaletteWell {
 
             if delta_cost < 0.0 {
                 best_cost = new_cost;
+            } else if rng.gen::<f64>() >= p {
+                self.color_set = backup_color_set;
             } else {
-                if rng.gen::<f64>() >= p {
-                    self.color_set = backup_color_set;
-                } else {
-                    // eprintln!("p={p} delta={delta_cost} temp={temp}");
-                    best_cost = new_cost;
-                }
-
+                // eprintln!("p={p} delta={delta_cost} temp={temp}");
+                best_cost = new_cost;
             }
         }
 
@@ -256,18 +267,10 @@ impl PaletteWell {
         (best_cost, result)
     }
 
-    fn change_color_set(&mut self, temp: f64) {
+    fn change_color_set(&mut self, _temp: f64) {
         let mut rng = rand::thread_rng();
 
-        #[allow(unused_assignments)]
-        let mut count = 3;
-        if 2.0 < temp {
-            count = 5;
-        } else if 0.8 < temp {
-            count = 5;
-        } else {
-            count = 5;
-        }
+        let count = 5;
 
         let mut order: Vec<usize> = (0..self.color_set.len()).collect();
         order.shuffle(&mut rng);
@@ -281,7 +284,7 @@ impl PaletteWell {
     }
 
     fn calc_cost_from_color_set(&self, start: usize, end: usize) -> ColorDifferenceCost {
-        let mut cost =0.0;
+        let mut cost = 0.0;
         let source = self.generate_mixer_color();
 
         for i in start..end {
@@ -320,8 +323,6 @@ impl PaletteWell {
         (c, m, y)
     }
 }
-
-
 
 trait TurnManager {
     fn countup_turn(&mut self);
@@ -379,7 +380,7 @@ fn main() {
         my_color,
         target_color,
         0,
-        14
+        14,
     );
 
     let target_list = palette.target_color.clone();
@@ -412,7 +413,7 @@ fn main() {
                 min_cost = cost;
                 mixture_color = chosen_color;
             } else {
-                for _ in 0..volume.clone() as usize {
+                for _ in 0..volume as usize {
                     answer.push("3 0 0".to_string());
                     volume -= 1.0;
                     palette.countup_turn();
@@ -510,7 +511,7 @@ fn main() {
                 // clean up
                 if volume >= 40.0 {
                     // eprintln!("[DEBUG] cleanup");
-                    for _ in 2..volume.clone() as usize {
+                    for _ in 2..volume as usize {
                         answer.push("3 0 0".to_string());
                         volume -= 1.0;
                         palette.countup_turn();
@@ -546,7 +547,7 @@ fn main() {
                     // let volume_bool = volume > 40.0;
                     // eprintln!("[DEBUG] volume={volume} capacity={volume_bool}");
 
-                    for _ in 0..volume.clone() as usize {
+                    for _ in 0..volume as usize {
                         answer.push("3 0 0".to_string());
                         volume -= 1.0;
                         palette.countup_turn();
@@ -581,7 +582,6 @@ fn main() {
                     volume -= 1.0;
 
                     break;
-
                 } else if best_gain > palette.color_cost as f64 {
                     let idx = chosen_idx.unwrap();
 
@@ -596,7 +596,7 @@ fn main() {
                     //     "[DEBUG] target={} add tube={} gain={:.3} new_cost={:.3} volume={} turn={} (turn_left={} need={})",
                     //     tidx, idx, best_gain, current_cost, volume, palette.current_turn(), palette.trun_left(), need_turn
                     // );
-                } else if !next_chosen_idx.is_none() {
+                } else if next_chosen_idx.is_some() {
                     //
                     let idx = next_chosen_idx.unwrap();
 
@@ -618,7 +618,6 @@ fn main() {
                     volume -= 1.0;
 
                     break;
-
                 } else {
                     ttl_cost += current_cost;
                     answer.push("2 0 0".to_string());

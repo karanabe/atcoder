@@ -114,12 +114,10 @@ fn main() {
 
         if p == 0 {
             uf.union(a, b);
+        } else if uf.is_same(a, b) {
+            println!("Yes");
         } else {
-            if uf.is_same(a, b) {
-                println!("Yes");
-            } else {
-                println!("No");
-            }
+            println!("No");
         }
     }
 }

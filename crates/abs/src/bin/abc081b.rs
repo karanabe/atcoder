@@ -26,7 +26,7 @@ fn odd_check(v1: &[u32]) -> bool {
             return false;
         }
     }
-    return true;
+    true
 }
 
 #[cfg(test)]

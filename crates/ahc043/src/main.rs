@@ -93,8 +93,8 @@ impl Railway {
             home_office: Vec::with_capacity(m),
             station_candidates: Vec::new(),
             capital: k,
-            t: t,
-            n: n,
+            t,
+            n,
             grid: vec![vec![Cell::Empty; n]; n],
             path: Vec::new(),
             stations: Vec::new(),
@@ -148,10 +148,13 @@ impl Railway {
                 if dr.abs() + dc.abs() <= 2 {
                     let nr = r as i32 + dr;
                     let nc = c as i32 + dc;
-                    if nr >= 0 && nr < self.n as i32 && nc >= 0 && nc < self.n as i32 {
-                        if self.grid[nr as usize][nc as usize] == Cell::Station {
-                            return true;
-                        }
+                    if nr >= 0
+                        && nr < self.n as i32
+                        && nc >= 0
+                        && nc < self.n as i32
+                        && self.grid[nr as usize][nc as usize] == Cell::Station
+                    {
+                        return true;
                     }
                 }
             }
@@ -167,10 +170,13 @@ impl Railway {
                 if dr.abs() + dc.abs() <= EXTEND_DIST {
                     let nr = r as i32 + dr;
                     let nc = c as i32 + dc;
-                    if nr >= 0 && nr < self.n as i32 && nc >= 0 && nc < self.n as i32 {
-                        if self.grid[nr as usize][nc as usize] == Cell::Station {
-                            return false;
-                        }
+                    if nr >= 0
+                        && nr < self.n as i32
+                        && nc >= 0
+                        && nc < self.n as i32
+                        && self.grid[nr as usize][nc as usize] == Cell::Station
+                    {
+                        return false;
                     }
                 }
             }
@@ -202,7 +208,7 @@ impl Railway {
 
     // Find candidate station from home or office
     fn find_first_investigate(&mut self, first_time: bool) -> bool {
-        for (count, r, c) in self.station_candidates.clone() {
+        if let Some((count, r, c)) = self.station_candidates.first().copied() {
             println!("# Start pos=({}, {}) Station", r, c);
             match self.find_home_or_office(r, c) {
                 Some(result) => {
@@ -289,9 +295,8 @@ impl Railway {
                     println!("# Worng?");
                 }
             }
-            break;
         }
-        return false;
+        false
     }
 
     // Find home or station from (r, c)
@@ -307,7 +312,7 @@ impl Railway {
             }
         }
 
-        if output.len() == 0 {
+        if output.is_empty() {
             None
         } else {
             output.sort_by_key(|x| x.1);
@@ -496,7 +501,7 @@ impl Railway {
     }
 
     fn is_station(&self) -> bool {
-        let (r, c) = self.stations[0].clone();
+        let (r, c) = self.stations[0];
         if self.grid[r][c] == Cell::Station {
             return true;
         }
@@ -582,12 +587,12 @@ fn main() {
                 railway.grid[pos_cur.0][pos_cur.1] = Cell::Track;
 
                 railway.path.remove(0);
-                let tmp = format!("{} {} {}", track_type.to_string(), pos_cur.0, pos_cur.1);
+                let tmp = format!("{} {} {}", track_type, pos_cur.0, pos_cur.1);
                 railway.capital -= RAIL_COST as i64;
 
                 outputs.push(tmp);
 
-                if !(railway.path.len() >= 3) {
+                if railway.path.len() < 3 {
                     railway.path = Vec::new();
                 }
             } else {
@@ -602,7 +607,7 @@ fn main() {
             if (STATION_COST as i64) < railway.capital {
                 let station = railway.stations.remove(0);
                 railway.grid[station.0][station.1] = Cell::Station;
-                let tmp = format!("{} {} {}", "0".to_string(), station.0, station.1);
+                let tmp = format!("{} {} {}", "0", station.0, station.1);
                 railway.capital -= STATION_COST as i64;
 
                 outputs.push(tmp);
@@ -614,23 +619,21 @@ fn main() {
                 // println!("# Capital short - station");
                 outputs.push("-1".to_string());
             }
+        } else if railway.extend_network() {
+            // println!("# station={} path={}", railway.stations.len(), railway.path.len());
+            continue;
         } else {
-            if railway.extend_network() {
-                // println!("# station={} path={}", railway.stations.len(), railway.path.len());
+            break;
+            // println!("# Can not found new stations");
+            /*
+            if railway.find_first_investigate(false) {
+                println!("# Find first investigate again");
                 continue;
             } else {
+                println!("# Find first investigate again FALSE loop={}", railway.loop_count);
                 break;
-                // println!("# Can not found new stations");
-                /*
-                if railway.find_first_investigate(false) {
-                    println!("# Find first investigate again");
-                    continue;
-                } else {
-                    println!("# Find first investigate again FALSE loop={}", railway.loop_count);
-                    break;
-                }
-                */
             }
+            */
         }
 
         railway.capital += railway.calc_revenue();

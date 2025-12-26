@@ -65,7 +65,7 @@ fn main() {
     let mut queue = VecDeque::new();
     let mut level = vec![-1; n + 1];
     let mut parent = vec![0; n + 1];
-    let mut min_cycle = std::i32::MAX;
+    let mut min_cycle = i32::MAX;
 
     queue.push_back(start);
     level[start] = 0;
@@ -76,18 +76,16 @@ fn main() {
                 level[v] = level[u] + 1;
                 parent[v] = u;
                 queue.push_back(v);
-            } else if parent[u] != v {
-                if u == 1 || v == 1 {
-                    let cycle_length = level[u] - level[v] + 1;
-                    if cycle_length >= 2 {
-                        min_cycle = min_cycle.min(cycle_length);
-                    }
+            } else if parent[u] != v && (u == 1 || v == 1) {
+                let cycle_length = level[u] - level[v] + 1;
+                if cycle_length >= 2 {
+                    min_cycle = min_cycle.min(cycle_length);
                 }
             }
         }
     }
 
-    if min_cycle == std::i32::MAX {
+    if min_cycle == i32::MAX {
         println!("-1");
     } else {
         println!("{}", min_cycle);

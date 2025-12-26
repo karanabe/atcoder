@@ -21,8 +21,8 @@ fn solve(n: usize, k: usize, p: Vec<usize>) -> String {
     }
 
     let mut bt = BTreeSet::new();
-    for i in 0..k {
-        bt.insert(q[i]);
+    for &value in q.iter().take(k) {
+        bt.insert(value);
     }
 
     let mut ans = bt.iter().next_back().unwrap() - bt.iter().next().unwrap();
@@ -32,7 +32,7 @@ fn solve(n: usize, k: usize, p: Vec<usize>) -> String {
         ans = ans.min(bt.iter().next_back().unwrap() - bt.iter().next().unwrap());
     }
     println!("{}", ans);
-    format!("{}", ans)
+    ans.to_string()
 }
 
 #[cfg(test)]

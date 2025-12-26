@@ -31,7 +31,7 @@ fn main() {
 
         let mut heap = BinaryHeap::new();
         let mut sum_bi = 0u64;
-        let mut min_value = std::u128::MAX;
+        let mut min_value = u128::MAX;
 
         for &(ai, bi) in ab.iter() {
             heap.push(*bi);

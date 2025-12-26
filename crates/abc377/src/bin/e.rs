@@ -70,7 +70,7 @@ fn main() {
         ans[i] = cycle[new_idx];
     }
 
-    for i in 0..n {
-        print!("{}{}", ans[i], if i == n - 1 { "\n" } else { " " });
+    for (i, value) in ans.iter().enumerate() {
+        print!("{}{}", value, if i + 1 == ans.len() { "\n" } else { " " });
     }
 }

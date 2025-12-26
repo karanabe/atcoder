@@ -23,13 +23,13 @@ fn solve(s: String) -> String {
             }
         }
 
-        if result == false {
+        if !result {
             print!("NO");
             return "NO".to_string();
         }
     }
     print!("YES");
-    return "YES".to_string();
+    "YES".to_string()
 }
 
 #[cfg(test)]

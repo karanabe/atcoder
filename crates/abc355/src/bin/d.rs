@@ -1,7 +1,6 @@
 // https://atcoder.jp/contests/abc355/tasks/abc355_d
 // D - Intersecting Intervals
 use proconio::input;
-use std::cmp;
 
 struct FenwickTree {
     data: Vec<i64>,

@@ -13,11 +13,11 @@ fn main() {
 fn solve(n: usize, t: usize, a: usize) -> String {
     if t.abs_diff(a) < n - (t + a) {
         println!("No");
-        return format!("No");
+        return "No".to_string();
     }
 
     println!("Yes");
-    format!("Yes")
+    "Yes".to_string()
 }
 
 #[cfg(test)]

@@ -13,7 +13,7 @@ fn main() {
 }
 
 fn solve(n: usize, p: Vec<(i64, i64, usize)>) -> String {
-    let mut dp = vec![std::i64::MAX; n];
+    let mut dp = vec![i64::MAX; n];
     dp[0] = 0;
     let mut h = BinaryHeap::new();
     h.push((0, 0));
@@ -34,5 +34,5 @@ fn solve(n: usize, p: Vec<(i64, i64, usize)>) -> String {
     }
     println!("{}", dp[n - 1]);
 
-    format!("{}", dp[n - 1])
+    dp[n - 1].to_string()
 }

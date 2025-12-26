@@ -111,6 +111,7 @@ fn combs(r: usize) -> (u128, u128, u128, u128) {
 }
 
 #[inline(always)]
+#[allow(clippy::too_many_arguments)]
 fn gain_stop(
     a: u128,
     b0: u128,
@@ -179,6 +180,7 @@ fn apply_action(
     act
 }
 
+#[allow(clippy::too_many_arguments)]
 fn build_from_prefix(
     base: Option<&[i8]>,
     cut: usize,
@@ -192,9 +194,7 @@ fn build_from_prefix(
     let mut actions = vec![-1i8; t];
 
     if let Some(b) = base {
-        for i in 0..cut {
-            actions[i] = b[i];
-        }
+        actions[..cut].copy_from_slice(&b[..cut]);
         if cut > 0 && rng.next_f64() < params.shake_prob {
             let m = 1 + rng.gen_usize(3);
             let w = 30.min(cut);
@@ -213,12 +213,12 @@ fn build_from_prefix(
     let mut b = [[1u128; N]; L];
     let mut p = [[0u32; N]; L];
 
-    for turn in 0..cut {
-        let act = actions[turn];
-        actions[turn] = apply_action(act, &mut apples, &mut b, &mut p, a, c);
+    for action in actions.iter_mut().take(cut) {
+        let act = *action;
+        *action = apply_action(act, &mut apples, &mut b, &mut p, a, c);
     }
 
-    for turn in cut..t {
+    for (turn, action) in actions.iter_mut().enumerate().take(t).skip(cut) {
         let r = t - turn;
         let (c1, c2, c3, c4) = combs(r);
 
@@ -346,8 +346,8 @@ fn build_from_prefix(
             cands[rng.gen_usize(k_take)].1
         };
 
-        actions[turn] = chosen;
-        actions[turn] = apply_action(chosen, &mut apples, &mut b, &mut p, a, c);
+        *action = chosen;
+        *action = apply_action(chosen, &mut apples, &mut b, &mut p, a, c);
     }
 
     (actions, apples)
@@ -366,12 +366,7 @@ fn sample_params(rng: &mut XorShift64, progress: f64, is_rebuild: bool) -> Param
     let mut alpha0 = if is_rebuild { 0.70 } else { 0.88 };
     alpha0 -= 0.55 * progress;
     alpha0 += (rng.next_f64() - 0.5) * 0.10;
-    if alpha0 < 0.0 {
-        alpha0 = 0.0;
-    }
-    if alpha0 > 0.98 {
-        alpha0 = 0.98;
-    }
+    alpha0 = alpha0.clamp(0.0, 0.98);
 
     let pot_div_choices = [1u128, 2, 4, 8];
     let cost_div_choices = [4u128, 8, 16, 32];
@@ -397,12 +392,7 @@ fn sample_params(rng: &mut XorShift64, progress: f64, is_rebuild: bool) -> Param
 
     let mut best_prob = if is_rebuild { 0.70 } else { 0.58 };
     best_prob += (rng.next_f64() - 0.5) * 0.18;
-    if best_prob < 0.45 {
-        best_prob = 0.45;
-    }
-    if best_prob > 0.90 {
-        best_prob = 0.90;
-    }
+    best_prob = best_prob.clamp(0.45, 0.90);
 
     let shake_prob = if is_rebuild { 0.22 } else { 0.06 };
 

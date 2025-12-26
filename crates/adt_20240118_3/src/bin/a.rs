@@ -12,7 +12,7 @@ fn main() {
 
 fn solve(n: usize, s: &str) -> String {
     println!("{}", &s[n - 1..n]);
-    format!("{}", &s[n - 1..n])
+    s[n - 1..n].to_string()
 }
 
 #[cfg(test)]

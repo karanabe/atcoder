@@ -23,5 +23,5 @@ fn solve(n: usize, a: Vec<Vec<char>>, b: Vec<Vec<char>>) -> String {
         }
     }
     println!("{ans}");
-    format!("{ans}")
+    ans
 }

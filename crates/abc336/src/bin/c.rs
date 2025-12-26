@@ -24,7 +24,7 @@ fn solve(mut n: usize) -> String {
     for i in v.clone() {
         print!("{i}");
     }
-    println!("");
+    println!();
     let s: Vec<String> = v.iter().map(|x| x.to_string()).collect();
     s.join("")
 }

@@ -15,7 +15,6 @@ fn solve(n: usize, a: Vec<i32>) -> String {
     let mut current = -1;
     #[allow(unused_assignments)]
     let mut num: i32 = 0;
-    let mut result: String = "".to_string();
     let mut hashmap: HashMap<i32, usize> = HashMap::new();
 
     for (index, element) in a.iter().enumerate() {

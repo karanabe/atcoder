@@ -14,7 +14,7 @@ fn solve(s: &str) -> String {
     let result = words.last().unwrap();
 
     println!("{result}");
-    format!("{result}")
+    result.to_string()
 }
 
 #[cfg(test)]

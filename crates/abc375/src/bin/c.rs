@@ -35,11 +35,11 @@ fn main() {
     let a: Vec<Vec<char>> = a.iter().map(|s| s.chars().collect()).collect();
     let mut ans = vec![vec!['.'; n]; n];
 
-    for i in 0..n {
-        for j in 0..n {
+    for (i, row) in ans.iter_mut().enumerate().take(n) {
+        for (j, cell) in row.iter_mut().enumerate().take(n) {
             let cnt = min4(i + 1, j + 1, n - i, n - j);
             let (x, y) = move_position(i, j, cnt, n);
-            ans[i][j] = a[x][y];
+            *cell = a[x][y];
         }
     }
 

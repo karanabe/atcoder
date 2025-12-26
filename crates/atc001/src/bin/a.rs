@@ -65,9 +65,9 @@ fn main() {
     let mut seen = vec![vec![false; w]; h];
 
     let mut start = (0, 0);
-    for i in 0..h {
-        for j in 0..w {
-            if c[i][j] == 's' {
+    for (i, row) in c.iter().enumerate() {
+        for (j, &ch) in row.iter().enumerate() {
+            if ch == 's' {
                 start = (i, j);
             }
         }
@@ -98,11 +98,12 @@ fn dfs(
 
     for (i, j) in DIRECTION {
         let next = (pos.0.wrapping_add(i), pos.1.wrapping_add(j));
-        if next.0 < h && next.1 < w && (grid[next.0][next.1] == '.' || grid[next.0][next.1] == 'g')
+        if next.0 < h
+            && next.1 < w
+            && (grid[next.0][next.1] == '.' || grid[next.0][next.1] == 'g')
+            && dfs(grid, seen, next, h, w)
         {
-            if dfs(grid, seen, next, h, w) {
-                return true;
-            }
+            return true;
         }
     }
 

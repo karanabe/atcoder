@@ -58,16 +58,15 @@ const DIRECTION: [(usize, usize); 4] = [(!0, 0), (1, 0), (0, !0), (0, 1)];
 fn main() {
     input! {
         h: usize,
-        w: usize,
+        _w: usize,
         d: usize,
         grid: [Chars; h],
     }
 
     let mut cell = Vec::new();
-    for i in 0..h {
-        let row = &grid[i];
-        for j in 0..w {
-            if row[j] == '.' {
+    for (i, row) in grid.iter().enumerate() {
+        for (j, &ch) in row.iter().enumerate() {
+            if ch == '.' {
                 cell.push((i, j));
             }
         }

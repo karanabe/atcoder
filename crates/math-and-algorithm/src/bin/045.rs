@@ -10,7 +10,7 @@ use itertools::Itertools;
 #[allow(unused_imports)]
 use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
-fn bfs(n: usize, graph: &Vec<Vec<usize>>, start: usize) -> i32 {
+fn bfs(n: usize, graph: &[Vec<usize>], start: usize) -> i32 {
     let mut distance = vec![-1; n];
     distance[start] = 0;
     let mut ans = 0;

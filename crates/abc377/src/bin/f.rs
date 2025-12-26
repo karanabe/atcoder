@@ -24,7 +24,7 @@ fn num_cells_on_main_diagonal(k: i64, n: i64) -> i64 {
 }
 
 fn num_cells_on_sub_diagonal(k: i64, n: i64) -> i64 {
-    if -n + 1 <= k && k <= n - 1 {
+    if -n < k && k < n {
         n - k.abs()
     } else {
         0

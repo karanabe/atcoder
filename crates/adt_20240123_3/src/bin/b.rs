@@ -15,7 +15,7 @@ fn solve(_n: usize, mut s: Vec<String>) -> String {
     for out in s.iter() {
         println!("{out}");
     }
-    format!("test")
+    "test".to_string()
 }
 
 #[cfg(test)]

@@ -20,10 +20,10 @@ fn solve(_n: usize, _m: usize, a: Vec<usize>, mut b: Vec<usize>) -> String {
     let mut result = false;
 
     for item in &numbers {
-        if a.contains(&item) {
+        if a.contains(item) {
             if result {
                 println!("Yes");
-                return format!("Yes");
+                return "Yes".to_string();
             } else {
                 result = true;
             }
@@ -33,7 +33,7 @@ fn solve(_n: usize, _m: usize, a: Vec<usize>, mut b: Vec<usize>) -> String {
     }
 
     println!("No");
-    format!("No")
+    "No".to_string()
 }
 
 #[cfg(test)]

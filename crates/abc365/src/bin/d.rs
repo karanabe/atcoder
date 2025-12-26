@@ -26,47 +26,8 @@ fn main() {
     println!("{}", dp[n][0].max(dp[n][1]).max(dp[n][2]));
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_case_1() {
-        let n = 6;
-        let s = "PRSSRS".chars().collect();
-        assert_eq!(calculate_max_wins(n, &s), 5);
-    }
-
-    #[test]
-    fn test_case_2() {
-        let n = 10;
-        let s = "SSSSSSSSSS".chars().collect();
-        assert_eq!(calculate_max_wins(n, &s), 5);
-    }
-
-    #[test]
-    fn test_case_3() {
-        let n = 24;
-        let s = "SPRPSRRRRRPPRPRPSSRSPRSS".chars().collect();
-        assert_eq!(calculate_max_wins(n, &s), 18);
-    }
-
-    #[test]
-    fn test_case_4() {
-        let n = 1;
-        let s = "R".chars().collect();
-        assert_eq!(calculate_max_wins(n, &s), 1);
-    }
-
-    #[test]
-    fn test_case_5() {
-        let n = 2;
-        let s = "RS".chars().collect();
-        assert_eq!(calculate_max_wins(n, &s), 2);
-    }
-}
-
-fn calculate_max_wins(n: usize, s: &Vec<char>) -> i64 {
+#[allow(dead_code)]
+fn calculate_max_wins(n: usize, s: &[char]) -> i64 {
     let mut dp = vec![[-1i64 << 60; 3]; n + 1];
     dp[0] = [0; 3];
 
@@ -84,4 +45,44 @@ fn calculate_max_wins(n: usize, s: &Vec<char>) -> i64 {
     }
 
     dp[n][0].max(dp[n][1]).max(dp[n][2])
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_case_1() {
+        let n = 6;
+        let s: Vec<char> = "PRSSRS".chars().collect();
+        assert_eq!(calculate_max_wins(n, &s), 5);
+    }
+
+    #[test]
+    fn test_case_2() {
+        let n = 10;
+        let s: Vec<char> = "SSSSSSSSSS".chars().collect();
+        assert_eq!(calculate_max_wins(n, &s), 5);
+    }
+
+    #[test]
+    fn test_case_3() {
+        let n = 24;
+        let s: Vec<char> = "SPRPSRRRRRPPRPRPSSRSPRSS".chars().collect();
+        assert_eq!(calculate_max_wins(n, &s), 18);
+    }
+
+    #[test]
+    fn test_case_4() {
+        let n = 1;
+        let s: Vec<char> = "R".chars().collect();
+        assert_eq!(calculate_max_wins(n, &s), 1);
+    }
+
+    #[test]
+    fn test_case_5() {
+        let n = 2;
+        let s: Vec<char> = "RS".chars().collect();
+        assert_eq!(calculate_max_wins(n, &s), 2);
+    }
 }

@@ -1,6 +1,4 @@
 #[allow(unused_imports)]
-use itertools;
-#[allow(unused_imports)]
 use proconio::{
     input,
     marker::{Bytes, Chars, Isize1, Usize1},
@@ -61,9 +59,7 @@ fn main() {
     }
 
     let mut result = vec![0i64; n];
-    for i in 0..n {
-        result[i] = uf.potential[i];
-    }
+    result.copy_from_slice(&uf.potential);
 
     for (i, ans) in result.iter().enumerate() {
         if i == n - 1 {

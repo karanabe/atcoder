@@ -31,7 +31,7 @@ fn solve(a: &Vec<Vec<i32>>) -> String {
         y = v[2];
     }
     println!("Yes");
-    return "Yes".to_string();
+    "Yes".to_string()
 }
 
 #[cfg(test)]

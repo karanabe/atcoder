@@ -19,7 +19,7 @@ fn solve(_n: usize, x: usize, y: usize, z: usize) -> String {
     let ans = if lower < z && z < upper { "Yes" } else { "No" };
 
     println!("{ans}");
-    format!("{ans}")
+    ans.to_string()
 }
 
 #[cfg(test)]

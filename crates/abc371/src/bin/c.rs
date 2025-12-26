@@ -45,7 +45,7 @@ fn main() {
         }
     }
 
-    let mut min_cost = std::usize::MAX;
+    let mut min_cost = usize::MAX;
 
     for perm in (0..n).permutations(n) {
         let mut t_adj = vec![vec![false; n]; n];

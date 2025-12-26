@@ -65,6 +65,7 @@ fn main() {
     println!("{ans}");
 }
 
+#[allow(clippy::too_many_arguments)]
 fn dfs(
     grid: &Vec<Vec<char>>,
     seen: &mut Vec<Vec<bool>>,

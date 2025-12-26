@@ -17,8 +17,8 @@ fn main() {
 
     let mut heaps = vec![BinaryHeap::new(); w + 1];
     let mut limit = vec![0; w + 1];
-    for i in 1..=w {
-        limit[i] = w / i;
+    for (i, value) in limit.iter_mut().enumerate().take(w + 1).skip(1) {
+        *value = w / i;
     }
     for &(weight, value) in items.iter() {
         let mut dec = 1;
@@ -34,8 +34,8 @@ fn main() {
     }
 
     let mut items = vec![];
-    for i in 1..=w {
-        while let Some(v) = heaps[i].pop() {
+    for (i, heap) in heaps.iter_mut().enumerate().take(w + 1).skip(1) {
+        while let Some(v) = heap.pop() {
             items.push((i, (-v) as usize));
         }
     }

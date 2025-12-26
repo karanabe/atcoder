@@ -48,16 +48,13 @@ fn main() {
         a: [i64; m],
     }
 
-    let mut xa: Vec<(i64, i64)> = x.into_iter().zip(a.into_iter()).collect();
+    let mut xa: Vec<(i64, i64)> = x.into_iter().zip(a).collect();
     xa.sort_by(|a, b| a.0.cmp(&b.0));
 
     let mut sum = 0i64;
     let mut sum_idx = 0i64;
 
-    for i in 0..m {
-        let pos = xa[i].0;
-        let stones = xa[i].1;
-
+    for &(pos, stones) in xa.iter().take(m) {
         if sum < pos - 1 {
             println!("-1");
             return;

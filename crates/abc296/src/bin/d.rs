@@ -17,8 +17,7 @@ fn solve(n: usize, m: usize) -> String {
     }
     let mut result = n * n;
     for b in 1..=n {
-        // Rounding up of m/b is the same as (m + b - 1)/b
-        let a = (m + b - 1) / b;
+        let a = m.div_ceil(b);
         if a < b {
             break;
         }

@@ -30,8 +30,9 @@ fn solve(n: usize, s: usize, a: Vec<usize>) -> String {
             }
         }
     }
-    println!("{}", if dp[n][s] { "Yes" } else { "No" });
-    format!("{}", if dp[n][s] { "Yes" } else { "No" })
+    let result = if dp[n][s] { "Yes" } else { "No" };
+    println!("{result}");
+    result.to_string()
 }
 
 #[cfg(test)]

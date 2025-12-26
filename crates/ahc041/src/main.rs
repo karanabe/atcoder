@@ -54,35 +54,21 @@ use rand_distr::{Distribution, Normal};
 #[allow(unused_imports)]
 use std::time::{Duration, Instant};
 
-fn dfs(
-    root: usize,
-    graph: &Vec<Vec<usize>>,
-    parent: &mut Vec<isize>,
-    height: &mut Vec<usize>,
-    a: &Vec<usize>,
-    h: usize,
-) {
+fn dfs(root: usize, graph: &[Vec<usize>], parent: &mut [isize], height: &mut [usize], h: usize) {
     let current_height = height[root];
     if current_height < h {
         for &v in &graph[root] {
             if parent[v] == -2 {
                 height[v] = current_height + 1;
                 parent[v] = root as isize;
-                dfs(v, graph, parent, height, &a, h);
+                dfs(v, graph, parent, height, h);
             }
         }
     }
 }
 
 #[allow(dead_code)]
-fn bfs(
-    root: usize,
-    graph: &Vec<Vec<usize>>,
-    parent: &mut Vec<isize>,
-    a: &Vec<usize>,
-    h: usize,
-    n: usize,
-) {
+fn bfs(root: usize, graph: &[Vec<usize>], parent: &mut [isize], h: usize, n: usize) {
     let mut queue = VecDeque::new();
     queue.push_back(root);
 
@@ -125,8 +111,8 @@ fn main() {
     }
 
     // sort dfs order by asc
-    for u in 0..n {
-        graph[u].sort_by_key(|&v| a[v]);
+    for row in graph.iter_mut().take(n) {
+        row.sort_by_key(|&v| a[v]);
     }
 
     let mut parent = vec![-2isize; n];
@@ -137,12 +123,12 @@ fn main() {
             // bfs(v, &graph, &mut parent, &a, h, n);
             height[v] = 0;
             parent[v] = -1;
-            dfs(v, &graph, &mut parent, &mut height, &a, h);
+            dfs(v, &graph, &mut parent, &mut height, h);
         }
     }
 
-    for i in 0..n {
-        print!("{} ", parent[i]);
+    for value in parent.iter().take(n) {
+        print!("{} ", value);
     }
     println!();
 }

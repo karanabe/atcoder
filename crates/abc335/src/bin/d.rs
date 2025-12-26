@@ -38,15 +38,15 @@ fn solve(n: usize) {
         current = next;
     }
 
-    for i in 0..n {
-        for j in 0..n {
+    for (i, row) in result.iter().enumerate() {
+        for (j, value) in row.iter().enumerate() {
             if i == (n - 1) / 2 && j == (n - 1) / 2 {
                 print!("T ");
             } else {
-                print!("{} ", result[i][j]);
+                print!("{} ", value);
             }
         }
-        println!("");
+        println!();
     }
 }
 

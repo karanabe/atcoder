@@ -95,8 +95,8 @@ fn is_loaded(stack: &[BoxInfo], w_new: i32, dist: i32) -> bool {
 fn do_trip(
     target: (usize, usize),
     done: &mut [[bool; N]; N],
-    w: &Vec<Vec<i32>>,
-    d: &Vec<Vec<i32>>,
+    w: &[Vec<i32>],
+    d: &[Vec<i32>],
     record_ops: bool,
     ops: &mut Vec<char>,
 ) -> i32 {
@@ -211,11 +211,12 @@ fn do_trip(
     moves
 }
 
+#[allow(dead_code)]
 fn do_trip_rev(
     target: (usize, usize),
     done: &mut [[bool; N]; N],
-    w: &Vec<Vec<i32>>,
-    d: &Vec<Vec<i32>>,
+    w: &[Vec<i32>],
+    d: &[Vec<i32>],
     record_ops: bool,
     ops: &mut Vec<char>,
 ) -> i32 {
@@ -331,19 +332,19 @@ fn do_trip_rev(
     moves
 }
 
-fn simulate_total(done_init: &[[bool; N]; N], w: &Vec<Vec<i32>>, d: &Vec<Vec<i32>>) -> i32 {
+fn simulate_total(done_init: &[[bool; N]; N], w: &[Vec<i32>], d: &[Vec<i32>]) -> i32 {
     let mut done = *done_init;
     let mut total_moves = 0;
 
     loop {
         let mut target = None;
         'outer: for dist in (1..=MAX_DIST).rev() {
-            for i in 0..=dist as usize {
+            for (i, row) in done.iter().enumerate().take(dist as usize + 1) {
                 let j = dist as usize - i;
                 if i >= N || j >= N {
                     continue;
                 }
-                if !done[i][j] {
+                if !row[j] {
                     target = Some((i, j));
                     break 'outer;
                 }
@@ -359,16 +360,16 @@ fn simulate_total(done_init: &[[bool; N]; N], w: &Vec<Vec<i32>>, d: &Vec<Vec<i32
 }
 
 // Tries at most CANDIDATES from furthest away and returns best target
-fn choose_target(done: &[[bool; N]; N], w: &Vec<Vec<i32>>, d: &Vec<Vec<i32>>) -> (usize, usize) {
+fn choose_target(done: &[[bool; N]; N], w: &[Vec<i32>], d: &[Vec<i32>]) -> (usize, usize) {
     let mut cand: Vec<(usize, usize)> = Vec::with_capacity(CANDIDATES);
 
     'dist: for dist in (1..=MAX_DIST).rev() {
-        for i in 0..=dist as usize {
+        for (i, row) in done.iter().enumerate().take(dist as usize + 1) {
             let j = dist as usize - i;
             if i >= N || j >= N {
                 continue;
             }
-            if !done[i][j] {
+            if !row[j] {
                 cand.push((i, j));
                 if cand.len() == CANDIDATES {
                     break 'dist;

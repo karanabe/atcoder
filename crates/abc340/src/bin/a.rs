@@ -19,7 +19,7 @@ fn solve(a: usize, b: usize, d: usize) -> String {
 
     let ans = result.join(" ");
     println!("{ans}");
-    format!("{ans}")
+    ans
 }
 
 #[cfg(test)]

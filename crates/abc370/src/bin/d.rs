@@ -13,11 +13,11 @@ fn main() {
     let mut col_walls = vec![BTreeSet::new(); w + 1];
     let mut wall_count = h * w;
 
-    for i in 1..=h {
-        for j in 1..=w {
-            row_walls[i].insert(j);
-            col_walls[j].insert(i);
-        }
+    for row in row_walls.iter_mut().take(h + 1).skip(1) {
+        row.extend(1..=w);
+    }
+    for col in col_walls.iter_mut().take(w + 1).skip(1) {
+        col.extend(1..=h);
     }
 
     for (r, c) in queries {

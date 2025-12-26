@@ -24,8 +24,6 @@ fn solve(_n: usize, a: Vec<i64>) -> usize {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
     fn test_case_1() {
         let n = 4;

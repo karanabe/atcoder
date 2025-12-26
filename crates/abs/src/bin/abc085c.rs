@@ -21,7 +21,7 @@ fn solve(n: usize, y: usize) -> String {
         }
     }
     print!("-1 -1 -1");
-    return "-1 -1 -1".to_string();
+    "-1 -1 -1".to_string()
 }
 
 #[cfg(test)]

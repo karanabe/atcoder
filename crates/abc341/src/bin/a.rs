@@ -15,7 +15,7 @@ fn solve(n: usize) -> String {
         result = format!("{}01", result);
     }
     println!("{result}");
-    format!("{result}")
+    result
 }
 
 #[cfg(test)]

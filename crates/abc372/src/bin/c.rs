@@ -28,20 +28,16 @@ fn main() {
 
     for (&x, &c) in xi.iter().zip(ci.iter()) {
         for i in x.saturating_sub(2)..=(x + 2).min(n - 1) {
-            if i + 2 < n {
-                if s[i] == 'A' && s[i + 1] == 'B' && s[i + 2] == 'C' {
-                    ans -= 1;
-                }
+            if i + 2 < n && s[i] == 'A' && s[i + 1] == 'B' && s[i + 2] == 'C' {
+                ans -= 1;
             }
         }
 
         s[x] = c;
 
         for i in x.saturating_sub(2)..=(x + 2).min(n - 1) {
-            if i + 2 < n {
-                if s[i] == 'A' && s[i + 1] == 'B' && s[i + 2] == 'C' {
-                    ans += 1;
-                }
+            if i + 2 < n && s[i] == 'A' && s[i + 1] == 'B' && s[i + 2] == 'C' {
+                ans += 1;
             }
         }
 

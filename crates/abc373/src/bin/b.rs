@@ -1,6 +1,4 @@
 #[allow(unused_imports)]
-use itertools;
-#[allow(unused_imports)]
 use proconio::{
     input,
     marker::{Bytes, Chars, Isize1, Usize1},
@@ -18,9 +16,9 @@ fn main() {
     }
 
     let mut ttl_dist = 0;
-    let mut curr_pos = pos[('A' as u8 - b'A') as usize];
+    let mut curr_pos = pos[0];
 
-    for c in ('B' as u8)..=('Z' as u8) {
+    for c in b'B'..=b'Z' {
         let next_position = pos[(c - b'A') as usize];
         ttl_dist += (next_position - curr_pos).abs();
         curr_pos = next_position;

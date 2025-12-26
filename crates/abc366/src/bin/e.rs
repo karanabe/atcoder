@@ -16,19 +16,19 @@ fn main() {
     let mut fx = vec![0; n];
     let mut gx = vec![0; n];
 
-    for i in 0..n {
-        fx[i] = (0..n).map(|j| (x_coords[i] - x_coords[j]).abs()).sum();
+    for (i, &x_i) in x_coords.iter().enumerate() {
+        fx[i] = x_coords.iter().map(|&x_j| (x_i - x_j).abs()).sum();
     }
 
-    for i in 0..n {
-        gx[i] = (0..n).map(|j| (y_coords[i] - y_coords[j]).abs()).sum();
+    for (i, &y_i) in y_coords.iter().enumerate() {
+        gx[i] = y_coords.iter().map(|&y_j| (y_i - y_j).abs()).sum();
     }
 
     let mut count = 0;
     let mut j = 0;
 
-    for i in 0..n {
-        while j < n && fx[i] + gx[j] <= d {
+    for &fx_i in fx.iter() {
+        while j < n && fx_i + gx[j] <= d {
             j += 1;
         }
         count += j;

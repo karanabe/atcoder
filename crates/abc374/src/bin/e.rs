@@ -27,12 +27,11 @@ fn main() {
         let mut possible = true;
 
         for &(ai, pi, bi, qi) in &mach {
-            let cost = min_cost(ai, pi, bi, qi, mid);
-            if cost.is_none() {
+            if let Some(cost) = min_cost(ai, pi, bi, qi, mid) {
+                total_cost += cost;
+            } else {
                 possible = false;
                 break;
-            } else {
-                total_cost += cost.unwrap();
             }
 
             if total_cost > x {

@@ -13,7 +13,7 @@ fn solve(n: f64) -> String {
     let mut result: Vec<usize> = Vec::new();
     let mut tmp = n as usize;
     for i in 2..=n.sqrt().floor() as usize {
-        while tmp % i == 0 {
+        while tmp.is_multiple_of(i) {
             result.push(i);
             tmp /= i;
         }
@@ -21,16 +21,13 @@ fn solve(n: f64) -> String {
     if tmp > 1 {
         result.push(tmp);
     }
-    let r = format!(
-        "{}",
-        result
-            .iter()
-            .map(|x| x.to_string())
-            .collect::<Vec<_>>()
-            .join(" ")
-    );
+    let r = result
+        .iter()
+        .map(|x| x.to_string())
+        .collect::<Vec<_>>()
+        .join(" ");
     println!("{}", r);
-    return r;
+    r
 }
 
 #[cfg(test)]

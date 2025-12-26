@@ -12,8 +12,8 @@ fn main() {
 
 fn solve(n: usize, a: Vec<usize>) -> usize {
     let mut g = gcd(a[0], a[1]);
-    for i in 2..n {
-        g = gcd(g, a[i]);
+    for &value in a.iter().take(n).skip(2) {
+        g = gcd(g, value);
     }
     println!("{g}");
     g
@@ -33,9 +33,9 @@ fn gcd_not_good(aa: usize, bb: usize) -> usize {
     let mut b = bb;
     while a >= 1 && b >= 1 {
         if a < b {
-            b = b % a;
+            b %= a;
         } else {
-            a = a % b;
+            a %= b;
         }
     }
     if a >= 1 {

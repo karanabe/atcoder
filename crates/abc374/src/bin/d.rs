@@ -23,7 +23,7 @@ fn main() {
         segments.push(((a, b), (c, d)));
     }
 
-    let mut min_time = std::f64::MAX;
+    let mut min_time = f64::MAX;
 
     let permutations = permute((0..n).collect());
 
@@ -82,7 +82,7 @@ fn heap_permutation(k: usize, nums: &mut [usize], results: &mut Vec<Vec<usize>>)
     } else {
         for i in 0..k {
             heap_permutation(k - 1, nums, results);
-            if k % 2 == 0 {
+            if k.is_multiple_of(2) {
                 nums.swap(i, k - 1);
             } else {
                 nums.swap(0, k - 1);

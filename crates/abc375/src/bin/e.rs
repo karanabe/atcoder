@@ -22,12 +22,12 @@ fn main() {
     let total_strength: usize = people.iter().map(|&(_, b)| b).sum();
     let target_strength = total_strength / 3;
 
-    if total_strength % 3 != 0 {
+    if !total_strength.is_multiple_of(3) {
         println!("-1");
         return;
     }
 
-    let mut team_strength = vec![0; 4];
+    let mut team_strength = [0usize; 4];
     for &(team, strength) in &people {
         team_strength[team] += strength;
     }
@@ -36,11 +36,11 @@ fn main() {
     let mut dp = vec![vec![None; max_strength + 1]; max_strength + 1];
     dp[team_strength[1]][team_strength[2]] = Some(0);
 
-    for (_i, &(team_i, strength_i)) in people.iter().enumerate() {
+    for &(team_i, strength_i) in people.iter() {
         let mut new_dp = dp.clone();
-        for s1 in 0..=max_strength {
-            for s2 in 0..=max_strength {
-                if let Some(count) = dp[s1][s2] {
+        for (s1, row) in dp.iter().enumerate() {
+            for (s2, &value) in row.iter().enumerate() {
+                if let Some(count) = value {
                     for new_team in 1..=3 {
                         if new_team == team_i {
                             continue;

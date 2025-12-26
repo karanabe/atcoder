@@ -11,12 +11,12 @@ fn main() {
 
 fn solve(a: usize, b: usize) -> &'static str {
     let calc_result = a * b;
-    if calc_result % 2 == 0 {
+    if calc_result.is_multiple_of(2) {
         print!("Even");
-        return "Even";
+        "Even"
     } else {
         print!("Odd");
-        return "Odd";
+        "Odd"
     }
 }
 

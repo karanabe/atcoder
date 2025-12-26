@@ -31,7 +31,7 @@ fn solve(_n: usize, mut a: Vec<usize>) -> String {
     let ans = result.join(" ");
     println!("{ans}");
 
-    format!("{ans}")
+    ans
 }
 
 fn merge_sort<T: Ord + Copy>(data: &mut [T]) {
@@ -43,18 +43,16 @@ fn merge_sort<T: Ord + Copy>(data: &mut [T]) {
     merge_sort(&mut data[..middle]);
     merge_sort(&mut data[middle..]);
     let mut work_vec: Vec<T> = Vec::with_capacity(length);
-    for i in 0..length {
-        work_vec.push(data[i]);
-    }
+    work_vec.extend_from_slice(data);
     work_vec[middle..].reverse();
     let mut l = 0;
     let mut r = length - 1;
-    for i in 0..length {
+    for slot in data.iter_mut() {
         if work_vec[l] > work_vec[r] {
-            data[i] = work_vec[r];
+            *slot = work_vec[r];
             r -= 1;
         } else {
-            data[i] = work_vec[l];
+            *slot = work_vec[l];
             l += 1;
         }
     }

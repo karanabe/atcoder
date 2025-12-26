@@ -33,12 +33,12 @@ fn solve(n: usize, a: Vec<String>) -> String {
     let mut players = vec![];
 
     // グリッドとプレイヤーの位置を読み込む
-    for i in 0..n {
+    for (i, row) in a.iter().enumerate().take(n) {
         // 例として5x5グリッド
-        let cells: Vec<Cell> = a[i].trim().chars().map(Cell::from_char).collect();
+        let cells: Vec<Cell> = row.trim().chars().map(Cell::from_char).collect();
 
-        for j in 0..cells.len() {
-            if cells[j] == Cell::Player {
+        for (j, cell) in cells.iter().enumerate() {
+            if *cell == Cell::Player {
                 players.push((i as isize, j as isize));
             }
         }
@@ -57,7 +57,7 @@ fn solve(n: usize, a: Vec<String>) -> String {
     while let Some((p1, p2, steps)) = queue.pop_front() {
         if p1 == p2 {
             println!("{}", steps);
-            return format!("OK");
+            return "OK".to_string();
         }
 
         for &(dx, dy) in &moves {
@@ -82,7 +82,7 @@ fn solve(n: usize, a: Vec<String>) -> String {
 
     // キューが空になった場合は-1を出力
     println!("-1");
-    format!("test")
+    "test".to_string()
 }
 
 #[cfg(test)]

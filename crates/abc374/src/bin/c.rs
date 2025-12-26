@@ -23,11 +23,11 @@ fn main() {
         let mut a_sum = 0i64;
         let mut b_sum = 0i64;
 
-        for i in 0..n {
+        for (i, &value) in k_list.iter().enumerate().take(n) {
             if (bit & (1 << i)) != 0 {
-                a_sum += k_list[i];
+                a_sum += value;
             } else {
-                b_sum += k_list[i];
+                b_sum += value;
             }
         }
 

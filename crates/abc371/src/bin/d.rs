@@ -1,6 +1,6 @@
 use proconio::input;
 
-fn lower_bound(arr: &Vec<i64>, x: i64) -> usize {
+fn lower_bound(arr: &[i64], x: i64) -> usize {
     let mut low = 0usize;
     let mut high = arr.len();
     while low < high {
@@ -14,7 +14,7 @@ fn lower_bound(arr: &Vec<i64>, x: i64) -> usize {
     low
 }
 
-fn upper_bound(arr: &Vec<i64>, x: i64) -> usize {
+fn upper_bound(arr: &[i64], x: i64) -> usize {
     let mut low = 0usize;
     let mut high = arr.len();
     while low < high {

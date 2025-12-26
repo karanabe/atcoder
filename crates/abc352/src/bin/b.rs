@@ -13,10 +13,10 @@ fn main() {
 fn solve(s: &str, t: &str) -> String {
     let mut result = Vec::new();
     let mut t_chars = t.chars().enumerate();
-    let mut s_chars = s.chars();
+    let s_chars = s.chars();
 
-    while let Some(next_s) = s_chars.next() {
-        while let Some((i, next_t)) = t_chars.next() {
+    for next_s in s_chars {
+        for (i, next_t) in t_chars.by_ref() {
             if next_s == next_t {
                 result.push(i + 1);
                 break;
@@ -31,7 +31,7 @@ fn solve(s: &str, t: &str) -> String {
         .join(" ");
 
     println!("{ans}");
-    format!("{ans}")
+    ans.to_string()
 }
 
 #[cfg(test)]

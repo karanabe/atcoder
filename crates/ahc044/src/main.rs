@@ -100,10 +100,10 @@ fn main() {
 
     let mut rng = thread_rng();
     let mut sol = vec![(0, 0); n];
-    for i in 0..n {
+    for slot in sol.iter_mut() {
         let a_i = rng.gen_range(0..n);
         let b_i = rng.gen_range(0..n);
-        sol[i] = (a_i, b_i);
+        *slot = (a_i, b_i);
     }
 
     let (count_init, _) = simulate(n, &sol, SIM_STEPS);
@@ -151,8 +151,7 @@ fn main() {
             }
         } else {
             let prob = f64::exp(-(diff as f64) / temperature);
-            if rng.gen_bool(prob) {
-            } else {
+            if !rng.gen_bool(prob) {
                 if change_ab {
                     sol[i].0 = old_val;
                 } else {
@@ -162,7 +161,7 @@ fn main() {
         }
     }
 
-    for i in 0..n {
-        println!("{} {}", best_sol[i].0, best_sol[i].1);
+    for &(a, b) in best_sol.iter().take(n) {
+        println!("{} {}", a, b);
     }
 }

@@ -14,7 +14,7 @@ fn main() {
 fn solve(a: usize, b: usize) -> usize {
     let mut result = 1;
     for i in 2..=min(a, b) {
-        if a % i == 0 && b % i == 0 {
+        if a.is_multiple_of(i) && b.is_multiple_of(i) {
             result = i;
         }
     }

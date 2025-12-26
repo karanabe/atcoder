@@ -53,13 +53,13 @@ fn main() {
     }
 
     let mut sum_r_p: u64 = 0;
-    for r in 1..=n {
-        sum_r_p = sum_r_p.wrapping_add((r as u64) * prefix[r]);
+    for (r, &value) in prefix.iter().enumerate().take(n + 1).skip(1) {
+        sum_r_p = sum_r_p.wrapping_add((r as u64) * value);
     }
 
     let mut sum_p_times: u64 = 0;
-    for l in 0..n {
-        sum_p_times = sum_p_times.wrapping_add(prefix[l] * ((n - l) as u64));
+    for (l, &value) in prefix.iter().enumerate().take(n) {
+        sum_p_times = sum_p_times.wrapping_add(value * ((n - l) as u64));
     }
 
     let sum1 = sum_r_p.wrapping_sub(sum_p_times);
@@ -69,8 +69,8 @@ fn main() {
 
     fenwick.add(prefix[0] as usize, 1u64);
 
-    for r in 1..=n {
-        let pr = prefix[r] as usize;
+    for &value in prefix.iter().take(n + 1).skip(1) {
+        let pr = value as usize;
         if pr < m {
             let count = fenwick.sum(pr + 1..=m);
             sum2 = sum2.wrapping_add(count);

@@ -14,13 +14,13 @@ fn solve(a: usize, b: usize) -> String {
     let mut ans = 6;
     if a == b {
         println!("-1");
-        return format!("-1");
+        return "-1".to_string();
     }
 
     ans = ans - a - b;
 
     println!("{ans}");
-    format!("{ans}")
+    ans.to_string()
 }
 
 #[cfg(test)]

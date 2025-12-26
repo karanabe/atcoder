@@ -69,6 +69,7 @@ struct Container {
 trait Packing {
     fn new(items: Vec<(i64, i64)>) -> Self;
     fn check_rotate(&mut self);
+    #[allow(dead_code)]
     fn apply_margin(&mut self, sigma: i64);
     fn find_split_point(&mut self);
 }
@@ -112,8 +113,8 @@ impl Packing for Container {
             let width_padding = normal.sample(&mut rng) as i64;
             let height_padding = normal.sample(&mut rng) as i64;
 
-            *w = *w + width_padding;
-            *h = *h + height_padding;
+            *w += width_padding;
+            *h += height_padding;
         }
     }
 
@@ -159,7 +160,7 @@ impl Packing for Container {
                 split_count = (n / 10) - 1;
             }
 
-            let split = (n + split_count - 1) / split_count;
+            let split = n.div_ceil(split_count);
 
             self.status.split_point = (0..split_count).map(|i| i * split).collect();
         }
@@ -407,7 +408,7 @@ fn main() {
         adjustment_step += 1;
         if adjustment_step as usize > max_offset {
             container.status.split_count += 1;
-            let split = (n + container.status.split_count - 1) / container.status.split_count;
+            let split = n.div_ceil(container.status.split_count);
             container.status.split_point = (0..container.status.split_count)
                 .map(|i| i * split)
                 .collect();

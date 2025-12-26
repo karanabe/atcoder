@@ -63,5 +63,5 @@ fn main() {
         }
     }
 
-    println!("{}", res.into_iter().map(|r| r as i64).join(" "))
+    println!("{}", res.into_iter().join(" "))
 }

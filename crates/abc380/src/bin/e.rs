@@ -60,7 +60,7 @@ fn main() {
     let mut cnt = vec![0; n + 2];
     let mut intervals = BTreeMap::new();
 
-    for i in 1..=n {
+    for (i, value) in cnt.iter_mut().enumerate().take(n + 1).skip(1) {
         intervals.insert(
             i,
             Interval {
@@ -69,7 +69,7 @@ fn main() {
                 color: i,
             },
         );
-        cnt[i] = 1;
+        *value = 1;
     }
 
     let mut results = Vec::new();

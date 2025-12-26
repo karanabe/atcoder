@@ -57,8 +57,8 @@ fn main() {
     }
 
     let mut deg3_nodes = Vec::new();
-    for i in 1..=n {
-        if degs[i] == 3 {
+    for (i, &deg) in degs.iter().enumerate().take(n + 1).skip(1) {
+        if deg == 3 {
             deg3_nodes.push(i);
         }
     }

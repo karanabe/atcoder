@@ -20,7 +20,7 @@ fn solve(n: f64) -> String {
 
 fn is_prime(i: f64) -> bool {
     for j in 2..=(i.sqrt() as usize) {
-        if i as usize % j == 0 {
+        if (i as usize).is_multiple_of(j) {
             return false;
         }
     }

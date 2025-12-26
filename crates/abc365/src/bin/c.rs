@@ -15,7 +15,7 @@ fn main() {
     println!("{}", max_x);
 }
 
-fn find_max_x(n: usize, m: i64, a: &[i64]) -> Option<i64> {
+fn find_max_x(_n: usize, m: i64, a: &[i64]) -> Option<i64> {
     let mut low = 0;
     let mut high = *a.iter().max().unwrap();
 

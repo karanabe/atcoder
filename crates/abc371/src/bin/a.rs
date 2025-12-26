@@ -20,16 +20,12 @@ fn main() {
         } else {
             "B"
         }
-    } else if sab == '<' && sac == '>' {
+    } else if (sab == '<' && sac == '>') || (sab == '>' && sac == '<') {
         "A"
-    } else if sab == '>' && sac == '<' {
-        "A"
+    } else if sbc == '<' {
+        "B"
     } else {
-        if sbc == '<' {
-            "B"
-        } else {
-            "C"
-        }
+        "C"
     };
 
     println!("{}", middle);

@@ -64,9 +64,9 @@ fn main() {
     let mut dist = vec![u32::MAX; hw];
     let mut q = VecDeque::new();
 
-    for i in 0..h {
-        for j in 0..w {
-            if grid[i][j] == 'H' {
+    for (i, row) in grid.iter().enumerate() {
+        for (j, &cell) in row.iter().enumerate() {
+            if cell == 'H' {
                 let idx = i * w + j;
                 dist[idx] = 0;
                 q.push_back(idx);
@@ -102,9 +102,9 @@ fn main() {
     }
 
     let mut count = 0u32;
-    for i in 0..h {
-        for j in 0..w {
-            if grid[i][j] != '#' && dist[i * w + j] <= d as u32 {
+    for (i, row) in grid.iter().enumerate() {
+        for (j, &cell) in row.iter().enumerate() {
+            if cell != '#' && dist[i * w + j] <= d as u32 {
                 count += 1;
             }
         }

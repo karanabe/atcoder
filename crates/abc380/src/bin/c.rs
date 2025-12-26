@@ -72,20 +72,15 @@ fn main() {
 
     let mut tch = sch.clone();
 
-    for i in l_k..=r_k {
-        tch[i] = '0';
-    }
+    tch[l_k..=r_k].fill('0');
 
-    for i in (rk1 + 1)..=(rk1 + len) {
-        if i < n {
-            tch[i] = '1';
-        }
-    }
+    let ones_start = rk1 + 1;
+    let ones_end = rk1 + len;
+    tch[ones_start..=ones_end].fill('1');
 
-    for i in (rk1 + len + 1)..=r_k {
-        if i < n {
-            tch[i] = '0';
-        }
+    let zeros_start = rk1 + len + 1;
+    if zeros_start <= r_k {
+        tch[zeros_start..=r_k].fill('0');
     }
 
     let ans: String = tch.into_iter().collect();

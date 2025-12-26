@@ -8,7 +8,7 @@ fn main() {
         w: i32,
         n: usize,
     }
-    let _ = solve(h, w, n);
+    solve(h, w, n);
 }
 
 fn solve(h: i32, w: i32, n: usize) {

@@ -18,6 +18,8 @@ use rand::prelude::*;
 #[allow(unused_imports)]
 use std::time::{Duration, Instant};
 
+type AnsQueueItem = Reverse<(usize, VecDeque<Vec<char>>, usize, usize)>;
+
 #[allow(unused_variables)]
 #[allow(unused_assignments)]
 fn main() {
@@ -27,8 +29,7 @@ fn main() {
         v: usize,
     }
 
-    let mut ans_queue: BinaryHeap<Reverse<(usize, VecDeque<Vec<char>>, usize, usize)>> =
-        BinaryHeap::new();
+    let mut ans_queue: BinaryHeap<AnsQueueItem> = BinaryHeap::new();
     //let mut action_queue = VecDeque::new();
 
     let mut s_grid = Vec::new();
@@ -47,18 +48,18 @@ fn main() {
     }
 
     let mut takoyaki = HashSet::new();
-    for i in 0..n {
-        for j in 0..n {
-            if s_grid[i][j] == '1' {
+    for (i, row) in s_grid.iter().enumerate() {
+        for (j, &ch) in row.iter().enumerate() {
+            if ch == '1' {
                 takoyaki.insert((i, j));
             }
         }
     }
 
     let mut target_positions = HashSet::new();
-    for i in 0..n {
-        for j in 0..n {
-            if t_grid[i][j] == '1' {
+    for (i, row) in t_grid.iter().enumerate() {
+        for (j, &ch) in row.iter().enumerate() {
+            if ch == '1' {
                 target_positions.insert((i, j));
             }
         }
@@ -105,7 +106,7 @@ fn main() {
 
     let mut calc_count = 0;
 
-    let dirs = vec![(0, 1, 'R'), (1, 0, 'D'), (0, !0, 'L'), (!0, 0, 'U')];
+    let dirs = [(0, 1, 'R'), (1, 0, 'D'), (0, !0, 'L'), (!0, 0, 'U')];
     let arms = vec![
         [(2, 1), (3, 0), (2, -1)],
         [(1, -2), (0, -3), (-1, -2)],
@@ -116,7 +117,7 @@ fn main() {
     while start.elapsed() < time_limit {
         //&& temp > temp_min
 
-        if start_pos.len() != 0 {
+        if !start_pos.is_empty() {
             if calc_count != 0 {
                 (x, y) = start_pos.pop().unwrap();
             }
@@ -139,7 +140,7 @@ fn main() {
 
         // println!("{:?}", target_positions);
 
-        while target_positions.len() != 0 {
+        while !target_positions.is_empty() {
             // println!("{} {}", takoyaki.len(), target_positions.len());
             let start_pos = nearest_point(root_x, root_y, &mut takoyaki).unwrap();
             let (ssx, ssy) = start_pos;
@@ -389,7 +390,7 @@ fn nearest_point(
         return None;
     }
 
-    let mut min_distance = std::isize::MAX;
+    let mut min_distance = isize::MAX;
     let mut closest_point = None;
 
     for &(x, y) in points.iter() {
@@ -434,7 +435,7 @@ fn nearest_goal_in_grid(
         return None;
     }
 
-    let mut min_distance = std::isize::MAX;
+    let mut min_distance = isize::MAX;
     let mut closest_goal = None;
 
     for &(gx, gy) in goals.iter() {
@@ -452,24 +453,25 @@ fn nearest_goal_in_grid(
 
 fn goal_direction(root_x: usize, root_y: usize, goal_x: usize, goal_y: usize) -> usize {
     if goal_x > root_x {
-        return 1;
+        1
     } else if goal_x < root_x {
-        return 3;
+        3
     } else if goal_y > root_y {
-        return 0;
+        0
     } else {
         //goal_y < root_y
-        return 2;
+        2
     }
 }
 
 #[allow(unused_variables)]
 #[allow(unused_assignments)]
+#[allow(clippy::too_many_arguments)]
 fn pick_or_drop_takoyaki(
     n: usize,
     root_x: usize,
     root_y: usize,
-    arms: &Vec<[(isize, isize); 3]>,
+    arms: &[[(isize, isize); 3]],
     direction: usize,
     takoyaki: &mut HashSet<(usize, usize)>,
     target_positions: &mut HashSet<(usize, usize)>,
@@ -479,7 +481,7 @@ fn pick_or_drop_takoyaki(
     sy: usize,
     gx: usize,
     gy: usize,
-    cmd: &mut Vec<char>,
+    cmd: &mut [char],
 ) {
     return;
     #[allow(unreachable_code)]
@@ -494,26 +496,23 @@ fn pick_or_drop_takoyaki(
         root_y as isize + arm_positions[2].1,
     );
 
-    let arm_pos_1u: (usize, usize);
-    let arm_pos_2u: (usize, usize);
-
-    if is_in_grid(arm_pos_1.0, arm_pos_1.1, n) {
-        arm_pos_1u = (
-            (root_x as isize + arm_positions[0].0).abs() as usize,
-            (root_y as isize + arm_positions[0].1).abs() as usize,
-        );
+    let arm_pos_1u: (usize, usize) = if is_in_grid(arm_pos_1.0, arm_pos_1.1, n) {
+        (
+            (root_x as isize + arm_positions[0].0).unsigned_abs(),
+            (root_y as isize + arm_positions[0].1).unsigned_abs(),
+        )
     } else {
-        arm_pos_1u = (10000usize, 10000usize);
-    }
+        (10000usize, 10000usize)
+    };
 
-    if is_in_grid(arm_pos_2.0, arm_pos_2.1, n) {
-        arm_pos_2u = (
-            (root_x as isize + arm_positions[2].0).abs() as usize,
-            (root_y as isize + arm_positions[2].1).abs() as usize,
-        );
+    let arm_pos_2u: (usize, usize) = if is_in_grid(arm_pos_2.0, arm_pos_2.1, n) {
+        (
+            (root_x as isize + arm_positions[2].0).unsigned_abs(),
+            (root_y as isize + arm_positions[2].1).unsigned_abs(),
+        )
     } else {
-        arm_pos_2u = (10000usize, 10000usize);
-    }
+        (10000usize, 10000usize)
+    };
 
     if !*holding_1 {
         if takoyaki.take(&arm_pos_1u).is_some() && (sx, sy) != arm_pos_1u {
@@ -521,12 +520,10 @@ fn pick_or_drop_takoyaki(
             cmd[8] = 'P';
             *holding_1 = true;
         }
-    } else {
-        if target_positions.contains(&arm_pos_1u) && (gx, gy) != arm_pos_1u {
-            target_positions.take(&arm_pos_1u);
-            cmd[8] = 'P';
-            *holding_1 = false;
-        }
+    } else if target_positions.contains(&arm_pos_1u) && (gx, gy) != arm_pos_1u {
+        target_positions.take(&arm_pos_1u);
+        cmd[8] = 'P';
+        *holding_1 = false;
     }
 
     if !*holding_2 {
@@ -535,12 +532,10 @@ fn pick_or_drop_takoyaki(
             cmd[9] = 'P';
             *holding_2 = true;
         }
-    } else {
-        if target_positions.contains(&arm_pos_2u) && (gx, gy) != arm_pos_2u {
-            target_positions.take(&arm_pos_2u);
-            cmd[9] = 'P';
-            *holding_2 = false;
-        }
+    } else if target_positions.contains(&arm_pos_2u) && (gx, gy) != arm_pos_2u {
+        target_positions.take(&arm_pos_2u);
+        cmd[9] = 'P';
+        *holding_2 = false;
     }
 }
 

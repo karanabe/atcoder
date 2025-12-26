@@ -16,16 +16,16 @@ fn main() {
         // println!("{:?}", ans);
     }
 
-    for j in 1..n {
-        if ans[j] > 0 {
+    for &value in ans.iter().take(n).skip(1) {
+        if value > 0 {
             print!("<");
         }
-        if ans[j] == 0 {
+        if value == 0 {
             print!("=");
         }
-        if ans[j] < 0 {
+        if value < 0 {
             print!(">");
         }
     }
-    println!("");
+    println!();
 }

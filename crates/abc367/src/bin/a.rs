@@ -13,12 +13,10 @@ fn main() {
         } else {
             "Yes"
         }
+    } else if a >= b || a < c {
+        "No"
     } else {
-        if a >= b || a < c {
-            "No"
-        } else {
-            "Yes"
-        }
+        "Yes"
     };
 
     println!("{}", result);

@@ -12,17 +12,17 @@ fn main() {
     let _: String = solve(n, q, a, b);
 }
 
-fn solve(n: usize, q: Vec<i32>, a: Vec<i32>, b: Vec<i32>) -> String {
+fn solve(_n: usize, q: Vec<i32>, a: Vec<i32>, b: Vec<i32>) -> String {
     let ((top_max, _top_min), (bottom_max, _bottom_min)) = find_max_min_positions(&a, &b);
 
     let top = (q[top_max] - b[top_max]) / a[top_max];
     let bottom = (q[bottom_max] - a[bottom_max]) / b[bottom_max];
 
     println!("{}", top + bottom);
-    format!("{}", top + bottom)
+    (top + bottom).to_string()
 }
 
-fn find_max_min_positions(a: &Vec<i32>, b: &Vec<i32>) -> ((usize, usize), (usize, usize)) {
+fn find_max_min_positions(a: &[i32], b: &[i32]) -> ((usize, usize), (usize, usize)) {
     let mut max_a_min_b = (0, 0);
 
     let mut min_a_max_b = (0, 0);

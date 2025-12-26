@@ -9,5 +9,5 @@ fn main() {
     for i in 0..n - 1 {
         print!("{} ", a[i] * a[i + 1]);
     }
-    println!("");
+    println!();
 }

@@ -16,9 +16,9 @@ fn solve(n: usize, a: Vec<i64>) -> String {
     let mut current: i64 = 0;
     let mut result: i64 = 0;
 
-    for i in 0..n {
-        current = current + a[i];
-        result += a[i];
+    for &value in a.iter().take(n) {
+        current += value;
+        result += value;
         if current < 0 {
             first += current.abs();
             current = 0;

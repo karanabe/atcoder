@@ -47,7 +47,7 @@ impl UnionFind {
         self.top_vertices[root_x] = merged_top;
     }
 
-    fn merge_top_vertices(a: &Vec<usize>, b: &Vec<usize>) -> Vec<usize> {
+    fn merge_top_vertices(a: &[usize], b: &[usize]) -> Vec<usize> {
         let mut result = Vec::with_capacity(20);
         let mut i = 0;
         let mut j = 0;

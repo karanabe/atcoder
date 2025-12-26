@@ -1,6 +1,4 @@
 #[allow(unused_imports)]
-use itertools;
-#[allow(unused_imports)]
 use proconio::{
     input,
     marker::{Bytes, Chars, Isize1, Usize1},

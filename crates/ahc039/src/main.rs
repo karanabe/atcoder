@@ -88,7 +88,7 @@ fn main() {
     ];
     let step = 1;
 
-    let mut best_score = std::i32::MIN;
+    let mut best_score = i32::MIN;
     let mut best_rect = (0, 0, 0, 0);
     let perimeter_limit = 400_000;
 

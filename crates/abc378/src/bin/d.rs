@@ -66,6 +66,7 @@ fn main() {
     println!("{}", count);
 }
 
+#[allow(clippy::too_many_arguments)]
 fn dfs(
     x: usize,
     y: usize,

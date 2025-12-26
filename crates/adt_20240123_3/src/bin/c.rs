@@ -10,30 +10,28 @@ fn main() {
 }
 
 fn solve(s: &str) -> String {
-    if s.len() != 8 {
-        println!("No");
-        return format!("No");
-    }
-    let first = s.chars().next().unwrap();
-    let last = s.chars().last().unwrap();
-    let middle = &s[1..s.len() - 1];
-
-    let is_uppercase = first.is_ascii_uppercase() && last.is_ascii_uppercase();
-
-    let is_number = middle.parse::<u32>().is_ok();
-    let is_in_range = if let Ok(num) = middle.parse::<u32>() {
-        num >= 100000 && num <= 999999
+    let result = if s.len() != 8 {
+        "No"
     } else {
-        false
+        let first = s.chars().next().unwrap();
+        let last = s.chars().last().unwrap();
+        let middle = &s[1..s.len() - 1];
+
+        let is_uppercase = first.is_ascii_uppercase() && last.is_ascii_uppercase();
+
+        let number = middle.parse::<u32>().ok();
+        let is_number = number.is_some();
+        let is_in_range = number.is_some_and(|num| (100000..=999999).contains(&num));
+
+        if is_uppercase && is_number && is_in_range {
+            "Yes"
+        } else {
+            "No"
+        }
     };
 
-    if is_uppercase && is_number && is_in_range {
-        println!("Yes");
-        return format!("Yes");
-    } else {
-        println!("No");
-        return format!("No");
-    }
+    println!("{result}");
+    result.to_string()
 }
 
 #[cfg(test)]

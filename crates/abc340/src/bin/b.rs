@@ -20,5 +20,5 @@ fn solve(n: usize) -> String {
             println!("{}", result.get(result.len() - xk).unwrap());
         }
     }
-    format!("test")
+    "test".to_string()
 }

@@ -35,9 +35,9 @@ fn gcd_not_good(aa: usize, bb: usize) -> usize {
     let mut b = bb;
     while a >= 1 && b >= 1 {
         if a < b {
-            b = b % a;
+            b %= a;
         } else {
-            a = a % b;
+            a %= b;
         }
     }
     if a >= 1 {

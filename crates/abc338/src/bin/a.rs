@@ -16,20 +16,20 @@ fn solve(s: &str) -> String {
     if n == 1 {
         if is_uppercase {
             println!("Yes");
-            return format!("Yes");
+            return "Yes".to_string();
         } else {
             println!("No");
-            return format!("No");
+            return "No".to_string();
         }
     }
     let is_lowercase = s[1..n].chars().all(|c| c.is_lowercase());
 
     if is_uppercase && is_lowercase {
         println!("Yes");
-        return format!("Yes");
+        return "Yes".to_string();
     }
     println!("No");
-    format!("No")
+    "No".to_string()
 }
 
 #[cfg(test)]

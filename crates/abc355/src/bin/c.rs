@@ -11,7 +11,7 @@ fn main() {
     let _: String = solve(n, t, a);
 }
 
-fn solve(n: usize, t: usize, a: Vec<usize>) -> String {
+fn solve(n: usize, _t: usize, a: Vec<usize>) -> String {
     let turns = a.clone();
     let mut rows = vec![0; n];
     let mut cols = vec![0; n];
@@ -35,12 +35,12 @@ fn solve(n: usize, t: usize, a: Vec<usize>) -> String {
 
         if rows[row] == n || cols[col] == n || diag == n || anti_diag == n {
             println!("{}", i + 1);
-            return format!("{}", i + 1);
+            return (i + 1).to_string();
         }
     }
 
     println!("-1");
-    format!("-1")
+    "-1".to_string()
 }
 
 #[cfg(test)]

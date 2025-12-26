@@ -40,9 +40,10 @@ fn main() {
             target_pos = t;
             l = t;
         }
-        match distance_in_ring_buffer_with_obstacle(n, current_hand_pos, target_pos, obstacle_pos) {
-            Some(value) => ans += value,
-            None => {}
+        if let Some(value) =
+            distance_in_ring_buffer_with_obstacle(n, current_hand_pos, target_pos, obstacle_pos)
+        {
+            ans += value;
         }
     }
 

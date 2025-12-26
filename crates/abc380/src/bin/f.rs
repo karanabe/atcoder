@@ -95,11 +95,11 @@ fn is_first_player_win(
             let mut s = status.clone();
             s[i] = 0;
 
-            for j in 0..s.len() {
-                if s[j] == 1 {
-                    s[j] = 2;
-                } else if s[j] == 2 {
-                    s[j] = 1;
+            for value in s.iter_mut() {
+                if *value == 1 {
+                    *value = 2;
+                } else if *value == 2 {
+                    *value = 1;
                 }
             }
 
@@ -117,5 +117,5 @@ fn is_first_player_win(
 
     memo.insert(status, result);
 
-    return result;
+    result
 }

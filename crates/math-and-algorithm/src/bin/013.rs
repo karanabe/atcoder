@@ -14,7 +14,7 @@ fn main() {
 fn solve(n: f64) {
     let mut result: BTreeSet<usize> = BTreeSet::new();
     for i in 1..=(n.sqrt() as usize) {
-        if n as usize % i == 0 {
+        if (n as usize).is_multiple_of(i) {
             result.insert(i);
             result.insert(n as usize / i);
         }

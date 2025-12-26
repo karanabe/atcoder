@@ -67,12 +67,10 @@ fn simulate(mut h_pos: usize, mut other_pos: usize, t: usize, n: usize, clockwis
             } else {
                 h_pos + 1
             }
+        } else if h_pos == 1 {
+            n
         } else {
-            if h_pos == 1 {
-                n
-            } else {
-                h_pos - 1
-            }
+            h_pos - 1
         };
 
         if next_h_pos == other_pos {
@@ -82,12 +80,10 @@ fn simulate(mut h_pos: usize, mut other_pos: usize, t: usize, n: usize, clockwis
                 } else {
                     other_pos + 1
                 }
+            } else if other_pos == 1 {
+                n
             } else {
-                if other_pos == 1 {
-                    n
-                } else {
-                    other_pos - 1
-                }
+                other_pos - 1
             };
 
             steps += 1;
@@ -115,12 +111,10 @@ fn steps_cw_other_pos(
             } else {
                 h_pos + 1
             }
+        } else if h_pos == 1 {
+            n
         } else {
-            if h_pos == 1 {
-                n
-            } else {
-                h_pos - 1
-            }
+            h_pos - 1
         };
 
         if next_h_pos == other_pos {
@@ -130,12 +124,10 @@ fn steps_cw_other_pos(
                 } else {
                     other_pos + 1
                 }
+            } else if other_pos == 1 {
+                n
             } else {
-                if other_pos == 1 {
-                    n
-                } else {
-                    other_pos - 1
-                }
+                other_pos - 1
             };
 
             other_pos = next_other_pos;

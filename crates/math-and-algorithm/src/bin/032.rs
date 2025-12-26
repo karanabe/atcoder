@@ -34,7 +34,7 @@ fn solve(n: usize, x: usize, mut a: Vec<usize>) -> String {
     }
 
     println!("{}", ans);
-    format!("{}", ans)
+    ans.to_string()
 }
 
 #[cfg(test)]
