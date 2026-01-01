@@ -48,8 +48,40 @@ fn main() {
         n: usize
     }
 
-    let pi = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
+    let mut bet = Vec::<Vec<usize>>::with_capacity(n);
 
-    let s = pi.chars().take(n + 2).join("");
-    println!("{s}");
+    for _ in 0..n {
+        input! {
+            c: usize,
+            a: [usize; c]
+        }
+        bet.push(a);
+    }
+
+    input! {
+        x: usize
+    }
+
+    let mut count: HashMap<usize, usize> = HashMap::new();
+    for (i, _) in bet.iter().enumerate().take(n) {
+        if bet[i].contains(&x) {
+            count.insert(i + 1, bet[i].len());
+        }
+    }
+
+    let Some(min_count) = count.values().copied().min() else {
+        println!("0");
+        println!();
+        return;
+    };
+
+    let mut keys: Vec<usize> = count
+        .iter()
+        .filter_map(|(&k, &v)| (v == min_count).then_some(k))
+        .collect();
+
+    keys.sort_unstable();
+
+    println!("{}", keys.len());
+    println!("{}", keys.iter().join(" "));
 }
